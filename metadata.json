@@ -1,0 +1,8 @@
+{
+  "name": "IguanaNet",
+  "description": "Portafolio interactivo 3D WebGL de Luis Casanova. Arquitectura Omni-Canvas 4 capas, Visor de Inspección retro-industrial, props, ArchViz y compresión DRACO.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

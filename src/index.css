@@ -1,0 +1,146 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --sgx-bg-charcoal: #244156;
+    --sgx-bg-darker: #162937;
+    --sgx-bg-deep: #0e1b24;
+    --sgx-bg-terminal: #091218;
+    --sgx-teal: #99EEFF;
+    --sgx-teal-muted: #5bbccf;
+    --sgx-tangerine: #F57E00;
+    --sgx-tangerine-glow: rgba(245, 126, 0, 0.45);
+    --sgx-border-teal: rgba(153, 238, 255, 0.28);
+    --sgx-border-tangerine: rgba(245, 126, 0, 0.45);
+    --sgx-glass: rgba(22, 41, 55, 0.82);
+    --sgx-glass-heavy: rgba(14, 27, 36, 0.92);
+  }
+
+  html, body {
+    background-color: #244156;
+    color: #e2e8f0;
+    font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+    overscroll-behavior: none;
+    overflow: hidden;
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  #root {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  h1, h2, h3, h4, .font-heading {
+    font-family: 'Orbitron', sans-serif;
+    letter-spacing: 0.05em;
+  }
+
+  code, pre, .font-mono-telemetry {
+    font-family: 'JetBrains Mono', monospace;
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+/* 45-degree chamfer geometry for Neo-Ingeniería / Industrial panels */
+.clip-chamfer-45 {
+  clip-path: polygon(
+    14px 0,
+    calc(100% - 14px) 0,
+    100% 14px,
+    100% calc(100% - 14px),
+    calc(100% - 14px) 100%,
+    14px 100%,
+    0 calc(100% - 14px),
+    0 14px
+  );
+}
+
+.clip-chamfer-top-45 {
+  clip-path: polygon(
+    14px 0,
+    calc(100% - 14px) 0,
+    100% 14px,
+    100% 100%,
+    0 100%,
+    0 14px
+  );
+}
+
+.clip-chamfer-corner-45 {
+  clip-path: polygon(
+    0 0,
+    calc(100% - 18px) 0,
+    100% 18px,
+    100% 100%,
+    0 100%
+  );
+}
+
+.clip-tag-chamfer {
+  clip-path: polygon(
+    8px 0,
+    100% 0,
+    100% calc(100% - 8px),
+    calc(100% - 8px) 100%,
+    0 100%,
+    0 8px
+  );
+}
+
+/* Industrial Grid Background */
+.industrial-grid {
+  background-size: 32px 32px;
+  background-image: 
+    linear-gradient(to right, rgba(153, 238, 255, 0.06) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(153, 238, 255, 0.06) 1px, transparent 1px);
+}
+
+.industrial-grid-dense {
+  background-size: 16px 16px;
+  background-image: 
+    linear-gradient(to right, rgba(245, 126, 0, 0.08) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(245, 126, 0, 0.08) 1px, transparent 1px);
+}
+
+/* CRT Scanline & Terminal Pulse */
+@keyframes crt-scan {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(1200%); }
+}
+
+.animate-crt-scan {
+  animation: crt-scan 8s linear infinite;
+}
+
+@keyframes terminal-cursor {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.animate-terminal-cursor {
+  animation: terminal-cursor 0.9s infinite;
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+::-webkit-scrollbar-track {
+  background: #101c27;
+}
+::-webkit-scrollbar-thumb {
+  background: #244156;
+  border: 1px solid rgba(153, 238, 255, 0.3);
+  border-radius: 2px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #345c7b;
+  border-color: #99EEFF;
+}
