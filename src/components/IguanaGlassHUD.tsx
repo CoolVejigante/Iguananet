@@ -16,7 +16,7 @@ import {
   Minimize2
 } from 'lucide-react';
 import { soundEngine } from '../services/sound-effects';
-import { IguanaNetLogo } from './IguanaNetLogo';
+import logoCompact from '../assets/images/iguananetconcept-removebg-preview2.png';
 
 interface IguanaGlassHUDProps {
   isMuted: boolean;
@@ -45,13 +45,17 @@ export const IguanaGlassHUD: React.FC<IguanaGlassHUDProps> = ({
     <header className="fixed top-0 left-0 right-0 z-30 pointer-events-none select-none">
       {/* Top Glass Navigation Bar */}
       <div className="mx-auto px-4 sm:px-6 py-3 max-w-7xl flex items-center justify-between gap-3">
-        {/* Official IguanaNet Logo (Replaces old text badge per screenshot_1.png) */}
+        {/* Official IguanaNet Logo (Blue circled area: iguananetconcept-removebg-preview2) */}
         <div
           onClick={() => scrollTo('identity-hub')}
           className="flex items-center gap-3 bg-[#162937]/90 hover:bg-[#1a3142] backdrop-blur-md border border-[#99EEFF]/30 px-3 py-1.5 clip-chamfer-45 pointer-events-auto shadow-lg transition-all cursor-pointer group"
           title="IguanaNet - Luis Casanova Portfolio"
         >
-          <IguanaNetLogo className="h-8 sm:h-9 w-auto" />
+          <img
+            src={logoCompact}
+            alt="IguanaNet Logo"
+            className="h-8 sm:h-9 w-auto object-contain filter drop-shadow-[0_0_10px_rgba(153,238,255,0.4)]"
+          />
           <div className="hidden sm:flex flex-col border-l border-[#99EEFF]/20 pl-2.5">
             <span className="font-heading font-black text-white text-xs tracking-wider group-hover:text-[#99EEFF] transition-colors">
               LUIS CASANOVA

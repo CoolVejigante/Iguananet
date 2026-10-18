@@ -9,7 +9,7 @@
 import React, { useState, useEffect } from 'react';
 import { Terminal, Shield, Zap, ChevronRight } from 'lucide-react';
 import { soundEngine } from '../services/sound-effects';
-import { IguanaNetLogo } from './IguanaNetLogo';
+import logoCompact from '../assets/images/iguananetconcept-removebg-preview2.png';
 
 interface IguanaGatekeeperProps {
   onEnter: () => void;
@@ -84,7 +84,11 @@ export const IguanaGatekeeper: React.FC<IguanaGatekeeperProps> = ({ onEnter, isM
         {/* Top Terminal Status Header */}
         <div className="flex flex-wrap items-center justify-between pb-4 border-b border-[#99EEFF]/20 text-xs">
           <div className="flex items-center gap-3">
-            <IguanaNetLogo className="h-8 w-auto" />
+            <img
+              src={logoCompact}
+              alt="IguanaNet Logo"
+              className="h-8 sm:h-9 w-auto object-contain filter drop-shadow-[0_0_8px_rgba(153,238,255,0.4)]"
+            />
             <span className="text-slate-500 hidden sm:inline">|</span>
             <span className="text-[#F57E00] font-mono-telemetry hidden sm:inline text-[11px]">
               IGUANA3D ARCHITECTURE

@@ -64,6 +64,7 @@
       font-family: 'JetBrains Mono', monospace;
       font-variant-numeric: tabular-nums;
     }
+    /* 45-degree chamfers */
     .clip-chamfer-45 {
       clip-path: polygon(
         14px 0,
@@ -109,10 +110,15 @@
   </style>
 </head>
 <body class="selection:bg-[#F57E00] selection:text-black">
-  <!-- LAYER 0: THE VOID (Three.js WebGL Canvas) -->
+
+  <!-- ========================================== -->
+  <!-- LAYER 0: THE VOID (Three.js WebGL Canvas)   -->
+  <!-- ========================================== -->
   <canvas id="void-canvas" class="fixed inset-0 w-full h-full pointer-events-none" style="z-index: 0;"></canvas>
 
-  <!-- LAYER 3: THE GATEKEEPER (Cinematic Intro) -->
+  <!-- ========================================== -->
+  <!-- LAYER 3: THE GATEKEEPER (Cinematic Intro)  -->
+  <!-- ========================================== -->
   <div id="gatekeeper-layer" class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-[#091218] transition-all duration-700">
     <div class="absolute inset-0 pointer-events-none industrial-grid opacity-30"></div>
     <div class="absolute inset-0 pointer-events-none overflow-hidden">
@@ -157,13 +163,17 @@
     </div>
   </div>
 
-  <!-- LAYER 2: THE GLASS HUD -->
+  <!-- ========================================== -->
+  <!-- LAYER 2: THE GLASS HUD (Industrial UI)     -->
+  <!-- ========================================== -->
   <header class="fixed top-0 left-0 right-0 z-30 pointer-events-none p-4">
     <div class="max-w-6xl mx-auto flex items-center justify-between pointer-events-auto">
-      <div class="bg-[#162937]/90 backdrop-blur-md border border-[#99EEFF]/30 px-4 py-2 clip-chamfer-45 text-xs font-mono-telemetry flex items-center gap-2.5 shadow-lg">
-        <span class="w-2.5 h-2.5 bg-[#F57E00] clip-tag-chamfer"></span>
-        <strong class="font-heading text-white">IGUANANET</strong>
-        <span class="text-slate-400">· LUIS CASANOVA</span>
+      <div class="bg-[#162937]/90 backdrop-blur-md border border-[#99EEFF]/30 px-3 py-1.5 clip-chamfer-45 text-xs font-mono-telemetry flex items-center gap-3 shadow-lg">
+        <img src="iguananetconcept-removebg-preview2.png" alt="IguanaNet Logo" class="h-8 sm:h-9 w-auto object-contain">
+        <div class="hidden sm:flex flex-col border-l border-[#99EEFF]/20 pl-2.5">
+          <span class="font-heading font-black text-white text-xs">LUIS CASANOVA</span>
+          <span class="text-[10px] text-slate-400">3D Artist & Visual Dev</span>
+        </div>
       </div>
 
       <nav class="hidden md:flex items-center gap-2 bg-[#162937]/90 backdrop-blur-md border border-[#99EEFF]/30 px-3 py-1.5 clip-chamfer-45 text-xs font-mono-telemetry">
@@ -173,27 +183,44 @@
         <span class="text-slate-600">/</span>
         <a href="#trajectory-matrix" class="text-slate-300 hover:text-[#99EEFF] px-2 py-1">[03 // IGUANA3D ROADMAP]</a>
       </nav>
+
+      <div class="flex items-center gap-2">
+        <button id="btn-audio-toggle" class="px-3 py-1.5 bg-[#162937]/90 border border-[#99EEFF]/30 text-xs font-mono-telemetry text-[#99EEFF] rounded">
+          AUDIO: ON
+        </button>
+      </div>
     </div>
   </header>
 
-  <!-- LAYER 1: THE DOM MATRIX -->
+  <!-- ========================================== -->
+  <!-- LAYER 1: THE DOM MATRIX (Content & UX)     -->
+  <!-- ========================================== -->
   <main class="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 pt-24 pb-24 space-y-16">
+
     <!-- SECTION 1: Identity Hub & Manifesto -->
     <section id="identity-hub" class="space-y-8">
-      <div class="space-y-2">
-        <div class="flex items-center gap-3">
-          <span class="px-3 py-1 bg-[#162937] border border-[#99EEFF]/40 text-[#99EEFF] text-xs font-mono-telemetry clip-tag-chamfer font-semibold">
-            IGUANANET // 3D PORTFOLIO
-          </span>
-          <span class="text-slate-400 font-mono-telemetry text-xs">// SAN JUAN, PUERTO RICO</span>
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <div class="flex items-center gap-3 mb-2">
+            <span class="px-3 py-1 bg-[#F57E00]/20 border border-[#F57E00]/40 text-[#F57E00] text-xs font-mono-telemetry clip-tag-chamfer font-semibold">
+              IGUANANET V2026.5
+            </span>
+            <span class="px-3 py-1 bg-[#162937] border border-[#99EEFF]/40 text-[#99EEFF] text-xs font-mono-telemetry clip-tag-chamfer font-semibold">
+              IGUANA3D STUDIO
+            </span>
+            <span class="text-slate-400 font-mono-telemetry text-xs">// SAN JUAN, PUERTO RICO</span>
+          </div>
+          <h1 class="text-4xl sm:text-6xl font-heading font-black text-white">LUIS CASANOVA</h1>
+          <p class="text-lg sm:text-xl font-heading text-[#99EEFF] font-semibold">
+            3D Artist & Visual Developer · Props, ArchViz & Retro-Industrial
+          </p>
         </div>
-        <h1 class="text-4xl sm:text-6xl font-heading font-black text-white">LUIS CASANOVA</h1>
-        <p class="text-lg sm:text-xl font-heading text-[#99EEFF] font-semibold">
-          3D Artist & Visual Developer · Props, ArchViz & Retro-Industrial
-        </p>
+        <div class="flex items-center">
+          <img src="iguananetconcept-removebg-preview.png" alt="IguanaNet" class="h-16 sm:h-20 w-auto object-contain">
+        </div>
       </div>
 
-      <!-- Integrated Elevator Pitch -->
+      <!-- Integrated Mandatory Elevator Pitch -->
       <div class="p-6 sm:p-8 bg-[#162937]/90 backdrop-blur-xl border-2 border-[#99EEFF]/40 clip-chamfer-45 space-y-3 shadow-xl">
         <span class="text-xs font-mono-telemetry text-[#F57E00] tracking-widest uppercase block">// ELEVATOR PITCH CONTRACT</span>
         <blockquote class="text-base sm:text-lg text-slate-100 italic border-l-2 border-[#F57E00] pl-4 leading-relaxed">
@@ -225,9 +252,35 @@
           <span class="text-[#F57E00]">↗</span>
         </a>
       </div>
+
+      <!-- Previous Artworks Section -->
+      <div class="space-y-4 pt-4">
+        <div class="flex items-center justify-between pb-2 border-b border-[#99EEFF]/20">
+          <span class="text-xs font-mono-telemetry text-[#F57E00] uppercase">// OBRAS PREVIAS & PROPS</span>
+          <span class="text-xs font-mono-telemetry text-slate-400">MODELOS LISTOS PARA PROBAR EN EL INSPECTION BAY</span>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="p-4 bg-[#162937]/90 border border-[#99EEFF]/25 clip-chamfer-45 space-y-2">
+            <div class="flex justify-between items-start">
+              <h3 class="font-heading font-bold text-white text-base">Consola Terminal Retro Iguana-1</h3>
+              <span class="text-[10px] font-mono-telemetry text-[#F57E00]">7,640 Tris</span>
+            </div>
+            <p class="text-xs text-slate-300">Estación mainframe estilo industrial con monitor CRT curvo, rejillas disipadoras y bulbos de vacío.</p>
+            <div class="text-[11px] font-mono-telemetry text-emerald-400">DRACO v1.5.6 · RoomEnvironment Studio</div>
+          </div>
+          <div class="p-4 bg-[#162937]/90 border border-[#99EEFF]/25 clip-chamfer-45 space-y-2">
+            <div class="flex justify-between items-start">
+              <h3 class="font-heading font-bold text-white text-base">Dron de Reconocimiento Iguana-X</h3>
+              <span class="text-[10px] font-mono-telemetry text-[#F57E00]">9,850 Tris</span>
+            </div>
+            <p class="text-xs text-slate-300">Unidad orbital con toberas vectoriales, chasis anodizado y domo óptico cian de alta sensibilidad.</p>
+            <div class="text-[11px] font-mono-telemetry text-emerald-400">DRACO v1.5.6 · RoomEnvironment Studio</div>
+          </div>
+        </div>
+      </div>
     </section>
 
-    <!-- SECTION 2: Inspection Bay -->
+    <!-- SECTION 2: Inspection Bay (Showcase) -->
     <section id="inspection-bay" class="space-y-4 pt-8">
       <div class="flex flex-wrap items-center justify-between gap-3 pb-2 border-b border-[#99EEFF]/20">
         <div>
@@ -247,26 +300,28 @@
       <div class="relative w-full h-[520px] bg-[#162937] border-2 border-[#99EEFF]/30 clip-chamfer-45 overflow-hidden">
         <div id="inspection-canvas-mount" class="w-full h-full cursor-grab active:cursor-grabbing"></div>
 
+        <!-- Telemetry HUD Box -->
         <div class="absolute top-4 left-4 bg-[#0e1b24]/90 backdrop-blur-md border border-[#99EEFF]/30 clip-chamfer-45 p-3.5 text-xs font-mono-telemetry space-y-1.5 shadow-xl">
           <div class="flex justify-between items-center text-[#F57E00] font-bold border-b border-[#99EEFF]/20 pb-1">
             <span>TELEMETRÍA TÉCNICA</span>
             <span class="text-[10px] text-emerald-400">60 FPS</span>
           </div>
-          <div>VÉRTICES: <span class="text-[#99EEFF] font-bold">4,820</span></div>
-          <div>POLÍGONOS / TRIS: <span class="text-white font-bold">7,640</span></div>
+          <div>VÉRTICES: <span id="tele-vertices" class="text-[#99EEFF] font-bold">4,820</span></div>
+          <div>POLÍGONOS / TRIS: <span id="tele-triangles" class="text-white font-bold">7,640</span></div>
           <div class="text-[10px] text-emerald-400 font-semibold">DRACO LOADER GOOGLE CDN (v1.5.6)</div>
           <div class="text-[10px] text-slate-400">PBR ROOM ENVIRONMENT ACTIVO</div>
         </div>
       </div>
     </section>
 
-    <!-- SECTION 3: Trajectory Matrix & Roadmap -->
+    <!-- SECTION 3: Trajectory Matrix & Roadmap (Iguana3D Vision) -->
     <section id="trajectory-matrix" class="space-y-6 pt-10">
       <div>
         <span class="text-xs font-mono-telemetry text-[#F57E00] uppercase tracking-widest block">// SECCIÓN 3</span>
         <h2 class="text-2xl sm:text-4xl font-heading font-black text-white">VISIÓN ESTRATÉGICA IGUANA3D</h2>
       </div>
 
+      <!-- Mandatory Mission Statement Quote -->
       <div class="p-6 sm:p-8 bg-[#162937]/90 border-l-4 border-[#F57E00] border-y border-r border-[#99EEFF]/30 clip-chamfer-45 shadow-xl">
         <blockquote class="text-base sm:text-xl font-heading text-white leading-relaxed font-semibold">
           "Nuestra visión no es solo improvisar tus assets u otros trabajos, Iguana3D está también enfocado en la contribución visual de cada tipo de industria relacionada para cementar la nueva generacion de desarolladores encargado de cementear propiedad intelectual cautivadora y imposible de despegar."
@@ -274,12 +329,13 @@
         <span class="text-xs font-mono-telemetry text-slate-400 block pt-2">— Luis Casanova, Fundador de Iguana3D</span>
       </div>
 
+      <!-- Gantt / Flowchart Timeline -->
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6 font-mono-telemetry text-xs">
         <div class="p-5 bg-[#162937]/80 border-2 border-emerald-500/50 clip-chamfer-45 space-y-3">
           <span class="px-2 py-0.5 bg-emerald-500/20 text-emerald-300 rounded font-bold">FASE 1 // COMPLETADO</span>
           <h4 class="font-heading text-white text-base font-bold">WebGL Portfolio Launch</h4>
           <p class="text-slate-300 font-sans leading-relaxed">
-            Lanzamiento del portafolio interactivo 3D con arquitectura Omni-Canvas 4 capas y compresión DRACO.
+            Lanzamiento del portafolio interactivo 3D con arquitectura Omni-Canvas 4 capas, compresión DRACO y visualización PBR sin fricción.
           </p>
         </div>
 
@@ -287,7 +343,7 @@
           <span class="px-2 py-0.5 bg-[#F57E00]/20 text-[#F57E00] rounded font-bold">FASE 2 // EN EJECUCIÓN</span>
           <h4 class="font-heading text-white text-base font-bold">Collaborative Projects & Game Jams</h4>
           <p class="text-slate-300 font-sans leading-relaxed">
-            Coproducción de assets 3D optimizados para motores indie y game jams internacionales.
+            Coproducción de assets 3D optimizados para motores indie (Unreal Engine, Godot, Three.js) y game jams internacionales.
           </p>
         </div>
 
@@ -302,6 +358,9 @@
     </section>
   </main>
 
+  <!-- ========================================== -->
+  <!-- VANILLA THREE.JS MODULE LOGIC              -->
+  <!-- ========================================== -->
   <script type="module">
     import * as THREE from 'three';
     import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
@@ -309,6 +368,7 @@
     import { DRACOLoader } from 'three/addons/loaders/DRACOLoader.js';
     import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
+    // Gatekeeper Layer Dismissal
     const gatekeeper = document.getElementById('gatekeeper-layer');
     const enterBtn = document.getElementById('btn-enter-system');
     enterBtn?.addEventListener('click', () => {
@@ -317,6 +377,7 @@
       setTimeout(() => gatekeeper.style.display = 'none', 700);
     });
 
+    // 1. Layer 0 Void Background
     const voidCanvas = document.getElementById('void-canvas');
     const voidScene = new THREE.Scene();
     voidScene.background = new THREE.Color(0x244156);
@@ -327,6 +388,7 @@
 
     const voidRenderer = new THREE.WebGLRenderer({ canvas: voidCanvas, antialias: true });
     voidRenderer.setSize(window.innerWidth, window.innerHeight);
+    voidRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
     const gridFloor = new THREE.GridHelper(50, 30, 0x99eeff, 0x162937);
     gridFloor.position.y = -4;
@@ -339,6 +401,7 @@
     }
     animateVoid();
 
+    // 2. Section 2 Inspection Bay
     const bayContainer = document.getElementById('inspection-canvas-mount');
     const bayScene = new THREE.Scene();
     bayScene.background = new THREE.Color(0x162937);
@@ -348,6 +411,7 @@
 
     const bayRenderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' });
     bayRenderer.setSize(bayContainer.clientWidth, bayContainer.clientHeight);
+    bayRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     bayRenderer.outputColorSpace = THREE.SRGBColorSpace;
     bayRenderer.toneMapping = THREE.ACESFilmicToneMapping;
     bayRenderer.toneMappingExposure = 1.15;
@@ -355,17 +419,21 @@
 
     const controls = new OrbitControls(bayCam, bayRenderer.domElement);
     controls.enableDamping = true;
+    controls.dampingFactor = 0.05;
 
+    // RoomEnvironment setup (Prevents dark model bug)
     const pmrem = new THREE.PMREMGenerator(bayRenderer);
     bayScene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
     pmrem.dispose();
 
+    // DRACO Loader Setup with Official Google CDN
     const dracoLoader = new DRACOLoader();
     dracoLoader.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.6/');
     const gltfLoader = new GLTFLoader();
     gltfLoader.setDRACOLoader(dracoLoader);
     gltfLoader.setCrossOrigin('anonymous');
 
+    // Studio Lights
     const keyLight = new THREE.DirectionalLight(0xffeedd, 2.0);
     keyLight.position.set(6, 8, 6);
     bayScene.add(keyLight);
@@ -378,40 +446,54 @@
     pedestalGrid.position.y = -1.6;
     bayScene.add(pedestalGrid);
 
+    // Composite 3D Retro Terminal Model
     const modelGroup = new THREE.Group();
-    const chassis = new THREE.Mesh(
-      new THREE.BoxGeometry(3.2, 1.4, 2.2),
-      new THREE.MeshStandardMaterial({ color: 0x244156, metalness: 0.85, roughness: 0.25 })
-    );
+    const chassisMat = new THREE.MeshStandardMaterial({ color: 0x244156, metalness: 0.85, roughness: 0.25 });
+    const hoodMat = new THREE.MeshStandardMaterial({ color: 0x111c24, metalness: 0.7, roughness: 0.35 });
+    const screenMat = new THREE.MeshStandardMaterial({ color: 0x091c24, emissive: 0x99eeff, emissiveIntensity: 0.5 });
+    const copperMat = new THREE.MeshStandardMaterial({ color: 0xb87333, metalness: 0.9, roughness: 0.2 });
+
+    const chassis = new THREE.Mesh(new THREE.BoxGeometry(3.2, 1.4, 2.2), chassisMat);
     chassis.position.y = -0.4;
     modelGroup.add(chassis);
 
-    const hood = new THREE.Mesh(
-      new THREE.BoxGeometry(2.6, 2.0, 1.6),
-      new THREE.MeshStandardMaterial({ color: 0x111c24, metalness: 0.7, roughness: 0.35 })
-    );
+    const hood = new THREE.Mesh(new THREE.BoxGeometry(2.6, 2.0, 1.6), hoodMat);
     hood.position.set(0, 1.0, -0.2);
     modelGroup.add(hood);
 
     const screen = new THREE.Mesh(
       new THREE.CylinderGeometry(1.0, 1.0, 1.4, 32, 1, false, Math.PI * 0.7, Math.PI * 0.6),
-      new THREE.MeshStandardMaterial({ color: 0x091c24, emissive: 0x99eeff, emissiveIntensity: 0.5 })
+      screenMat
     );
     screen.position.set(0, 1.05, 0.45);
     screen.rotation.y = Math.PI / 2;
     modelGroup.add(screen);
 
+    // Vacuum tube dials
+    for (let i = -2; i <= 2; i++) {
+      const dial = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.12, 0.4, 16), copperMat);
+      dial.position.set(i * 0.4, 2.15, -0.4);
+      modelGroup.add(dial);
+    }
+
     bayScene.add(modelGroup);
 
+    // Wireframe Toggle
     let isWire = false;
-    document.getElementById('btn-wireframe-toggle')?.addEventListener('click', () => {
+    const wireBtn = document.getElementById('btn-wireframe-toggle');
+    wireBtn?.addEventListener('click', () => {
       isWire = !isWire;
-      document.getElementById('btn-wireframe-toggle').textContent = isWire ? 'WIREFRAME [ON]' : 'WIREFRAME [OFF]';
+      wireBtn.textContent = isWire ? 'WIREFRAME [ON]' : 'WIREFRAME [OFF]';
       modelGroup.traverse((child) => {
-        if (child.isMesh && child.material) child.material.wireframe = isWire;
+        if (child.isMesh && child.material) {
+          child.material.wireframe = isWire;
+          if (isWire) child.material.color.setHex(0xf57e00);
+          else child.material.color.setHex(0x244156);
+        }
       });
     });
 
+    // Reset Camera
     document.getElementById('btn-reset-camera')?.addEventListener('click', () => {
       bayCam.position.set(4.2, 3.0, 5.0);
       controls.target.set(0, 0, 0);
@@ -426,6 +508,7 @@
     }
     animateBay();
 
+    // Resize Handler
     window.addEventListener('resize', () => {
       voidCam.aspect = window.innerWidth / window.innerHeight;
       voidCam.updateProjectionMatrix();

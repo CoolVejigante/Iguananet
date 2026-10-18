@@ -33,7 +33,7 @@ import {
 } from 'lucide-react';
 import { soundEngine } from '../services/sound-effects';
 import { IguanaInspectionBay, BuiltinModelId } from './IguanaInspectionBay';
-import { IguanaNetLogo } from './IguanaNetLogo';
+import logoFull from '../assets/images/iguananetconcept-removebg-preview.png';
 
 interface ArtworkProject {
   id: string;
@@ -152,8 +152,13 @@ export const IguanaPortfolioMatrix: React.FC = () => {
                 3D Artist & Visual Developer · Props, ArchViz & Retro-Industrial
               </p>
             </div>
-            <div className="hidden lg:block">
-              <IguanaNetLogo className="h-16 w-auto opacity-95" />
+            {/* Red circled area: iguananetconcept-removebg-preview */}
+            <div className="flex items-center">
+              <img
+                src={logoFull}
+                alt="IguanaNet Official Logo"
+                className="h-14 sm:h-20 w-auto max-w-[280px] sm:max-w-[420px] object-contain filter drop-shadow-[0_0_18px_rgba(153,238,255,0.45)]"
+              />
             </div>
           </div>
         </div>
