@@ -18,7 +18,6 @@ import {
   ChevronRight,
   Sparkles,
   Calendar,
-  CheckCircle2,
   Clock,
   Rocket,
   Compass,
@@ -139,7 +138,7 @@ export const IguanaPortfolioMatrix: React.FC = () => {
               IGUANA3D STUDIO
             </span>
             <span className="text-slate-400 font-mono-telemetry text-xs hidden sm:inline">
-              // SAN JUAN, PUERTO RICO
+              // HUMACAO, PUERTO RICO
             </span>
           </div>
 
@@ -165,9 +164,6 @@ export const IguanaPortfolioMatrix: React.FC = () => {
 
         {/* Integrated Mandatory Elevator Pitch Box */}
         <div className="relative p-6 sm:p-8 bg-[#162937]/90 backdrop-blur-xl border-2 border-[#99EEFF]/40 clip-chamfer-45 shadow-[0_0_40px_rgba(36,65,86,0.6)]">
-          <div className="absolute top-0 right-0 px-4 py-1 bg-[#99EEFF] text-black font-mono-telemetry text-xs font-bold clip-chamfer-corner-45">
-            ELEVATOR PITCH CONTRACT
-          </div>
 
           <div className="flex items-start gap-4">
             <div className="w-10 h-10 rounded-lg bg-[#244156] border border-[#99EEFF]/40 flex items-center justify-center shrink-0 mt-1">
@@ -179,25 +175,8 @@ export const IguanaPortfolioMatrix: React.FC = () => {
                 // MANIFIESTO PROFESIONAL Y PROPUESTA DE VALOR
               </span>
               <blockquote className="text-base sm:text-lg text-slate-100 font-sans leading-relaxed border-l-2 border-[#F57E00] pl-4 italic">
-                "Saludos, soy Luis Casanova, 3D Artist y Visual Developer especializado en props, ArchViz y estética retro-industrial. Resuelvo la incertidumbre de los directores de arte e indie game devs que contratan a ciegas en portafolios estáticos sin conocer la optimización ni la escala real de los modelos. Lo logro mediante un Visor WebGL de Inspección 'Inspection Bay' estilo terminal retro, donde pueden probar mis mallas en tiempo real, alternar wireframes, validar compresión DRACO y evaluar texturas PBR sin fricción ni descargas."
+                "Saludos, soy Luis Casanova, 3D Artist y Visual Developer especializado en props, ArchViz y diseño industrial y artístico. Resuelvo la incertidumbre de los directores de arte e indie game devs que contratan a ciegas sin conocer la optimización ni la escala real de los modelos. Logro mediante un visor WebGL de inspección 'Inspection Bay', donde pueden probar los assets tridimensionales en vivo, alternar wireframes, inspeccionar vértices y polígonos y evaluar texturas PBR sin fricción ni descargas. Y por eso es cósmicamente interesante."
               </blockquote>
-
-              <div className="flex flex-wrap items-center gap-4 pt-2 text-xs font-mono-telemetry text-slate-300">
-                <span className="flex items-center gap-1.5 text-[#99EEFF]">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                  <span>Sin fricción ni descargas pesadas</span>
-                </span>
-                <span className="text-slate-600">·</span>
-                <span className="flex items-center gap-1.5 text-[#F57E00]">
-                  <CheckCircle2 className="w-4 h-4 text-[#F57E00]" />
-                  <span>Mallas validadas en DRACO v1.5.6</span>
-                </span>
-                <span className="text-slate-600">·</span>
-                <span className="flex items-center gap-1.5 text-white">
-                  <CheckCircle2 className="w-4 h-4 text-cyan-400" />
-                  <span>Escala real 1:1 e iluminación física</span>
-                </span>
-              </div>
             </div>
           </div>
         </div>
