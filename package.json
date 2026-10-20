@@ -2,6 +2,7 @@
   "homepage" : "https://coolvejigante.github.io/Iguananet",
   "name": "Iguananet",
   "private": true,
+   "type": "module",
   "version": "0.0.1",
   
   "scripts": {
