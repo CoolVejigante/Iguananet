@@ -154,7 +154,7 @@ export const IguanaGatekeeper: React.FC<IguanaGatekeeperProps> = ({ onEnter, isM
             <span className="inline-block w-2 sm:w-3 h-6 sm:h-9 ml-1 bg-[#F57E00] animate-terminal-cursor" />
           </h1>
           <p className="text-xs sm:text-sm text-slate-300 max-w-xl leading-relaxed font-sans">
-            Portafolio interactivo 3D de alta fidelidad, inspección WebGL en tiempo real con compresión DRACO y visualización PBR sin fricción.
+            Portafolio interactivo 3D de alta fidelidad en tiempo real
           </p>
         </div>
 

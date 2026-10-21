@@ -106,7 +106,7 @@ export const IguanaSingleFileExportModal: React.FC<IguanaSingleFileExportModalPr
         Ambición, Inmersión e Imaginación.
       </h1>
       <p class="text-sm text-slate-300 font-sans">
-        Portafolio interactivo 3D de Luis Casanova (Iniciado SGX). Visor WebGL de Inspección con decodificación DRACO y evaluación PBR en tiempo real.
+        Portafolio interactivo 3D de alta fidelidad en tiempo real
       </p>
       <button id="btn-enter-system" class="px-8 py-3.5 bg-[#244156] hover:bg-[#1b3447] text-[#99EEFF] border-2 border-[#99EEFF] clip-chamfer-45 font-heading font-bold text-sm tracking-wider shadow-[0_0_30px_rgba(153,238,255,0.4)] transition-all">
         [ ACCEDER AL SISTEMA / ENTRANDO A UN MUNDO NUEVO ]
