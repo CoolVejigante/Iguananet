@@ -736,7 +736,7 @@ export const IguanaInspectionBay: React.FC<IguanaInspectionBayProps> = ({
                 : 'bg-[#244156]/60 text-slate-300 border-[#99EEFF]/30 hover:border-[#99EEFF]'
             }`}
           >
-            [1] Teléfono Inteligente
+            [1] Terminal Retro
           </button>
           <button
             onClick={() => handleModelSelect('DRONE')}
@@ -746,7 +746,7 @@ export const IguanaInspectionBay: React.FC<IguanaInspectionBayProps> = ({
                 : 'bg-[#244156]/60 text-slate-300 border-[#99EEFF]/30 hover:border-[#99EEFF]'
             }`}
           >
-            [2] Iguana
+            [2] Dron Iguana-X
           </button>
           <button
             onClick={() => handleModelSelect('ARCHVIZ')}
@@ -756,7 +756,7 @@ export const IguanaInspectionBay: React.FC<IguanaInspectionBayProps> = ({
                 : 'bg-[#244156]/60 text-slate-300 border-[#99EEFF]/30 hover:border-[#99EEFF]'
             }`}
           >
-            [3] Plato Arqueológico
+            [3] ArchViz Hábitat
           </button>
           <button
             onClick={() => handleModelSelect('FUSION_CORE')}
@@ -766,7 +766,7 @@ export const IguanaInspectionBay: React.FC<IguanaInspectionBayProps> = ({
                 : 'bg-[#244156]/60 text-slate-300 border-[#99EEFF]/30 hover:border-[#99EEFF]'
             }`}
           >
-            [4] Apartamento Retrofuturista
+            [4] Celda Fusión
           </button>
         </div>
       </div>

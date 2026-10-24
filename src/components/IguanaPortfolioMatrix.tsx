@@ -33,20 +33,12 @@ import {
 import { soundEngine } from '../services/sound-effects';
 import { IguanaInspectionBay, BuiltinModelId } from './IguanaInspectionBay';
 import logoFull from '../assets/images/iguananetconcept-removebg-preview.png';
-import pcVRImg from '../assets/images/pcVR@2x@2x.jpg';
-import busStopImg from '../assets/images/busStopRndr1@2x.jpg';
-import intdorfinImg from '../assets/images/intdorfin.jpg';
-import modaparfinalImg from '../assets/images/modaparfinal.png';
-import iguanaModelImg from '../assets/images/iguana_model_3d.png';
-import platoArqueologicoImg from '../assets/images/plato_arqueologico.png';
-import telefonoInteligenteImg from '../assets/images/telefono_inteligente.png';
 
 interface ArtworkProject {
   id: string;
   title: string;
   category: string;
   modelTarget: BuiltinModelId;
-  image?: string;
   specs: {
     triangles: string;
     textures: string;
@@ -63,26 +55,24 @@ export const IguanaPortfolioMatrix: React.FC = () => {
   const artworks: ArtworkProject[] = [
     {
       id: 'art-1',
-      title: 'Telefono Inteligente',
-      category: 'Dispositivo Móvil & Hardware Retrofuturista',
+      title: 'Consola Terminal Retro Iguana-1',
+      category: 'Prop Retro-Industrial',
       modelTarget: 'TERMINAL',
-      image: telefonoInteligenteImg,
       specs: {
         triangles: '7,640 Tris',
-        textures: 'PBR Titanio Negro & Biseles',
-        pbrType: 'Micro-facet Specular / PBR',
+        textures: 'PBR 4K Roughness/Metal',
+        pbrType: 'RoomEnvironment Studio',
         compression: 'DRACO v1.5.6 (Google CDN)'
       },
       description:
-        'Concepto de teléfono inteligente retrofuturista con chasis modular biselado, acabado negro mate, botones metálicos laterales y display táctil de alta definición.',
-      tags: ['Hardware', 'Smartphone', 'Retrofuturismo', 'Props', 'Industrial']
+        'Estación de trabajo mainframe estilo retro-futurista con monitor curvo CRT, rejillas disipadoras de calor y bulbos de vacío con filamentos de tungsteno.',
+      tags: ['Props', 'Retro-Industrial', 'Hard-Surface', 'DRACO']
     },
     {
       id: 'art-2',
-      title: 'Iguana',
-      category: 'Mascota & Escultura 3D',
+      title: 'Dron de Reconocimiento Iguana-X',
+      category: 'Vehículo Táctico Sci-Fi',
       modelTarget: 'DRONE',
-      image: iguanaModelImg,
       specs: {
         triangles: '9,850 Tris',
         textures: 'PBR Dual-Coat Anodizado',
@@ -90,40 +80,38 @@ export const IguanaPortfolioMatrix: React.FC = () => {
         compression: 'DRACO v1.5.6 (Google CDN)'
       },
       description:
-        'Mascota emblemática cibernética Iguana con cresta bioluminiscente, escamas metálicas facetadas y estructura anatómica optimizada en tiempo real.',
-      tags: ['Iguana', 'Game-Ready', 'Sci-Fi', 'Props', 'Rigged']
+        'Unidad orbital no tripulada para cartografía espacial. Cuatro puntales articulados con toberas vectoriales y domo óptico cian de alta sensibilidad.',
+      tags: ['Game-Ready', 'Sci-Fi', 'Props', 'Rigged']
     },
     {
       id: 'art-3',
-      title: 'Plato Arqueológico',
-      category: 'Patrimonio Cultural & Arqueología',
+      title: 'Neo-San Juan Brutalist Habitat',
+      category: 'ArchViz Modular Concept',
       modelTarget: 'ARCHVIZ',
-      image: platoArqueologicoImg,
       specs: {
         triangles: '6,880 Tris',
-        textures: 'Cerámica Ancestral & Arcilla',
-        pbrType: 'Micro-facet Roughness / PBR',
-        compression: 'DRACO v1.5.6 (Google CDN)'
-      },
-      description:
-        'Reconstrucción tridimensional de plato ceremonial arqueológico con iconografía tallada, textura cerámica porosa y pátina de desgaste milenario.',
-      tags: ['Arqueología', 'Prop', 'Texturas-PBR', 'DRACO', 'Historia']
-    },
-    {
-      id: 'art-4',
-      title: 'Concepto de Apartamento Retrofuturista',
-      category: 'ArchViz Modular Concept',
-      modelTarget: 'FUSION_CORE',
-      image: modaparfinalImg,
-      specs: {
-        triangles: '9,200 Tris',
         textures: 'Concreto & Vidrio Dieléctrico',
         pbrType: 'Transmission 0.9 / ACES',
         compression: 'DRACO v1.5.6 (Google CDN)'
       },
       description:
-        'Pabellón habitacional y concepto de apartamento modular retrofuturista con pórticos voladizos, ventanales panorámicos y estética brutalista contemporánea.',
-      tags: ['ArchViz', 'Retrofuturismo', 'Apartamento', 'Modular', 'Ambientes']
+        'Pabellón arquitectónico modular de observación costera con pórtico voladizo, ventanales panorámicos y lamas de sombreado solar en acero envejecido.',
+      tags: ['ArchViz', 'Brutalismo', 'Modular', 'Ambientes']
+    },
+    {
+      id: 'art-4',
+      title: 'Celda de Contención Criogénica',
+      category: 'Prop Pesado de Fusión',
+      modelTarget: 'FUSION_CORE',
+      specs: {
+        triangles: '9,200 Tris',
+        textures: 'Cobre C101 & Acero Damasco',
+        pbrType: 'Emissive Plasma Core',
+        compression: 'DRACO v1.5.6 (Google CDN)'
+      },
+      description:
+        'Reactor de energía industrial con toroide magnético de confinamiento, mirilla de plasma y sellos de alta presión para entornos de juego AAA.',
+      tags: ['Props', 'Industrial', 'Energía', 'VFX']
     }
   ];
 
@@ -176,29 +164,19 @@ export const IguanaPortfolioMatrix: React.FC = () => {
 
         {/* Integrated Mandatory Elevator Pitch Box */}
         <div className="relative p-6 sm:p-8 bg-[#162937]/90 backdrop-blur-xl border-2 border-[#99EEFF]/40 clip-chamfer-45 shadow-[0_0_40px_rgba(36,65,86,0.6)]">
-          <div className="flex flex-col lg:flex-row items-center justify-between gap-6">
-            <div className="flex items-start gap-4 flex-1">
-              <div className="w-10 h-10 rounded-lg bg-[#244156] border border-[#99EEFF]/40 flex items-center justify-center shrink-0 mt-1">
-                <Terminal className="w-5 h-5 text-[#F57E00]" />
-              </div>
 
-              <div className="space-y-4">
-                <span className="text-xs font-mono-telemetry text-[#F57E00] tracking-widest uppercase">
-                  // MANIFIESTO PROFESIONAL Y PROPUESTA DE VALOR
-                </span>
-                <blockquote className="text-base sm:text-lg text-slate-100 font-sans leading-relaxed border-l-2 border-[#F57E00] pl-4 italic">
-                  "Saludos, soy Luis Casanova, 3D Artist y Visual Developer especializado en props, ArchViz y diseño industrial y artístico. Resuelvo la incertidumbre de los directores de arte e indie game devs que contratan a ciegas sin conocer la optimización ni la escala real de los modelos. Logro mediante un visor WebGL de inspección 'Inspection Bay', donde pueden probar los assets tridimensionales en vivo, alternar wireframes, inspeccionar vértices y polígonos y evaluar texturas PBR sin fricción ni descargas. Y por eso es cósmicamente interesante."
-                </blockquote>
-              </div>
+          <div className="flex items-start gap-4">
+            <div className="w-10 h-10 rounded-lg bg-[#244156] border border-[#99EEFF]/40 flex items-center justify-center shrink-0 mt-1">
+              <Terminal className="w-5 h-5 text-[#F57E00]" />
             </div>
 
-            {/* Area destacada en verde: Render 3D de la Iguana */}
-            <div className="w-full lg:w-72 xl:w-80 shrink-0 flex items-center justify-center p-3 bg-[#0e1b24]/80 border border-[#99EEFF]/30 rounded-lg clip-chamfer-45 overflow-hidden shadow-inner group">
-              <img
-                src={iguanaModelImg}
-                alt="Iguana 3D Model"
-                className="w-full h-auto max-h-48 object-contain filter drop-shadow-[0_0_15px_rgba(153,238,255,0.4)] group-hover:scale-105 transition-transform duration-500"
-              />
+            <div className="space-y-4">
+              <span className="text-xs font-mono-telemetry text-[#F57E00] tracking-widest uppercase">
+                // MANIFIESTO PROFESIONAL Y PROPUESTA DE VALOR
+              </span>
+              <blockquote className="text-base sm:text-lg text-slate-100 font-sans leading-relaxed border-l-2 border-[#F57E00] pl-4 italic">
+                "Saludos, soy Luis Casanova, 3D Artist y Visual Developer especializado en props, ArchViz y diseño industrial y artístico. Resuelvo la incertidumbre de los directores de arte e indie game devs que contratan a ciegas sin conocer la optimización ni la escala real de los modelos. Logro mediante un visor WebGL de inspección 'Inspection Bay', donde pueden probar los assets tridimensionales en vivo, alternar wireframes, inspeccionar vértices y polígonos y evaluar texturas PBR sin fricción ni descargas. Y por eso es cósmicamente interesante."
+              </blockquote>
             </div>
           </div>
         </div>
@@ -322,18 +300,6 @@ export const IguanaPortfolioMatrix: React.FC = () => {
                     {art.specs.triangles}
                   </span>
                 </div>
-
-                {art.image && (
-                  <div className="relative w-full h-44 sm:h-52 overflow-hidden rounded-md border border-[#99EEFF]/25 group-hover:border-[#99EEFF]/60 transition-all bg-[#0e1b24]">
-                    <img
-                      src={art.image}
-                      alt={art.title}
-                      className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
-                      loading="lazy"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#162937]/80 via-transparent to-transparent pointer-events-none" />
-                  </div>
-                )}
 
                 <p className="text-xs text-slate-300 leading-relaxed font-sans">
                   {art.description}
