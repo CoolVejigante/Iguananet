@@ -41,6 +41,93 @@ import { soundEngine } from '../services/sound-effects';
 
 export type BuiltinModelId = 'TERMINAL' | 'DRONE' | 'ARCHVIZ' | 'FUSION_CORE';
 
+/**
+ * ============================================================================
+ * GUÍA DE INGENIERÍA 3D // ASSETS MANUALES DE BLENDER (.GLB) CON COMPRESIÓN DRACO
+ * ============================================================================
+ * 
+ * 1. ALOJAMIENTO NATIVO (SAME-ORIGIN):
+ *    Los modelos 3D se colocan en /public/assets/models/ dentro del proyecto.
+ *    Al servirse desde el mismo dominio/origen que la aplicación web, el navegador
+ *    nunca dispara bloqueos de seguridad CORS (Access-Control-Allow-Origin).
+ * 
+ * 2. COMPRESIÓN GEOMÉTRICA DRACO v1.5.6:
+ *    Permite reducir el tamaño de las mallas 3D entre un 70% y 90% preservando
+ *    la fidelidad de vértices, normales y coordenadas UV.
+ *    El decodificador WebAssembly se carga desde el CDN oficial de Google:
+ *    https://www.gstatic.com/draco/versioned/decoders/1.5.6/
+ * 
+ * 3. RESOLUCIÓN DINÁMICA DE RUTA CON VITE:
+ *    Usamos import.meta.env.BASE_URL para que las rutas funcionen tanto en
+ *    desarrollo local (localhost:3000/Iguananet/) como en producción (GitHub Pages).
+ */
+
+export interface BlenderModelMeta {
+  id: BuiltinModelId;
+  title: string;
+  category: string;
+  fileName: string;
+  relativePath: string;
+  hasDraco: boolean;
+  targetScale: number;
+  description: string;
+}
+
+export const BLENDER_MODELS_REGISTRY: Record<BuiltinModelId, BlenderModelMeta> = {
+  TERMINAL: {
+    id: 'TERMINAL',
+    title: 'Teléfono Inteligente',
+    category: 'Dispositivo Móvil & Hardware Retrofuturista',
+    fileName: 'newsovphone.glb',
+    relativePath: 'assets/models/newsovphone.glb',
+    hasDraco: true,
+    targetScale: 3.2,
+    description: 'Smartphone modular retrofuturista modelado a mano en Blender con acabado negro titanio, pantalla táctil y botones laterales.'
+  },
+  DRONE: {
+    id: 'DRONE',
+    title: 'Iguana',
+    category: 'Mascota Cibernética & Escultura 3D',
+    fileName: 'iguana.glb',
+    relativePath: 'assets/models/iguana.glb',
+    hasDraco: true,
+    targetScale: 3.3,
+    description: 'Escultura emblemática de la Iguana modelada a mano en Blender con cresta bioluminiscente y topología anatómica en tiempo real.'
+  },
+  ARCHVIZ: {
+    id: 'ARCHVIZ',
+    title: 'Plato Arqueológico',
+    category: 'Patrimonio Cultural & Arqueología',
+    fileName: 'plato_arqueologico.glb',
+    relativePath: 'assets/models/plato_arqueologico.glb',
+    hasDraco: true,
+    targetScale: 3.0,
+    description: 'Reconstrucción arqueológica de plato ceremonial con iconografía ancestral, pátina porosa y compresión DRACO aplicada en Blender.'
+  },
+  FUSION_CORE: {
+    id: 'FUSION_CORE',
+    title: 'Apartamento Retrofuturista',
+    category: 'ArchViz Modular Concept',
+    fileName: 'modapar.glb',
+    relativePath: 'assets/models/modapar.glb',
+    hasDraco: true,
+    targetScale: 3.2,
+    description: 'Concepto de apartamento modular con arquitectura retrofuturista, grandes ventanales y compresión DRACO v1.5.6.'
+  }
+};
+
+/**
+ * PASO 1: FUNCIÓN DE RESOLUCIÓN DE RUTA DINÁMICA
+ * Resuelve cualquier ruta relativa en el servidor asegurando compatibilidad
+ * con subcarpetas en GitHub Pages o dominios raíz en Vercel/Netlify.
+ */
+export const resolveModelUrl = (relativePath: string): string => {
+  const base = import.meta.env.BASE_URL || '/';
+  const cleanBase = base.endsWith('/') ? base : `${base}/`;
+  const cleanPath = relativePath.startsWith('/') ? relativePath.slice(1) : relativePath;
+  return `${cleanBase}${cleanPath}`;
+};
+
 interface IguanaInspectionBayProps {
   initialModel?: BuiltinModelId;
 }
@@ -92,7 +179,8 @@ export const IguanaInspectionBay: React.FC<IguanaInspectionBayProps> = ({
     originalMaterialsMap: new Map()
   });
 
-  // Deep GPU memory dispose routine (Grimoire Cap 2.4)
+  // PASO 3: LIMPIEZA PROFUNDA DE MEMORIA GPU (.dispose())
+  // Libera geometrías, materiales y texturas al cambiar de modelo para evitar memory leaks
   const disposeGroup = (group: THREE.Group) => {
     while (group.children.length > 0) {
       const obj = group.children[0];
@@ -376,12 +464,189 @@ export const IguanaInspectionBay: React.FC<IguanaInspectionBayProps> = ({
     return group;
   }, []);
 
-  // Initialize Three.js WebGL Scene with RoomEnvironment & DRACO standards
+  // ============================================================================
+  // PASO 4: RESET DE CÁMARA & CONTROLES ORBITALES
+  // ============================================================================
+  const handleResetCamera = useCallback(() => {
+    soundEngine.playClickSound();
+    if (sceneRefs.current.camera && sceneRefs.current.controls) {
+      sceneRefs.current.camera.position.set(4.2, 3.0, 5.0);
+      sceneRefs.current.controls.target.set(0, 0, 0);
+      sceneRefs.current.controls.update();
+    }
+  }, []);
+
+  // ============================================================================
+  // PASO 5: PROCESAMIENTO, CENTRADO Y NORMALIZACIÓN DE ESCALA (THREE.Box3)
+  // ============================================================================
+  const processLoadedAsset = useCallback(
+    (
+      object: THREE.Object3D,
+      fileName: string,
+      isDraco = false,
+      targetScale = 3.2,
+      wireframeMode = false
+    ) => {
+      if (!sceneRefs.current.scene) return;
+
+      // 1. Limpieza profunda en la GPU del modelo anterior
+      if (sceneRefs.current.currentMeshGroup) {
+        sceneRefs.current.scene.remove(sceneRefs.current.currentMeshGroup);
+        disposeGroup(sceneRefs.current.currentMeshGroup);
+      }
+
+      const wrapper = new THREE.Group();
+      uploadedModelRef.current.originalMaterialsMap.clear();
+
+      let totalVerts = 0;
+      let totalTris = 0;
+      let meshCount = 0;
+
+      // 2. Travesía de la jerarquía de nodos de Blender
+      object.traverse((node) => {
+        if ((node as THREE.Mesh).isMesh) {
+          const mesh = node as THREE.Mesh;
+          mesh.castShadow = true;
+          mesh.receiveShadow = true;
+          meshCount++;
+
+          // Almacenar el material PBR original para alternar wireframe sin pérdida de texturas
+          if (mesh.material) {
+            uploadedModelRef.current.originalMaterialsMap.set(
+              mesh,
+              Array.isArray(mesh.material) ? [...mesh.material] : mesh.material
+            );
+
+            // Si el visor está en modo Wireframe al cargar, aplicar Tangerine #F57E00
+            if (wireframeMode) {
+              mesh.material = new THREE.MeshStandardMaterial({
+                color: 0xf57e00,
+                emissive: 0xf57e00,
+                emissiveIntensity: 0.6,
+                wireframe: true
+              });
+            }
+          }
+
+          // Extracción de telemetría técnica real del asset de Blender
+          if (mesh.geometry) {
+            const pos = mesh.geometry.attributes.position;
+            if (pos) totalVerts += pos.count;
+            if (mesh.geometry.index) {
+              totalTris += Math.round(mesh.geometry.index.count / 3);
+            } else if (pos) {
+              totalTris += Math.floor(pos.count / 3);
+            }
+          }
+        }
+      });
+
+      // 3. Centrado del modelo en el origen (0, 0, 0)
+      const box = new THREE.Box3().setFromObject(object);
+      const center = box.getCenter(new THREE.Vector3());
+      const size = box.getSize(new THREE.Vector3());
+
+      object.position.sub(center);
+      wrapper.add(object);
+
+      // 4. Normalización automática de escala para presentación equilibrada
+      const maxDim = Math.max(size.x, size.y, size.z);
+      if (maxDim > 0 && isFinite(maxDim)) {
+        wrapper.scale.setScalar(targetScale / maxDim);
+      }
+
+      // 5. Ajuste sobre el pedestal de inspección industrial
+      const fitted = new THREE.Box3().setFromObject(wrapper);
+      if (fitted.min.y < -1.5) {
+        wrapper.position.y += (-1.5 - fitted.min.y);
+      }
+
+      sceneRefs.current.scene.add(wrapper);
+      sceneRefs.current.currentMeshGroup = wrapper;
+      uploadedModelRef.current.object = object;
+
+      // 6. Actualización de telemetría de inspección
+      setStats({
+        vertices: totalVerts > 0 ? totalVerts : 3200,
+        triangles: totalTris > 0 ? totalTris : 5100,
+        drawCalls: meshCount > 0 ? meshCount : 1,
+        dracoStatus: isDraco ? 'DRACO v1.5.6 (GOOGLE CDN)' : 'GLTF / DRACO PBR'
+      });
+
+      setUploadedModelName(fileName);
+      setUploadError(null);
+      setIsLoadingModel(false);
+      handleResetCamera();
+    },
+    [handleResetCamera]
+  );
+
+  // ============================================================================
+  // PASO 2: CARGADOR DE MODELOS MANUALES BLENDER (.GLB) CON DRACOLOADER
+  // ============================================================================
+  const loadBlenderGlbModel = useCallback(
+    (modelId: BuiltinModelId, wireframeMode: boolean) => {
+      const meta = BLENDER_MODELS_REGISTRY[modelId];
+      if (!meta) return;
+
+      setIsLoadingModel(true);
+      setUploadError(null);
+      soundEngine.playModelLoadSound();
+
+      // Resolver URL Same-Origin considerando Vite BASE_URL (/Iguananet/ o /)
+      const resolvedUrl = resolveModelUrl(meta.relativePath);
+
+      // Inicializar decodificador DRACO con WebAssembly oficial de Google CDN
+      const dracoLoader = new DRACOLoader();
+      dracoLoader.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.6/');
+
+      // Inicializar cargador GLTF conectado al decodificador DRACO
+      const gltfLoader = new GLTFLoader();
+      gltfLoader.setDRACOLoader(dracoLoader);
+      gltfLoader.setCrossOrigin('anonymous');
+
+      gltfLoader.load(
+        resolvedUrl,
+        (gltf) => {
+          processLoadedAsset(
+            gltf.scene,
+            `${meta.title} (${meta.fileName})`,
+            meta.hasDraco,
+            meta.targetScale,
+            wireframeMode
+          );
+          dracoLoader.dispose();
+        },
+        undefined,
+        (err) => {
+          console.warn(`[Iguana3D] Fallback procedural activo para ${meta.title} (${resolvedUrl}):`, err);
+          dracoLoader.dispose();
+
+          // Red de seguridad: si no se encontrara el archivo binario, recurrir a modelo procedural
+          if (sceneRefs.current.scene) {
+            if (sceneRefs.current.currentMeshGroup) {
+              sceneRefs.current.scene.remove(sceneRefs.current.currentMeshGroup);
+              disposeGroup(sceneRefs.current.currentMeshGroup);
+            }
+            const fallbackGroup = buildCompositeModel(modelId, wireframeMode);
+            sceneRefs.current.scene.add(fallbackGroup);
+            sceneRefs.current.currentMeshGroup = fallbackGroup;
+          }
+          setIsLoadingModel(false);
+        }
+      );
+    },
+    [processLoadedAsset, buildCompositeModel]
+  );
+
+  // ============================================================================
+  // INICIALIZACIÓN DE THREE.JS CON ROOMENVIRONMENT & LIGHTING RIG
+  // ============================================================================
   useEffect(() => {
     const container = mountRef.current;
     if (!container) return;
 
-    // 1. Scene
+    // 1. Escena WebGL con fondo oscuro industrial
     const scene = new THREE.Scene();
     scene.background = new THREE.Color(0x162937);
     sceneRefs.current.scene = scene;
@@ -389,12 +654,12 @@ export const IguanaInspectionBay: React.FC<IguanaInspectionBayProps> = ({
     const width = container.clientWidth || 800;
     const height = container.clientHeight || 500;
 
-    // 2. Camera
+    // 2. Cámara de perspectiva
     const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
     camera.position.set(4.2, 3.0, 5.0);
     sceneRefs.current.camera = camera;
 
-    // 3. Renderer with PBR ACESFilmic & SRGB standards
+    // 3. Renderizador con espacio de color SRGB y mapeo tonal ACESFilmic
     const renderer = new THREE.WebGLRenderer({
       antialias: true,
       powerPreference: 'high-performance'
@@ -409,7 +674,7 @@ export const IguanaInspectionBay: React.FC<IguanaInspectionBayProps> = ({
     container.appendChild(renderer.domElement);
     sceneRefs.current.renderer = renderer;
 
-    // 4. OrbitControls
+    // 4. OrbitControls con amortiguación suave
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
     controls.dampingFactor = 0.05;
@@ -417,12 +682,12 @@ export const IguanaInspectionBay: React.FC<IguanaInspectionBayProps> = ({
     controls.minDistance = 1.2;
     sceneRefs.current.controls = controls;
 
-    // 5. Studio Environment via RoomEnvironment (Anti Pitch-Black Bug)
+    // 5. Entorno RoomEnvironment (previene modelos PBR negros sin luz HDRI externa)
     const pmremGenerator = new THREE.PMREMGenerator(renderer);
     sceneRefs.current.pmremGenerator = pmremGenerator;
     scene.environment = pmremGenerator.fromScene(new RoomEnvironment(), 0.04).texture;
 
-    // 6. Studio Lighting Rig
+    // 6. Plataforma de iluminación de estudio de inspección
     const keyLight = new THREE.DirectionalLight(0xffeedd, 2.0);
     keyLight.position.set(6, 8, 6);
     keyLight.castShadow = true;
@@ -435,17 +700,15 @@ export const IguanaInspectionBay: React.FC<IguanaInspectionBayProps> = ({
     const groundHemi = new THREE.HemisphereLight(0x99eeff, 0x162937, 0.6);
     scene.add(groundHemi);
 
-    // Industrial Inspection Pedestal Grid
+    // Cuadrícula pedestal de inspección industrial
     const grid = new THREE.GridHelper(16, 20, 0xf57e00, 0x244156);
     grid.position.y = -1.6;
     scene.add(grid);
 
-    // Initial Model
-    const initialGroup = buildCompositeModel(activeModelId, isWireframe);
-    scene.add(initialGroup);
-    sceneRefs.current.currentMeshGroup = initialGroup;
+    // Cargar inmediatamente el modelo inicial manual hecho en Blender
+    loadBlenderGlbModel(activeModelId, isWireframe);
 
-    // 7. Render Loop (Zero GC)
+    // 7. Bucle de renderizado a 60 FPS
     let animId: number;
     const animate = () => {
       if (sceneRefs.current.currentMeshGroup && autoRotate) {
@@ -457,7 +720,7 @@ export const IguanaInspectionBay: React.FC<IguanaInspectionBayProps> = ({
     };
     animId = requestAnimationFrame(animate);
 
-    // Resize observer
+    // Observer de redimensionamiento responsivo
     const resizeObserver = new ResizeObserver((entries) => {
       for (const entry of entries) {
         const cr = entry.contentRect;
@@ -483,58 +746,58 @@ export const IguanaInspectionBay: React.FC<IguanaInspectionBayProps> = ({
         container.removeChild(renderer.domElement);
       }
     };
-  }, [buildCompositeModel]);
+  }, [loadBlenderGlbModel]);
 
-  // Model Switching Handler
+  // Sincronizar selección externa de modelo (e.g. al hacer click en el Catálogo de Producción)
+  useEffect(() => {
+    if (initialModel && initialModel !== activeModelId) {
+      setActiveModelId(initialModel);
+      setUploadedModelName(null);
+      setUploadError(null);
+      loadBlenderGlbModel(initialModel, isWireframe);
+    }
+  }, [initialModel, isWireframe, loadBlenderGlbModel, activeModelId]);
+
+  // Manejador de cambio manual de modelo mediante los botones [1], [2], [3], [4]
   const handleModelSelect = (id: BuiltinModelId) => {
     setActiveModelId(id);
     setUploadedModelName(null);
     setUploadError(null);
-    soundEngine.playModelLoadSound();
-
-    if (sceneRefs.current.scene) {
-      if (sceneRefs.current.currentMeshGroup) {
-        sceneRefs.current.scene.remove(sceneRefs.current.currentMeshGroup);
-        disposeGroup(sceneRefs.current.currentMeshGroup);
-      }
-      const newGroup = buildCompositeModel(id, isWireframe);
-      sceneRefs.current.scene.add(newGroup);
-      sceneRefs.current.currentMeshGroup = newGroup;
-
-      if (sceneRefs.current.camera && sceneRefs.current.controls) {
-        sceneRefs.current.camera.position.set(4.2, 3.0, 5.0);
-        sceneRefs.current.controls.target.set(0, 0, 0);
-        sceneRefs.current.controls.update();
-      }
-    }
+    loadBlenderGlbModel(id, isWireframe);
   };
 
-  // Wireframe Toggle Handler with Tangerine color
+  // Alternar modo Wireframe en color Tangerine (#F57E00) con restauración de texturas PBR
   const handleToggleWireframe = () => {
     const nextWire = !isWireframe;
     setIsWireframe(nextWire);
     soundEngine.playWireframeToggleSound(nextWire);
 
     if (uploadedModelRef.current.object) {
-      // Toggle on uploaded model
+      // Alternar en el modelo de Blender activo
       uploadedModelRef.current.object.traverse((child) => {
         if ((child as THREE.Mesh).isMesh) {
           const mesh = child as THREE.Mesh;
           if (mesh.material) {
-            if (Array.isArray(mesh.material)) {
-              mesh.material.forEach((m) => {
-                if ('wireframe' in m) {
-                  (m as THREE.MeshStandardMaterial).wireframe = nextWire;
-                }
+            if (nextWire) {
+              // Modo Wireframe Tangerine
+              mesh.material = new THREE.MeshStandardMaterial({
+                color: 0xf57e00,
+                emissive: 0xf57e00,
+                emissiveIntensity: 0.6,
+                wireframe: true
               });
-            } else if ('wireframe' in mesh.material) {
-              (mesh.material as THREE.MeshStandardMaterial).wireframe = nextWire;
+            } else {
+              // Restaurar material PBR original de Blender
+              const orig = uploadedModelRef.current.originalMaterialsMap.get(mesh);
+              if (orig) {
+                mesh.material = orig;
+              }
             }
           }
         }
       });
     } else if (sceneRefs.current.scene) {
-      // Toggle on procedural model
+      // Toggle en modelo procedural de fallback
       if (sceneRefs.current.currentMeshGroup) {
         sceneRefs.current.scene.remove(sceneRefs.current.currentMeshGroup);
         disposeGroup(sceneRefs.current.currentMeshGroup);
@@ -544,95 +807,6 @@ export const IguanaInspectionBay: React.FC<IguanaInspectionBayProps> = ({
       sceneRefs.current.currentMeshGroup = newGroup;
     }
   };
-
-  // Reset Camera
-  const handleResetCamera = () => {
-    soundEngine.playClickSound();
-    if (sceneRefs.current.camera && sceneRefs.current.controls) {
-      sceneRefs.current.camera.position.set(4.2, 3.0, 5.0);
-      sceneRefs.current.controls.target.set(0, 0, 0);
-      sceneRefs.current.controls.update();
-    }
-  };
-
-  // Process loaded 3D asset (DRACO enabled)
-  const processLoadedAsset = useCallback((object: THREE.Object3D, fileName: string, isDraco = false) => {
-    if (!sceneRefs.current.scene) return;
-
-    if (sceneRefs.current.currentMeshGroup) {
-      sceneRefs.current.scene.remove(sceneRefs.current.currentMeshGroup);
-      disposeGroup(sceneRefs.current.currentMeshGroup);
-    }
-
-    const wrapper = new THREE.Group();
-    uploadedModelRef.current.originalMaterialsMap.clear();
-
-    let totalVerts = 0;
-    let totalTris = 0;
-    let meshCount = 0;
-
-    object.traverse((node) => {
-      if ((node as THREE.Mesh).isMesh) {
-        const mesh = node as THREE.Mesh;
-        mesh.castShadow = true;
-        mesh.receiveShadow = true;
-        meshCount++;
-
-        if (mesh.material) {
-          uploadedModelRef.current.originalMaterialsMap.set(
-            mesh,
-            Array.isArray(mesh.material) ? [...mesh.material] : mesh.material
-          );
-        }
-
-        if (mesh.geometry) {
-          const pos = mesh.geometry.attributes.position;
-          if (pos) totalVerts += pos.count;
-          if (mesh.geometry.index) {
-            totalTris += Math.round(mesh.geometry.index.count / 3);
-          } else if (pos) {
-            totalTris += Math.floor(pos.count / 3);
-          }
-        }
-      }
-    });
-
-    // Auto-center and normalize scale
-    const box = new THREE.Box3().setFromObject(object);
-    const center = box.getCenter(new THREE.Vector3());
-    const size = box.getSize(new THREE.Vector3());
-
-    object.position.sub(center);
-    wrapper.add(object);
-
-    const maxDim = Math.max(size.x, size.y, size.z);
-    if (maxDim > 0 && isFinite(maxDim)) {
-      wrapper.scale.setScalar(3.2 / maxDim);
-    }
-
-    // Ground fit
-    const fitted = new THREE.Box3().setFromObject(wrapper);
-    if (fitted.min.y < -1.5) {
-      wrapper.position.y += (-1.5 - fitted.min.y);
-    }
-
-    sceneRefs.current.scene.add(wrapper);
-    sceneRefs.current.currentMeshGroup = wrapper;
-    uploadedModelRef.current.object = object;
-
-    setStats({
-      vertices: totalVerts > 0 ? totalVerts : 3200,
-      triangles: totalTris > 0 ? totalTris : 5100,
-      drawCalls: meshCount > 0 ? meshCount : 8,
-      dracoStatus: isDraco ? 'DRACO COMPRIMIDO (v1.5.6)' : 'GLTF / DRACO COMPATIBLE'
-    });
-
-    setUploadedModelName(fileName);
-    setUploadError(null);
-    setIsLoadingModel(false);
-    soundEngine.playCollectSound();
-    handleResetCamera();
-  }, []);
 
   // Load Model with DRACOLoader Google CDN standard
   const handleLoadFile = useCallback(async (file: File) => {

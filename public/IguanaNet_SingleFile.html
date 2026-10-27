@@ -448,8 +448,8 @@
     pedestalGrid.position.y = -1.6;
     bayScene.add(pedestalGrid);
 
-    // Composite 3D Retro Terminal Model
-    const modelGroup = new THREE.Group();
+    // Composite 3D Retro Model (Fallback inicial)
+    let activeModelGroup = new THREE.Group();
     const chassisMat = new THREE.MeshStandardMaterial({ color: 0x244156, metalness: 0.85, roughness: 0.25 });
     const hoodMat = new THREE.MeshStandardMaterial({ color: 0x111c24, metalness: 0.7, roughness: 0.35 });
     const screenMat = new THREE.MeshStandardMaterial({ color: 0x091c24, emissive: 0x99eeff, emissiveIntensity: 0.5 });
@@ -457,11 +457,11 @@
 
     const chassis = new THREE.Mesh(new THREE.BoxGeometry(3.2, 1.4, 2.2), chassisMat);
     chassis.position.y = -0.4;
-    modelGroup.add(chassis);
+    activeModelGroup.add(chassis);
 
     const hood = new THREE.Mesh(new THREE.BoxGeometry(2.6, 2.0, 1.6), hoodMat);
     hood.position.set(0, 1.0, -0.2);
-    modelGroup.add(hood);
+    activeModelGroup.add(hood);
 
     const screen = new THREE.Mesh(
       new THREE.CylinderGeometry(1.0, 1.0, 1.4, 32, 1, false, Math.PI * 0.7, Math.PI * 0.6),
@@ -469,16 +469,35 @@
     );
     screen.position.set(0, 1.05, 0.45);
     screen.rotation.y = Math.PI / 2;
-    modelGroup.add(screen);
+    activeModelGroup.add(screen);
 
-    // Vacuum tube dials
-    for (let i = -2; i <= 2; i++) {
-      const dial = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.12, 0.4, 16), copperMat);
-      dial.position.set(i * 0.4, 2.15, -0.4);
-      modelGroup.add(dial);
-    }
+    bayScene.add(activeModelGroup);
 
-    bayScene.add(modelGroup);
+    // ========================================================================
+    // CARGA DE MODELO MANUAL BLENDER (.GLB) SAME-ORIGIN CON DRACO v1.5.6
+    // ========================================================================
+    gltfLoader.load(
+      './assets/models/newsovphone.glb',
+      (gltf) => {
+        bayScene.remove(activeModelGroup);
+        const obj = gltf.scene;
+        
+        // Centrado y escalado con Bounding Box
+        const box = new THREE.Box3().setFromObject(obj);
+        const center = box.getCenter(new THREE.Vector3());
+        const size = box.getSize(new THREE.Vector3());
+        obj.position.sub(center);
+        
+        const maxDim = Math.max(size.x, size.y, size.z);
+        if (maxDim > 0) obj.scale.setScalar(3.2 / maxDim);
+        
+        bayScene.add(obj);
+        activeModelGroup = obj;
+        console.log('[Iguana3D] Modelo Blender .glb cargado con DRACO Google CDN.');
+      },
+      undefined,
+      (err) => console.log('[Iguana3D] Usando modelo procedural:', err)
+    );
 
     // Wireframe Toggle
     let isWire = false;
@@ -486,11 +505,10 @@
     wireBtn?.addEventListener('click', () => {
       isWire = !isWire;
       wireBtn.textContent = isWire ? 'WIREFRAME [ON]' : 'WIREFRAME [OFF]';
-      modelGroup.traverse((child) => {
+      activeModelGroup.traverse((child) => {
         if (child.isMesh && child.material) {
           child.material.wireframe = isWire;
           if (isWire) child.material.color.setHex(0xf57e00);
-          else child.material.color.setHex(0x244156);
         }
       });
     });
@@ -503,7 +521,7 @@
     });
 
     function animateBay() {
-      modelGroup.rotation.y += 0.005;
+      if (activeModelGroup) activeModelGroup.rotation.y += 0.005;
       controls.update();
       bayRenderer.render(bayScene, bayCam);
       requestAnimationFrame(animateBay);
