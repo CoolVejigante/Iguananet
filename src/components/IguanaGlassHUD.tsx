@@ -45,9 +45,9 @@ export const IguanaGlassHUD: React.FC<IguanaGlassHUDProps> = ({
     <header className="fixed top-0 left-0 right-0 z-30 pointer-events-none select-none">
       {/* Top Glass Navigation Bar */}
       <div className="mx-auto px-4 sm:px-6 py-3 max-w-7xl flex items-center justify-between gap-3">
-        {/* Official IguanaNet Logo (Blue circled area: iguananetconcept-removebg-preview2) */}
+        {/* Official IguanaNet Logo */}
         <div
-          onClick={() => scrollTo('identity-hub')}
+          onClick={() => scrollTo('inspection-bay')}
           className="flex items-center gap-3 bg-[#162937]/90 hover:bg-[#1a3142] backdrop-blur-md border border-[#99EEFF]/30 px-3 py-1.5 clip-chamfer-45 pointer-events-auto shadow-lg transition-all cursor-pointer group"
           title="IguanaNet - Luis Casanova Portfolio"
         >
@@ -70,25 +70,32 @@ export const IguanaGlassHUD: React.FC<IguanaGlassHUDProps> = ({
         {!isStageMode && (
           <nav className="hidden md:flex items-center gap-1 bg-[#162937]/90 backdrop-blur-md border border-[#99EEFF]/30 p-1 clip-chamfer-45 pointer-events-auto shadow-lg text-xs font-mono-telemetry">
             <button
-              onClick={() => scrollTo('identity-hub')}
-              className="px-3 py-1.5 rounded hover:bg-[#244156] text-slate-300 hover:text-[#99EEFF] transition-colors"
-            >
-              [01 // MANIFIESTO]
-            </button>
-            <span className="text-slate-600">/</span>
-            <button
               onClick={() => scrollTo('inspection-bay')}
               className="px-3 py-1.5 rounded hover:bg-[#244156] text-[#99EEFF] hover:text-white transition-colors flex items-center gap-1 font-bold"
             >
               <Eye className="w-3.5 h-3.5 text-[#F57E00]" />
-              <span>[02 // INSPECTION BAY]</span>
+              <span>[01 // INSPECTION BAY]</span>
+            </button>
+            <span className="text-slate-600">/</span>
+            <button
+              onClick={() => scrollTo('catalogo-produccion')}
+              className="px-3 py-1.5 rounded hover:bg-[#244156] text-slate-300 hover:text-[#99EEFF] transition-colors"
+            >
+              [02 // CATÁLOGO 3D]
+            </button>
+            <span className="text-slate-600">/</span>
+            <button
+              onClick={() => scrollTo('identity-hub')}
+              className="px-3 py-1.5 rounded hover:bg-[#244156] text-slate-300 hover:text-[#99EEFF] transition-colors"
+            >
+              [03 // MANIFIESTO & BIO]
             </button>
             <span className="text-slate-600">/</span>
             <button
               onClick={() => scrollTo('trajectory-matrix')}
               className="px-3 py-1.5 rounded hover:bg-[#244156] text-slate-300 hover:text-[#99EEFF] transition-colors"
             >
-              [03 // IGUANA3D ROADMAP]
+              [04 // ROADMAP]
             </button>
           </nav>
         )}

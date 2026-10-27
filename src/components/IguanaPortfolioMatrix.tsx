@@ -138,9 +138,111 @@ export const IguanaPortfolioMatrix: React.FC = () => {
 
   return (
     <div className="relative z-10 w-full min-h-screen text-slate-100 flex flex-col pb-24 overflow-x-hidden">
-      {/* SECTION 1: Identity Hub & Manifesto */}
-      <section id="identity-hub" className="w-full max-w-6xl mx-auto px-4 sm:px-6 pt-24 sm:pt-28 pb-16 space-y-12">
-        {/* Title, Logo & Location Tags (Crossed out SGX Guild tag removed) */}
+      {/* SECTION 1: Inspection Bay (Interactive 3D WebGL Canvas) */}
+      <section className="w-full pt-16 sm:pt-20 pb-4">
+        <IguanaInspectionBay
+          initialModel={selectedInspectModel}
+        />
+      </section>
+
+      {/* SECTION 2: Catálogo de Producción (Obras Previas & Props) */}
+      <section id="catalogo-produccion" className="w-full max-w-6xl mx-auto px-4 sm:px-6 pt-6 pb-12 space-y-6">
+        <div className="flex flex-wrap items-center justify-between gap-3 pb-2 border-b border-[#99EEFF]/20">
+          <div>
+            <span className="text-xs font-mono-telemetry text-[#F57E00] uppercase tracking-widest block">
+              // CATÁLOGO DE PRODUCCIÓN
+            </span>
+            <h2 className="text-2xl sm:text-3xl font-heading font-bold text-white">
+              OBRAS PREVIAS & PROPS RETRO-INDUSTRIALES
+            </h2>
+          </div>
+          <span className="text-xs font-mono-telemetry text-slate-400">
+            PRUEBA CADA MODELO EN VIVO EN EL INSPECTION BAY SUPERIOR
+          </span>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {artworks.map((art) => (
+            <div
+              key={art.id}
+              className="p-5 sm:p-6 bg-[#162937]/90 border border-[#99EEFF]/25 hover:border-[#99EEFF] clip-chamfer-45 transition-all duration-300 space-y-4 shadow-xl group"
+            >
+              <div className="flex items-start justify-between">
+                <div>
+                  <span className="text-[11px] font-mono-telemetry text-[#99EEFF] uppercase">
+                    {art.category}
+                  </span>
+                  <h3 className="text-lg font-heading font-bold text-white group-hover:text-[#99EEFF] transition-colors">
+                    {art.title}
+                  </h3>
+                </div>
+
+                <span className="px-2 py-0.5 text-[10px] font-mono-telemetry bg-[#244156] border border-[#99EEFF]/30 text-[#F57E00] rounded">
+                  {art.specs.triangles}
+                </span>
+              </div>
+
+              {art.image && (
+                <div className="relative w-full h-44 sm:h-52 overflow-hidden rounded-md border border-[#99EEFF]/25 group-hover:border-[#99EEFF]/60 transition-all bg-[#0e1b24]">
+                  <img
+                    src={art.image}
+                    alt={art.title}
+                    className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
+                    loading="lazy"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#162937]/80 via-transparent to-transparent pointer-events-none" />
+                </div>
+              )}
+
+              <p className="text-xs text-slate-300 leading-relaxed font-sans">
+                {art.description}
+              </p>
+
+              {/* Technical Specs Grid */}
+              <div className="p-3 bg-[#0e1b24]/80 border border-[#99EEFF]/15 rounded-lg grid grid-cols-2 gap-2 text-[11px] font-mono-telemetry">
+                <div>
+                  <span className="text-slate-500 block text-[10px]">TEXTURAS:</span>
+                  <span className="text-slate-200">{art.specs.textures}</span>
+                </div>
+                <div>
+                  <span className="text-slate-500 block text-[10px]">ILUMINACIÓN:</span>
+                  <span className="text-slate-200">{art.specs.pbrType}</span>
+                </div>
+                <div className="col-span-2">
+                  <span className="text-slate-500 block text-[10px]">COMPRESIÓN:</span>
+                  <span className="text-emerald-400">{art.specs.compression}</span>
+                </div>
+              </div>
+
+              {/* Action button: Test in Inspection Bay */}
+              <div className="flex items-center justify-between pt-2">
+                <div className="flex items-center gap-1.5 flex-wrap">
+                  {art.tags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="px-2 py-0.5 text-[10px] bg-[#244156] text-slate-300 rounded font-mono-telemetry"
+                    >
+                      #{tag}
+                    </span>
+                  ))}
+                </div>
+
+                <button
+                  onClick={() => handleInspectArtwork(art.modelTarget)}
+                  className="px-3.5 py-1.5 bg-[#99EEFF] hover:bg-white text-black font-heading font-bold text-xs rounded flex items-center gap-1.5 transition-all shadow-md group-hover:shadow-[0_0_15px_rgba(153,238,255,0.6)]"
+                >
+                  <Eye className="w-3.5 h-3.5 text-black" />
+                  <span>Inspeccionar 3D</span>
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* SECTION 3: Nombre, Información, Manifiesto Profesional & Red de Conectividad */}
+      <section id="identity-hub" className="w-full max-w-6xl mx-auto px-4 sm:px-6 py-12 space-y-12 border-t border-[#99EEFF]/15">
+        {/* Title, Logo & Location Tags */}
         <div className="flex flex-col space-y-4">
           <div className="flex flex-wrap items-center gap-3">
             <span className="px-3 py-1 bg-[#F57E00]/20 border border-[#F57E00]/40 text-[#F57E00] text-xs font-mono-telemetry clip-tag-chamfer font-semibold">
@@ -163,7 +265,7 @@ export const IguanaPortfolioMatrix: React.FC = () => {
                 3D Artist & Visual Developer · Props, ArchViz & Retro-Industrial
               </p>
             </div>
-            {/* Red circled area: iguananetconcept-removebg-preview */}
+            {/* Logo */}
             <div className="flex items-center">
               <img
                 src={logoFull}
@@ -285,108 +387,6 @@ export const IguanaPortfolioMatrix: React.FC = () => {
             </a>
           </div>
         </div>
-
-        {/* Sub-section: Previous Artworks */}
-        <div className="space-y-6 pt-6">
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <div>
-              <span className="text-xs font-mono-telemetry text-[#F57E00] uppercase tracking-widest block">
-                // CATÁLOGO DE PRODUCCIÓN
-              </span>
-              <h2 className="text-2xl sm:text-3xl font-heading font-bold text-white">
-                OBRAS PREVIAS & PROPS RETRO-INDUSTRIALES
-              </h2>
-            </div>
-            <span className="text-xs font-mono-telemetry text-slate-400">
-              PRUEBA CADA MODELO EN VIVO EN EL INSPECTION BAY
-            </span>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {artworks.map((art) => (
-              <div
-                key={art.id}
-                className="p-5 sm:p-6 bg-[#162937]/90 border border-[#99EEFF]/25 hover:border-[#99EEFF] clip-chamfer-45 transition-all duration-300 space-y-4 shadow-xl group"
-              >
-                <div className="flex items-start justify-between">
-                  <div>
-                    <span className="text-[11px] font-mono-telemetry text-[#99EEFF] uppercase">
-                      {art.category}
-                    </span>
-                    <h3 className="text-lg font-heading font-bold text-white group-hover:text-[#99EEFF] transition-colors">
-                      {art.title}
-                    </h3>
-                  </div>
-
-                  <span className="px-2 py-0.5 text-[10px] font-mono-telemetry bg-[#244156] border border-[#99EEFF]/30 text-[#F57E00] rounded">
-                    {art.specs.triangles}
-                  </span>
-                </div>
-
-                {art.image && (
-                  <div className="relative w-full h-44 sm:h-52 overflow-hidden rounded-md border border-[#99EEFF]/25 group-hover:border-[#99EEFF]/60 transition-all bg-[#0e1b24]">
-                    <img
-                      src={art.image}
-                      alt={art.title}
-                      className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
-                      loading="lazy"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#162937]/80 via-transparent to-transparent pointer-events-none" />
-                  </div>
-                )}
-
-                <p className="text-xs text-slate-300 leading-relaxed font-sans">
-                  {art.description}
-                </p>
-
-                {/* Technical Specs Grid */}
-                <div className="p-3 bg-[#0e1b24]/80 border border-[#99EEFF]/15 rounded-lg grid grid-cols-2 gap-2 text-[11px] font-mono-telemetry">
-                  <div>
-                    <span className="text-slate-500 block text-[10px]">TEXTURAS:</span>
-                    <span className="text-slate-200">{art.specs.textures}</span>
-                  </div>
-                  <div>
-                    <span className="text-slate-500 block text-[10px]">ILUMINACIÓN:</span>
-                    <span className="text-slate-200">{art.specs.pbrType}</span>
-                  </div>
-                  <div className="col-span-2">
-                    <span className="text-slate-500 block text-[10px]">COMPRESIÓN:</span>
-                    <span className="text-emerald-400">{art.specs.compression}</span>
-                  </div>
-                </div>
-
-                {/* Action button: Test in Inspection Bay */}
-                <div className="flex items-center justify-between pt-2">
-                  <div className="flex items-center gap-1.5 flex-wrap">
-                    {art.tags.map((tag) => (
-                      <span
-                        key={tag}
-                        className="px-2 py-0.5 text-[10px] bg-[#244156] text-slate-300 rounded font-mono-telemetry"
-                      >
-                        #{tag}
-                      </span>
-                    ))}
-                  </div>
-
-                  <button
-                    onClick={() => handleInspectArtwork(art.modelTarget)}
-                    className="px-3.5 py-1.5 bg-[#99EEFF] hover:bg-white text-black font-heading font-bold text-xs rounded flex items-center gap-1.5 transition-all shadow-md group-hover:shadow-[0_0_15px_rgba(153,238,255,0.6)]"
-                  >
-                    <Eye className="w-3.5 h-3.5 text-black" />
-                    <span>Inspeccionar 3D</span>
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* SECTION 2: Inspection Bay (Interactive 3D WebGL Canvas) */}
-      <section className="w-full my-8">
-        <IguanaInspectionBay
-          initialModel={selectedInspectModel}
-        />
       </section>
 
       {/* SECTION 3: Trajectory Matrix & Roadmap - Iguana3D Vision */}

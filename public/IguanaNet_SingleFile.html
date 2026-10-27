@@ -177,11 +177,13 @@
       </div>
 
       <nav class="hidden md:flex items-center gap-2 bg-[#162937]/90 backdrop-blur-md border border-[#99EEFF]/30 px-3 py-1.5 clip-chamfer-45 text-xs font-mono-telemetry">
-        <a href="#identity-hub" class="text-slate-300 hover:text-[#99EEFF] px-2 py-1">[01 // MANIFIESTO]</a>
+        <a href="#inspection-bay" class="text-[#99EEFF] font-bold px-2 py-1">[01 // INSPECTION BAY]</a>
         <span class="text-slate-600">/</span>
-        <a href="#inspection-bay" class="text-[#99EEFF] font-bold px-2 py-1">[02 // INSPECTION BAY]</a>
+        <a href="#catalogo-produccion" class="text-slate-300 hover:text-[#99EEFF] px-2 py-1">[02 // CATÁLOGO 3D]</a>
         <span class="text-slate-600">/</span>
-        <a href="#trajectory-matrix" class="text-slate-300 hover:text-[#99EEFF] px-2 py-1">[03 // IGUANA3D ROADMAP]</a>
+        <a href="#identity-hub" class="text-slate-300 hover:text-[#99EEFF] px-2 py-1">[03 // MANIFIESTO & BIO]</a>
+        <span class="text-slate-600">/</span>
+        <a href="#trajectory-matrix" class="text-slate-300 hover:text-[#99EEFF] px-2 py-1">[04 // ROADMAP]</a>
       </nav>
 
       <div class="flex items-center gap-2">
@@ -197,8 +199,68 @@
   <!-- ========================================== -->
   <main class="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 pt-24 pb-24 space-y-16">
 
-    <!-- SECTION 1: Identity Hub & Manifesto -->
-    <section id="identity-hub" class="space-y-8">
+    <!-- SECTION 1: Inspection Bay (Showcase) -->
+    <section id="inspection-bay" class="space-y-4">
+      <div class="flex flex-wrap items-center justify-between gap-3 pb-2 border-b border-[#99EEFF]/20">
+        <div>
+          <span class="text-xs font-mono-telemetry text-[#F57E00] block">// SHOWCASE 3D</span>
+          <h2 class="text-2xl font-heading font-bold text-white">VISOR WEBGL DE INSPECCIÓN</h2>
+        </div>
+        <div class="flex items-center gap-2">
+          <button id="btn-wireframe-toggle" class="px-3 py-1.5 bg-[#F57E00] text-black font-mono-telemetry font-bold text-xs rounded shadow">
+            WIREFRAME [OFF]
+          </button>
+          <button id="btn-reset-camera" class="px-3 py-1.5 bg-[#244156] text-white border border-[#99EEFF]/40 font-mono-telemetry text-xs rounded">
+            CENTRAR
+          </button>
+        </div>
+      </div>
+
+      <div class="relative w-full h-[520px] bg-[#162937] border-2 border-[#99EEFF]/30 clip-chamfer-45 overflow-hidden">
+        <div id="inspection-canvas-mount" class="w-full h-full cursor-grab active:cursor-grabbing"></div>
+
+        <!-- Telemetry HUD Box -->
+        <div class="absolute top-4 left-4 bg-[#0e1b24]/90 backdrop-blur-md border border-[#99EEFF]/30 clip-chamfer-45 p-3.5 text-xs font-mono-telemetry space-y-1.5 shadow-xl">
+          <div class="flex justify-between items-center text-[#F57E00] font-bold border-b border-[#99EEFF]/20 pb-1">
+            <span>TELEMETRÍA TÉCNICA</span>
+            <span class="text-[10px] text-emerald-400">60 FPS</span>
+          </div>
+          <div>VÉRTICES: <span id="tele-vertices" class="text-[#99EEFF] font-bold">4,820</span></div>
+          <div>POLÍGONOS / TRIS: <span id="tele-triangles" class="text-white font-bold">7,640</span></div>
+          <div class="text-[10px] text-emerald-400 font-semibold">DRACO LOADER GOOGLE CDN (v1.5.6)</div>
+          <div class="text-[10px] text-slate-400">PBR ROOM ENVIRONMENT ACTIVO</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 2: Catálogo de Producción -->
+    <section id="catalogo-produccion" class="space-y-4">
+      <div class="flex items-center justify-between pb-2 border-b border-[#99EEFF]/20">
+        <span class="text-xs font-mono-telemetry text-[#F57E00] uppercase">// CATÁLOGO DE PRODUCCIÓN & PROPS</span>
+        <span class="text-xs font-mono-telemetry text-slate-400">MODELOS LISTOS PARA PROBAR EN EL INSPECTION BAY</span>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="p-4 bg-[#162937]/90 border border-[#99EEFF]/25 clip-chamfer-45 space-y-2">
+          <div class="flex justify-between items-start">
+            <h3 class="font-heading font-bold text-white text-base">Telefono Inteligente</h3>
+            <span class="text-[10px] font-mono-telemetry text-[#F57E00]">7,640 Tris</span>
+          </div>
+          <p class="text-xs text-slate-300">Concepto de teléfono inteligente retrofuturista con chasis modular biselado, acabado negro mate y botones laterales.</p>
+          <div class="text-[11px] font-mono-telemetry text-emerald-400">DRACO v1.5.6 · RoomEnvironment Studio</div>
+        </div>
+        <div class="p-4 bg-[#162937]/90 border border-[#99EEFF]/25 clip-chamfer-45 space-y-2">
+          <div class="flex justify-between items-start">
+            <h3 class="font-heading font-bold text-white text-base">Iguana</h3>
+            <span class="text-[10px] font-mono-telemetry text-[#F57E00]">9,850 Tris</span>
+          </div>
+          <p class="text-xs text-slate-300">Mascota emblemática cibernética Iguana con cresta bioluminiscente y escamas metálicas facetadas.</p>
+          <div class="text-[11px] font-mono-telemetry text-emerald-400">DRACO v1.5.6 · RoomEnvironment Studio</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 3: Identity Hub, Manifiesto & Red de Conectividad -->
+    <section id="identity-hub" class="space-y-8 border-t border-[#99EEFF]/15 pt-8">
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <div class="flex items-center gap-3 mb-2">
@@ -251,66 +313,6 @@
           </div>
           <span class="text-[#F57E00]">↗</span>
         </a>
-      </div>
-
-      <!-- Previous Artworks Section -->
-      <div class="space-y-4 pt-4">
-        <div class="flex items-center justify-between pb-2 border-b border-[#99EEFF]/20">
-          <span class="text-xs font-mono-telemetry text-[#F57E00] uppercase">// OBRAS PREVIAS & PROPS</span>
-          <span class="text-xs font-mono-telemetry text-slate-400">MODELOS LISTOS PARA PROBAR EN EL INSPECTION BAY</span>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div class="p-4 bg-[#162937]/90 border border-[#99EEFF]/25 clip-chamfer-45 space-y-2">
-            <div class="flex justify-between items-start">
-              <h3 class="font-heading font-bold text-white text-base">Telefono Inteligente</h3>
-              <span class="text-[10px] font-mono-telemetry text-[#F57E00]">7,640 Tris</span>
-            </div>
-            <p class="text-xs text-slate-300">Concepto de teléfono inteligente retrofuturista con chasis modular biselado, acabado negro mate y botones laterales.</p>
-            <div class="text-[11px] font-mono-telemetry text-emerald-400">DRACO v1.5.6 · RoomEnvironment Studio</div>
-          </div>
-          <div class="p-4 bg-[#162937]/90 border border-[#99EEFF]/25 clip-chamfer-45 space-y-2">
-            <div class="flex justify-between items-start">
-              <h3 class="font-heading font-bold text-white text-base">Iguana</h3>
-              <span class="text-[10px] font-mono-telemetry text-[#F57E00]">9,850 Tris</span>
-            </div>
-            <p class="text-xs text-slate-300">Mascota emblemática cibernética Iguana con cresta bioluminiscente y escamas metálicas facetadas.</p>
-            <div class="text-[11px] font-mono-telemetry text-emerald-400">DRACO v1.5.6 · RoomEnvironment Studio</div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- SECTION 2: Inspection Bay (Showcase) -->
-    <section id="inspection-bay" class="space-y-4 pt-8">
-      <div class="flex flex-wrap items-center justify-between gap-3 pb-2 border-b border-[#99EEFF]/20">
-        <div>
-          <span class="text-xs font-mono-telemetry text-[#F57E00] block">// SHOWCASE 3D</span>
-          <h2 class="text-2xl font-heading font-bold text-white">VISOR WEBGL DE INSPECCIÓN</h2>
-        </div>
-        <div class="flex items-center gap-2">
-          <button id="btn-wireframe-toggle" class="px-3 py-1.5 bg-[#F57E00] text-black font-mono-telemetry font-bold text-xs rounded shadow">
-            WIREFRAME [OFF]
-          </button>
-          <button id="btn-reset-camera" class="px-3 py-1.5 bg-[#244156] text-white border border-[#99EEFF]/40 font-mono-telemetry text-xs rounded">
-            CENTRAR
-          </button>
-        </div>
-      </div>
-
-      <div class="relative w-full h-[520px] bg-[#162937] border-2 border-[#99EEFF]/30 clip-chamfer-45 overflow-hidden">
-        <div id="inspection-canvas-mount" class="w-full h-full cursor-grab active:cursor-grabbing"></div>
-
-        <!-- Telemetry HUD Box -->
-        <div class="absolute top-4 left-4 bg-[#0e1b24]/90 backdrop-blur-md border border-[#99EEFF]/30 clip-chamfer-45 p-3.5 text-xs font-mono-telemetry space-y-1.5 shadow-xl">
-          <div class="flex justify-between items-center text-[#F57E00] font-bold border-b border-[#99EEFF]/20 pb-1">
-            <span>TELEMETRÍA TÉCNICA</span>
-            <span class="text-[10px] text-emerald-400">60 FPS</span>
-          </div>
-          <div>VÉRTICES: <span id="tele-vertices" class="text-[#99EEFF] font-bold">4,820</span></div>
-          <div>POLÍGONOS / TRIS: <span id="tele-triangles" class="text-white font-bold">7,640</span></div>
-          <div class="text-[10px] text-emerald-400 font-semibold">DRACO LOADER GOOGLE CDN (v1.5.6)</div>
-          <div class="text-[10px] text-slate-400">PBR ROOM ENVIRONMENT ACTIVO</div>
-        </div>
       </div>
     </section>
 

@@ -132,28 +132,11 @@ export const IguanaSingleFileExportModal: React.FC<IguanaSingleFileExportModalPr
 
   <!-- LAYER 1: The DOM Matrix -->
   <main class="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 pt-24 pb-20 space-y-16">
-    <!-- SECTION 1: Identity Hub & Manifesto -->
-    <section id="identity-hub" class="space-y-8">
-      <div>
-        <span class="text-xs font-mono-telemetry text-[#F57E00] uppercase tracking-widest block">SGX GUILD // INITIATE RANK</span>
-        <h1 class="text-4xl sm:text-6xl font-heading font-black text-white">LUIS CASANOVA</h1>
-        <p class="text-lg font-heading text-[#99EEFF]">3D Artist & Visual Developer · Props, ArchViz & Retro-Industrial</p>
-      </div>
-
-      <!-- Elevator Pitch Contract Box -->
-      <div class="p-6 sm:p-8 bg-[#162937]/90 backdrop-blur-xl border-2 border-[#99EEFF]/40 clip-chamfer-45 space-y-3">
-        <span class="text-xs font-mono-telemetry text-[#F57E00] tracking-widest uppercase block">// MANIFIESTO PROFESIONAL Y PROPUESTA DE VALOR</span>
-        <blockquote class="text-base sm:text-lg text-slate-100 italic border-l-2 border-[#F57E00] pl-4">
-          "Saludos, soy Luis Casanova, 3D Artist y Visual Developer especializado en props, ArchViz y diseño industrial y artístico. Resuelvo la incertidumbre de los directores de arte e indie game devs que contratan a ciegas sin conocer la optimización ni la escala real de los modelos. Logro mediante un visor WebGL de inspección 'Inspection Bay', donde pueden probar los assets tridimensionales en vivo, alternar wireframes, inspeccionar vértices y polígonos y evaluar texturas PBR sin fricción ni descargas. Y por eso es cósmicamente interesante."
-        </blockquote>
-      </div>
-    </section>
-
-    <!-- SECTION 2: Inspection Bay (Showcase) -->
+    <!-- SECTION 1: Inspection Bay (Showcase) -->
     <section id="inspection-bay" class="space-y-4">
       <div class="flex items-center justify-between pb-2 border-b border-[#99EEFF]/20">
         <div>
-          <span class="text-xs font-mono-telemetry text-[#F57E00]">// SGX.SHOWCASE</span>
+          <span class="text-xs font-mono-telemetry text-[#F57E00]">// SHOWCASE 3D</span>
           <h2 class="text-2xl font-heading font-bold text-white">VISOR DE INSPECCIÓN WEBGL</h2>
         </div>
         <div class="flex items-center gap-2">
@@ -174,6 +157,23 @@ export const IguanaSingleFileExportModal: React.FC<IguanaSingleFileExportModalPr
           <div>POLÍGONOS: <span id="tele-tris" class="text-white">8,940</span></div>
           <div class="text-emerald-400 text-[10px]">DRACO LOADER GOOGLE CDN ACTIVO</div>
         </div>
+      </div>
+    </section>
+
+    <!-- SECTION 2: Identity Hub & Manifesto -->
+    <section id="identity-hub" class="space-y-8 border-t border-[#99EEFF]/15 pt-8">
+      <div>
+        <span class="text-xs font-mono-telemetry text-[#F57E00] uppercase tracking-widest block">IGUANANET // HUMACAO, PUERTO RICO</span>
+        <h1 class="text-4xl sm:text-6xl font-heading font-black text-white">LUIS CASANOVA</h1>
+        <p class="text-lg font-heading text-[#99EEFF]">3D Artist & Visual Developer · Props, ArchViz & Retro-Industrial</p>
+      </div>
+
+      <!-- Elevator Pitch Contract Box -->
+      <div class="p-6 sm:p-8 bg-[#162937]/90 backdrop-blur-xl border-2 border-[#99EEFF]/40 clip-chamfer-45 space-y-3">
+        <span class="text-xs font-mono-telemetry text-[#F57E00] tracking-widest uppercase block">// MANIFIESTO PROFESIONAL Y PROPUESTA DE VALOR</span>
+        <blockquote class="text-base sm:text-lg text-slate-100 italic border-l-2 border-[#F57E00] pl-4">
+          "Saludos, soy Luis Casanova, 3D Artist y Visual Developer especializado en props, ArchViz y diseño industrial y artístico. Resuelvo la incertidumbre de los directores de arte e indie game devs que contratan a ciegas sin conocer la optimización ni la escala real de los modelos. Logro mediante un visor WebGL de inspección 'Inspection Bay', donde pueden probar los assets tridimensionales en vivo, alternar wireframes, inspeccionar vértices y polígonos y evaluar texturas PBR sin fricción ni descargas. Y por eso es cósmicamente interesante."
+        </blockquote>
       </div>
     </section>
 
