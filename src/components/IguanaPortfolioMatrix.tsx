@@ -68,7 +68,7 @@ export const IguanaPortfolioMatrix: React.FC = () => {
       modelTarget: 'TERMINAL',
       image: telefonoInteligenteImg,
       specs: {
-        triangles: '7,640 Tris',
+        triangles: '1,712 Tris',
         textures: 'PBR Titanio Negro & Biseles',
         pbrType: 'Micro-facet Specular / PBR',
         compression: 'DRACO v1.5.6 (Google CDN)'
@@ -84,7 +84,7 @@ export const IguanaPortfolioMatrix: React.FC = () => {
       modelTarget: 'DRONE',
       image: iguanaModelImg,
       specs: {
-        triangles: '9,850 Tris',
+        triangles: '67,924 Tris',
         textures: 'PBR Dual-Coat Anodizado',
         pbrType: 'Micro-facet Specular',
         compression: 'DRACO v1.5.6 (Google CDN)'
@@ -100,7 +100,7 @@ export const IguanaPortfolioMatrix: React.FC = () => {
       modelTarget: 'ARCHVIZ',
       image: platoArqueologicoImg,
       specs: {
-        triangles: '6,880 Tris',
+        triangles: '256 Tris',
         textures: 'Cerámica Ancestral & Arcilla',
         pbrType: 'Micro-facet Roughness / PBR',
         compression: 'DRACO v1.5.6 (Google CDN)'
@@ -116,7 +116,7 @@ export const IguanaPortfolioMatrix: React.FC = () => {
       modelTarget: 'FUSION_CORE',
       image: modaparfinalImg,
       specs: {
-        triangles: '9,200 Tris',
+        triangles: '5,556 Tris',
         textures: 'Concreto & Vidrio Dieléctrico',
         pbrType: 'Transmission 0.9 / ACES',
         compression: 'DRACO v1.5.6 (Google CDN)'
@@ -142,6 +142,7 @@ export const IguanaPortfolioMatrix: React.FC = () => {
       <section className="w-full pt-16 sm:pt-20 pb-4">
         <IguanaInspectionBay
           initialModel={selectedInspectModel}
+          onModelChange={setSelectedInspectModel}
         />
       </section>
 

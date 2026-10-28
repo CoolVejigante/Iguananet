@@ -130,13 +130,16 @@ export const resolveModelUrl = (relativePath: string): string => {
 
 interface IguanaInspectionBayProps {
   initialModel?: BuiltinModelId;
+  onModelChange?: (modelId: BuiltinModelId) => void;
 }
 
 export const IguanaInspectionBay: React.FC<IguanaInspectionBayProps> = ({
-  initialModel = 'TERMINAL'
+  initialModel = 'TERMINAL',
+  onModelChange
 }) => {
   const mountRef = useRef<HTMLDivElement | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const prevInitialModelPropRef = useRef<BuiltinModelId>(initialModel);
 
   const [activeModelId, setActiveModelId] = useState<BuiltinModelId>(initialModel);
   const [isWireframe, setIsWireframe] = useState<boolean>(false);
@@ -149,9 +152,9 @@ export const IguanaInspectionBay: React.FC<IguanaInspectionBayProps> = ({
   const [isDracoActive, setIsDracoActive] = useState<boolean>(true);
 
   const [stats, setStats] = useState({
-    vertices: 5420,
-    triangles: 8940,
-    drawCalls: 12,
+    vertices: 2128,
+    triangles: 1712,
+    drawCalls: 4,
     dracoStatus: 'OPTIMIZADO (DRACO v1.5.6)'
   });
 
@@ -748,22 +751,25 @@ export const IguanaInspectionBay: React.FC<IguanaInspectionBayProps> = ({
     };
   }, [loadBlenderGlbModel]);
 
-  // Sincronizar selección externa de modelo (e.g. al hacer click en el Catálogo de Producción)
+  // Sincronizar selección externa de modelo ÚNICAMENTE cuando la prop externa cambie de valor
   useEffect(() => {
-    if (initialModel && initialModel !== activeModelId) {
+    if (initialModel && initialModel !== prevInitialModelPropRef.current) {
+      prevInitialModelPropRef.current = initialModel;
       setActiveModelId(initialModel);
       setUploadedModelName(null);
       setUploadError(null);
       loadBlenderGlbModel(initialModel, isWireframe);
     }
-  }, [initialModel, isWireframe, loadBlenderGlbModel, activeModelId]);
+  }, [initialModel, isWireframe, loadBlenderGlbModel]);
 
   // Manejador de cambio manual de modelo mediante los botones [1], [2], [3], [4]
   const handleModelSelect = (id: BuiltinModelId) => {
+    prevInitialModelPropRef.current = id; // Prevenir regresión de estado
     setActiveModelId(id);
     setUploadedModelName(null);
     setUploadError(null);
     loadBlenderGlbModel(id, isWireframe);
+    onModelChange?.(id);
   };
 
   // Alternar modo Wireframe en color Tangerine (#F57E00) con restauración de texturas PBR
