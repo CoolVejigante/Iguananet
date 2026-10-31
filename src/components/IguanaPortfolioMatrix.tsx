@@ -2,11 +2,12 @@
  * @license
  * SPDX-License-Identifier: Apache-2.0
  * Layer 1: The DOM Matrix (2D/UX Scrollytelling Container)
- * - Section 1: Identity Hub & Manifesto (Elevator Pitch, Previous Artworks, Retro-illuminated Social Links)
- * - Section 2: Inspection Bay (Interactive 3D WebGL Canvas)
- * - Section 3: Trajectory Matrix & Roadmap (Iguana3D Vision & Futuristic Gantt Timeline)
+ * - Section 1: Inspection Bay (Interactive 3D WebGL Canvas)
+ * - Section 2: Catálogo de Producción (Obras Previas & Props Retro-Industriales)
+ * - Section 3: Identity Hub & Manifesto (Elevator Pitch, Previous Artworks, Retro-illuminated Social Links)
+ * - Section 4: Trajectory Matrix & Roadmap (Iguana3D Vision & Futuristic Gantt Timeline)
  *
- * All SGX Guild mentions and HTML download buttons removed per user instructions.
+ * Full bilingual support (ES / EN) via useLanguage().
  */
 
 import React, { useState } from 'react';
@@ -28,9 +29,11 @@ import {
   Globe,
   Share2,
   Bookmark,
-  Send
+  Send,
+  Mail
 } from 'lucide-react';
 import { soundEngine } from '../services/sound-effects';
+import { useLanguage } from '../context/LanguageContext';
 import { IguanaInspectionBay, BuiltinModelId } from './IguanaInspectionBay';
 import logoFull from '../assets/images/iguananetconcept-removebg-preview.png';
 import pcVRImg from '../assets/images/pcVR@2x@2x.jpg';
@@ -58,71 +61,68 @@ interface ArtworkProject {
 }
 
 export const IguanaPortfolioMatrix: React.FC = () => {
+  const { t, language } = useLanguage();
   const [selectedInspectModel, setSelectedInspectModel] = useState<BuiltinModelId>('TERMINAL');
 
   const artworks: ArtworkProject[] = [
     {
       id: 'art-1',
-      title: 'Telefono Inteligente',
-      category: 'Dispositivo Móvil & Hardware Retrofuturista',
+      title: t.catalog.artworks.art1.title,
+      category: t.catalog.artworks.art1.category,
       modelTarget: 'TERMINAL',
       image: telefonoInteligenteImg,
       specs: {
         triangles: '1,712 Tris',
-        textures: 'PBR Titanio Negro & Biseles',
-        pbrType: 'Micro-facet Specular / PBR',
+        textures: t.catalog.artworks.art1.textures,
+        pbrType: t.catalog.artworks.art1.lighting,
         compression: 'DRACO v1.5.6 (Google CDN)'
       },
-      description:
-        'Concepto de teléfono inteligente retrofuturista con chasis modular biselado, acabado negro mate, botones metálicos laterales y display táctil de alta definición.',
+      description: t.catalog.artworks.art1.description,
       tags: ['Hardware', 'Smartphone', 'Retrofuturismo', 'Props', 'Industrial']
     },
     {
       id: 'art-2',
-      title: 'Iguana',
-      category: 'Mascota & Escultura 3D',
+      title: t.catalog.artworks.art2.title,
+      category: t.catalog.artworks.art2.category,
       modelTarget: 'DRONE',
       image: iguanaModelImg,
       specs: {
         triangles: '67,924 Tris',
-        textures: 'PBR Dual-Coat Anodizado',
-        pbrType: 'Micro-facet Specular',
+        textures: t.catalog.artworks.art2.textures,
+        pbrType: t.catalog.artworks.art2.lighting,
         compression: 'DRACO v1.5.6 (Google CDN)'
       },
-      description:
-        'Mascota emblemática cibernética Iguana con cresta bioluminiscente, escamas metálicas facetadas y estructura anatómica optimizada en tiempo real.',
+      description: t.catalog.artworks.art2.description,
       tags: ['Iguana', 'Game-Ready', 'Sci-Fi', 'Props', 'Rigged']
     },
     {
       id: 'art-3',
-      title: 'Plato Arqueológico',
-      category: 'Patrimonio Cultural & Arqueología',
+      title: t.catalog.artworks.art3.title,
+      category: t.catalog.artworks.art3.category,
       modelTarget: 'ARCHVIZ',
       image: platoArqueologicoImg,
       specs: {
         triangles: '256 Tris',
-        textures: 'Cerámica Ancestral & Arcilla',
-        pbrType: 'Micro-facet Roughness / PBR',
+        textures: t.catalog.artworks.art3.textures,
+        pbrType: t.catalog.artworks.art3.lighting,
         compression: 'DRACO v1.5.6 (Google CDN)'
       },
-      description:
-        'Reconstrucción tridimensional de plato ceremonial arqueológico con iconografía tallada, textura cerámica porosa y pátina de desgaste milenario.',
+      description: t.catalog.artworks.art3.description,
       tags: ['Arqueología', 'Prop', 'Texturas-PBR', 'DRACO', 'Historia']
     },
     {
       id: 'art-4',
-      title: 'Concepto de Apartamento Retrofuturista',
-      category: 'ArchViz Modular Concept',
+      title: t.catalog.artworks.art4.title,
+      category: t.catalog.artworks.art4.category,
       modelTarget: 'FUSION_CORE',
       image: modaparfinalImg,
       specs: {
         triangles: '5,556 Tris',
-        textures: 'Concreto & Vidrio Dieléctrico',
-        pbrType: 'Transmission 0.9 / ACES',
+        textures: t.catalog.artworks.art4.textures,
+        pbrType: t.catalog.artworks.art4.lighting,
         compression: 'DRACO v1.5.6 (Google CDN)'
       },
-      description:
-        'Pabellón habitacional y concepto de apartamento modular retrofuturista con pórticos voladizos, ventanales panorámicos y estética brutalista contemporánea.',
+      description: t.catalog.artworks.art4.description,
       tags: ['ArchViz', 'Retrofuturismo', 'Apartamento', 'Modular', 'Ambientes']
     }
   ];
@@ -151,14 +151,14 @@ export const IguanaPortfolioMatrix: React.FC = () => {
         <div className="flex flex-wrap items-center justify-between gap-3 pb-2 border-b border-[#99EEFF]/20">
           <div>
             <span className="text-xs font-mono-telemetry text-[#F57E00] uppercase tracking-widest block">
-              // CATÁLOGO DE PRODUCCIÓN
+              {t.catalog.badge}
             </span>
             <h2 className="text-2xl sm:text-3xl font-heading font-bold text-white">
-              OBRAS PREVIAS & PROPS RETRO-INDUSTRIALES
+              {t.catalog.title}
             </h2>
           </div>
           <span className="text-xs font-mono-telemetry text-slate-400">
-            PRUEBA CADA MODELO EN VIVO EN EL INSPECTION BAY SUPERIOR
+            {t.catalog.subtitle}
           </span>
         </div>
 
@@ -202,15 +202,15 @@ export const IguanaPortfolioMatrix: React.FC = () => {
               {/* Technical Specs Grid */}
               <div className="p-3 bg-[#0e1b24]/80 border border-[#99EEFF]/15 rounded-lg grid grid-cols-2 gap-2 text-[11px] font-mono-telemetry">
                 <div>
-                  <span className="text-slate-500 block text-[10px]">TEXTURAS:</span>
+                  <span className="text-slate-500 block text-[10px]">{t.catalog.specsTextures}</span>
                   <span className="text-slate-200">{art.specs.textures}</span>
                 </div>
                 <div>
-                  <span className="text-slate-500 block text-[10px]">ILUMINACIÓN:</span>
+                  <span className="text-slate-500 block text-[10px]">{t.catalog.specsLighting}</span>
                   <span className="text-slate-200">{art.specs.pbrType}</span>
                 </div>
                 <div className="col-span-2">
-                  <span className="text-slate-500 block text-[10px]">COMPRESIÓN:</span>
+                  <span className="text-slate-500 block text-[10px]">{t.catalog.specsCompression}</span>
                   <span className="text-emerald-400">{art.specs.compression}</span>
                 </div>
               </div>
@@ -233,7 +233,7 @@ export const IguanaPortfolioMatrix: React.FC = () => {
                   className="px-3.5 py-1.5 bg-[#99EEFF] hover:bg-white text-black font-heading font-bold text-xs rounded flex items-center gap-1.5 transition-all shadow-md group-hover:shadow-[0_0_15px_rgba(153,238,255,0.6)]"
                 >
                   <Eye className="w-3.5 h-3.5 text-black" />
-                  <span>Inspeccionar 3D</span>
+                  <span>{t.catalog.inspectBtn}</span>
                 </button>
               </div>
             </div>
@@ -253,7 +253,7 @@ export const IguanaPortfolioMatrix: React.FC = () => {
               IGUANA3D STUDIO
             </span>
             <span className="text-slate-400 font-mono-telemetry text-xs hidden sm:inline">
-              // HUMACAO, PUERTO RICO
+              {t.identityHub.location}
             </span>
           </div>
 
@@ -263,7 +263,7 @@ export const IguanaPortfolioMatrix: React.FC = () => {
                 LUIS CASANOVA
               </h1>
               <p className="text-lg sm:text-xl font-heading text-[#99EEFF] font-semibold tracking-wide mt-1">
-                3D Artist & Visual Developer · Props, ArchViz & Retro-Industrial
+                {t.identityHub.role}
               </p>
             </div>
             {/* Logo */}
@@ -287,15 +287,15 @@ export const IguanaPortfolioMatrix: React.FC = () => {
 
               <div className="space-y-4">
                 <span className="text-xs font-mono-telemetry text-[#F57E00] tracking-widest uppercase">
-                  // MANIFIESTO PROFESIONAL Y PROPUESTA DE VALOR
+                  {t.identityHub.manifestoBadge}
                 </span>
                 <blockquote className="text-base sm:text-lg text-slate-100 font-sans leading-relaxed border-l-2 border-[#F57E00] pl-4 italic">
-                  "Saludos, soy Luis Casanova, 3D Artist y Visual Developer especializado en props, ArchViz y diseño industrial y artístico. Resuelvo la incertidumbre de los directores de arte e indie game devs que contratan a ciegas sin conocer la optimización ni la escala real de los modelos. Logro mediante un visor WebGL de inspección 'Inspection Bay', donde pueden probar los assets tridimensionales en vivo, alternar wireframes, inspeccionar vértices y polígonos y evaluar texturas PBR sin fricción ni descargas. Y por eso es cósmicamente interesante."
+                  {t.identityHub.manifestoText}
                 </blockquote>
               </div>
             </div>
 
-            {/* Area destacada en verde: Render 3D de la Iguana */}
+            {/* Iguana 3D Model Display Card */}
             <div className="w-full lg:w-72 xl:w-80 shrink-0 flex items-center justify-center p-3 bg-[#0e1b24]/80 border border-[#99EEFF]/30 rounded-lg clip-chamfer-45 overflow-hidden shadow-inner group">
               <img
                 src={iguanaModelImg}
@@ -310,10 +310,10 @@ export const IguanaPortfolioMatrix: React.FC = () => {
         <div className="space-y-4">
           <div className="flex items-center justify-between pb-2 border-b border-[#99EEFF]/20">
             <span className="text-xs font-mono-telemetry text-[#99EEFF] uppercase tracking-wider">
-              // RED DE CONECTIVIDAD & PORTAFOLIO EN VIVO
+              {t.identityHub.connectivityBadge}
             </span>
             <span className="text-xs font-mono-telemetry text-slate-400">
-              ENLACES RETRO-ILUMINADOS
+              {t.identityHub.connectivitySub}
             </span>
           </div>
 
@@ -334,7 +334,7 @@ export const IguanaPortfolioMatrix: React.FC = () => {
                     ARTSTATION
                   </h4>
                   <span className="text-[11px] font-mono-telemetry text-slate-400">
-                    Galería de Props 3D & ArchViz
+                    {t.identityHub.artstationSub}
                   </span>
                 </div>
               </div>
@@ -357,7 +357,7 @@ export const IguanaPortfolioMatrix: React.FC = () => {
                     LINKEDIN
                   </h4>
                   <span className="text-[11px] font-mono-telemetry text-slate-400">
-                    Trayectoria & Producción
+                    {t.identityHub.linkedinSub}
                   </span>
                 </div>
               </div>
@@ -380,7 +380,7 @@ export const IguanaPortfolioMatrix: React.FC = () => {
                     INSTAGRAM
                   </h4>
                   <span className="text-[11px] font-mono-telemetry text-slate-400">
-                    WIPs, Renders & Wireframes
+                    {t.identityHub.instagramSub}
                   </span>
                 </div>
               </div>
@@ -390,39 +390,39 @@ export const IguanaPortfolioMatrix: React.FC = () => {
         </div>
       </section>
 
-      {/* SECTION 3: Trajectory Matrix & Roadmap - Iguana3D Vision */}
+      {/* SECTION 4: Trajectory Matrix & Roadmap - Iguana3D Vision */}
       <section id="trajectory-matrix" className="w-full max-w-6xl mx-auto px-4 sm:px-6 pt-16 space-y-12">
         {/* Section Header */}
         <div className="space-y-3">
           <div className="flex items-center gap-2">
             <span className="w-2.5 h-2.5 bg-[#F57E00] clip-tag-chamfer" />
             <span className="text-xs font-mono-telemetry text-[#F57E00] uppercase tracking-widest font-semibold">
-              SECCIÓN 3 // MATRIZ DE TRAYECTORIA & ROADMAP
+              {t.roadmap.badge}
             </span>
           </div>
           <h2 className="text-3xl sm:text-4xl font-heading font-black text-white">
-            VISIÓN ESTRATÉGICA IGUANA3D
+            {t.roadmap.title}
           </h2>
         </div>
 
         {/* Mandatory Mission Statement Quote */}
         <div className="p-6 sm:p-8 bg-[#162937]/90 backdrop-blur-xl border-l-4 border-[#F57E00] border-y border-r border-[#99EEFF]/20 clip-chamfer-45 shadow-xl space-y-3">
           <span className="text-xs font-mono-telemetry text-[#99EEFF] tracking-wider uppercase block">
-            // DECLARACIÓN DE MISIÓN OFICIAL IGUANA3D
+            {t.roadmap.missionBadge}
           </span>
           <blockquote className="text-base sm:text-xl font-heading text-white leading-relaxed font-semibold">
-            "Nuestra visión no es solo improvisar tus assets u otros trabajos, Iguana3D está también enfocado en la contribución visual de cada tipo de industria relacionada para cementar la nueva generacion de desarolladores encargado de cementear propiedad intelectual cautivadora y imposible de despegar."
+            {t.roadmap.missionQuote}
           </blockquote>
           <span className="text-xs font-mono-telemetry text-slate-400 block pt-1">
-            — Luis Casanova, Fundador de Iguana3D & Desarrollador Visual 3D
+            {t.roadmap.missionAuthor}
           </span>
         </div>
 
         {/* Futuristic Gantt / Flowchart Timeline */}
         <div className="space-y-6">
           <div className="flex items-center justify-between pb-2 border-b border-[#99EEFF]/20 text-xs font-mono-telemetry text-slate-400">
-            <span className="text-[#99EEFF]">CRONOGRAMA DE EXPANSIÓN TECNOLÓGICA & CREATIVA</span>
-            <span>TIMELINE V2026-2027</span>
+            <span className="text-[#99EEFF]">{t.roadmap.timelineTitle}</span>
+            <span>{t.roadmap.timelineVersion}</span>
           </div>
 
           <div className="space-y-6">
@@ -435,28 +435,28 @@ export const IguanaPortfolioMatrix: React.FC = () => {
                   </span>
                   <div>
                     <span className="text-[10px] font-mono-telemetry text-emerald-400 tracking-wider">
-                      FASE 1 // DESPLIEGUE FUNDACIONAL
+                      {t.roadmap.phase1.tag}
                     </span>
                     <h3 className="text-lg font-heading font-bold text-white">
-                      WebGL Portfolio Launch (IguanaNet)
+                      {t.roadmap.phase1.title}
                     </h3>
                   </div>
                 </div>
 
                 <span className="px-3 py-1 bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 rounded-full text-xs font-mono-telemetry font-bold">
-                  ✓ COMPLETADO & ACTIVO
+                  {t.roadmap.phase1.status}
                 </span>
               </div>
 
               <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-sans">
-                Lanzamiento del portafolio interactivo 3D con la arquitectura Omni-Canvas de 4 capas. Integración de decodificador DRACO v1.5.6 vía Google CDN, mitigación total de CORS y visualización sin fricción.
+                {t.roadmap.phase1.description}
               </p>
 
               {/* Gantt Milestone Bar */}
               <div className="space-y-1.5 pt-2">
                 <div className="flex justify-between text-[11px] font-mono-telemetry text-slate-400">
-                  <span>Hito: Visor WebGL + PBR RoomEnvironment</span>
-                  <span className="text-emerald-400 font-bold">100% CUMPLIDO</span>
+                  <span>{language === 'es' ? 'Hito: Visor WebGL + PBR RoomEnvironment' : 'Milestone: WebGL Viewer + PBR RoomEnvironment'}</span>
+                  <span className="text-emerald-400 font-bold">{language === 'es' ? '100% CUMPLIDO' : '100% ACHIEVED'}</span>
                 </div>
                 <div className="w-full h-2.5 bg-[#0e1b24] rounded-full overflow-hidden border border-emerald-500/30">
                   <div className="h-full bg-gradient-to-r from-emerald-500 to-[#99EEFF] w-full" />
@@ -473,28 +473,28 @@ export const IguanaPortfolioMatrix: React.FC = () => {
                   </span>
                   <div>
                     <span className="text-[10px] font-mono-telemetry text-[#F57E00] tracking-wider">
-                      FASE 2 // COLABORACIÓN & MOTOR INDIE
+                      {t.roadmap.phase2.tag}
                     </span>
                     <h3 className="text-lg font-heading font-bold text-white">
-                      Collaborative Projects & Game Jams
+                      {t.roadmap.phase2.title}
                     </h3>
                   </div>
                 </div>
 
                 <span className="px-3 py-1 bg-[#F57E00]/20 text-[#F57E00] border border-[#F57E00]/40 rounded-full text-xs font-mono-telemetry font-bold animate-pulse">
-                  EN EJECUCIÓN // 2026
+                  {t.roadmap.phase2.status}
                 </span>
               </div>
 
               <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-sans">
-                Coproducción de assets 3D optimizados para motores de videojuegos (Unreal Engine 5, Godot 4, Three.js) en colaboración con desarrolladores independientes y participación activa en game jams internacionales. Automatización del pipeline de compresión geométrica y micro-optimizaciones WebGL.
+                {t.roadmap.phase2.description}
               </p>
 
               {/* Gantt Milestone Bar */}
               <div className="space-y-1.5 pt-2">
                 <div className="flex justify-between text-[11px] font-mono-telemetry text-slate-400">
-                  <span>Hito: Pipeline de Assets AAA + Alianzas Indie</span>
-                  <span className="text-[#F57E00] font-bold">65% EN CURSO</span>
+                  <span>{language === 'es' ? 'Hito: Pipeline de Assets AAA + Alianzas Indie' : 'Milestone: AAA Asset Pipeline & Indie Alliances'}</span>
+                  <span className="text-[#F57E00] font-bold">{language === 'es' ? '65% EN CURSO' : '65% IN PROGRESS'}</span>
                 </div>
                 <div className="w-full h-2.5 bg-[#0e1b24] rounded-full overflow-hidden border border-[#F57E00]/30">
                   <div className="h-full bg-gradient-to-r from-[#F57E00] to-[#99EEFF] w-[65%]" />
@@ -511,28 +511,28 @@ export const IguanaPortfolioMatrix: React.FC = () => {
                   </span>
                   <div>
                     <span className="text-[10px] font-mono-telemetry text-[#99EEFF] tracking-wider">
-                      FASE 3 // CONSOLIDACIÓN INSTITUCIONAL
+                      {t.roadmap.phase3.tag}
                     </span>
                     <h3 className="text-lg font-heading font-bold text-white">
-                      Independent Studio Consolidation in Puerto Rico
+                      {t.roadmap.phase3.title}
                     </h3>
                   </div>
                 </div>
 
                 <span className="px-3 py-1 bg-[#244156] text-[#99EEFF] border border-[#99EEFF]/40 rounded-full text-xs font-mono-telemetry font-bold">
-                  VISIÓN ESTRATÉGICA // 2027
+                  {t.roadmap.phase3.status}
                 </span>
               </div>
 
               <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-sans">
-                Consolidación formal de Iguana3D como estudio independiente líder de desarrollo visual y producción de propiedad intelectual interactiva en Puerto Rico. Fomento y mentoría de la nueva generación de desarrolladores locales para crear franquicias cautivadoras e imposibles de despegar para el mercado global.
+                {t.roadmap.phase3.description}
               </p>
 
               {/* Gantt Milestone Bar */}
               <div className="space-y-1.5 pt-2">
                 <div className="flex justify-between text-[11px] font-mono-telemetry text-slate-400">
-                  <span>Hito: Estudio de Desarrollo Visual Puerto Rico</span>
-                  <span className="text-[#99EEFF] font-bold">PLANIFICACIÓN ACTIVA</span>
+                  <span>{language === 'es' ? 'Hito: Estudio de Desarrollo Visual Puerto Rico' : 'Milestone: Puerto Rico Visual Development Studio'}</span>
+                  <span className="text-[#99EEFF] font-bold">{language === 'es' ? 'PLANIFICACIÓN ACTIVA' : 'ACTIVE PLANNING'}</span>
                 </div>
                 <div className="w-full h-2.5 bg-[#0e1b24] rounded-full overflow-hidden border border-[#99EEFF]/30">
                   <div className="h-full bg-gradient-to-r from-[#244156] to-[#99EEFF] w-[25%]" />
@@ -542,18 +542,32 @@ export const IguanaPortfolioMatrix: React.FC = () => {
           </div>
         </div>
 
-        {/* Contact & Collaboration Footer Box (Download button removed per user specification) */}
+        {/* Contact & Collaboration Footer Box */}
         <div className="p-6 bg-gradient-to-r from-[#162937] via-[#244156] to-[#162937] border border-[#99EEFF]/40 clip-chamfer-45 flex flex-wrap items-center justify-between gap-4">
           <div className="space-y-1">
             <h4 className="font-heading font-bold text-white text-base">
-              ¿Listo para colaborar en tu próximo proyecto o producción 3D?
+              {language === 'es'
+                ? '¿Listo para colaborar en mis o tus próximos proyectos?'
+                : 'Ready to collaborate on upcoming projects?'}
             </h4>
             <p className="text-xs text-slate-300 font-sans">
-              Inspecciona los modelos en tiempo real en el Inspection Bay o conecta directamente a través de nuestras redes profesionales.
+              {language === 'es'
+                ? 'Inspecciona los modelos en tiempo real en el Inspection Bay o conecta directamente para cotizaciones y dirección artística.'
+                : 'Inspect models live in the Inspection Bay or connect directly for quotes and artistic direction.'}
             </p>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 flex-wrap">
+            <a
+              href="https://mail.google.com/mail/?view=cm&fs=1&to=luis.e.a.fontanez.casanova@gmail.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-4 py-2 bg-gradient-to-r from-[#EA4335] to-[#c5221f] hover:from-[#d93025] hover:to-[#b31412] text-white font-heading font-bold text-xs rounded transition-all shadow-[0_0_15px_rgba(234,67,53,0.4)] flex items-center gap-2"
+              title="Redactar mensaje en Gmail a luis.e.a.fontanez.casanova@gmail.com"
+            >
+              <Mail className="w-3.5 h-3.5" />
+              <span>{language === 'es' ? 'Redactar en Gmail' : 'Compose in Gmail'}</span>
+            </a>
             <a
               href="https://www.linkedin.com"
               target="_blank"
@@ -561,7 +575,7 @@ export const IguanaPortfolioMatrix: React.FC = () => {
               className="px-4 py-2 bg-[#99EEFF] hover:bg-white text-black font-heading font-bold text-xs rounded transition-all shadow-md flex items-center gap-2"
             >
               <Send className="w-3.5 h-3.5" />
-              <span>Contactar en LinkedIn</span>
+              <span>{language === 'es' ? 'LinkedIn' : 'LinkedIn'}</span>
             </a>
             <a
               href="https://www.artstation.com"
@@ -570,7 +584,7 @@ export const IguanaPortfolioMatrix: React.FC = () => {
               className="px-4 py-2 bg-[#244156] hover:bg-[#1a3142] border border-[#99EEFF]/40 text-[#99EEFF] font-heading font-bold text-xs rounded transition-all flex items-center gap-2"
             >
               <Globe className="w-3.5 h-3.5" />
-              <span>Ver en ArtStation</span>
+              <span>{language === 'es' ? 'ArtStation' : 'ArtStation'}</span>
             </a>
           </div>
         </div>

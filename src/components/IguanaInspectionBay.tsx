@@ -38,6 +38,7 @@ import {
   Maximize2
 } from 'lucide-react';
 import { soundEngine } from '../services/sound-effects';
+import { useLanguage } from '../context/LanguageContext';
 
 export type BuiltinModelId = 'TERMINAL' | 'DRONE' | 'ARCHVIZ' | 'FUSION_CORE';
 
@@ -137,6 +138,7 @@ export const IguanaInspectionBay: React.FC<IguanaInspectionBayProps> = ({
   initialModel = 'TERMINAL',
   onModelChange
 }) => {
+  const { t, language } = useLanguage();
   const mountRef = useRef<HTMLDivElement | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const prevInitialModelPropRef = useRef<BuiltinModelId>(initialModel);
@@ -906,7 +908,7 @@ export const IguanaInspectionBay: React.FC<IguanaInspectionBayProps> = ({
         {/* Model Switcher Buttons */}
         <div className="flex items-center gap-1.5 flex-wrap">
           <span className="text-slate-400 font-mono-telemetry text-[11px] mr-1 hidden lg:inline">
-            ASSETS 3D:
+            {language === 'es' ? 'ASSETS 3D:' : '3D ASSETS:'}
           </span>
           <button
             onClick={() => handleModelSelect('TERMINAL')}
@@ -916,7 +918,7 @@ export const IguanaInspectionBay: React.FC<IguanaInspectionBayProps> = ({
                 : 'bg-[#244156]/60 text-slate-300 border-[#99EEFF]/30 hover:border-[#99EEFF]'
             }`}
           >
-            [1] Teléfono Inteligente
+            [1] {t.inspectionBay.tabs.terminal}
           </button>
           <button
             onClick={() => handleModelSelect('DRONE')}
@@ -926,7 +928,7 @@ export const IguanaInspectionBay: React.FC<IguanaInspectionBayProps> = ({
                 : 'bg-[#244156]/60 text-slate-300 border-[#99EEFF]/30 hover:border-[#99EEFF]'
             }`}
           >
-            [2] Iguana
+            [2] {t.inspectionBay.tabs.drone}
           </button>
           <button
             onClick={() => handleModelSelect('ARCHVIZ')}
@@ -936,7 +938,7 @@ export const IguanaInspectionBay: React.FC<IguanaInspectionBayProps> = ({
                 : 'bg-[#244156]/60 text-slate-300 border-[#99EEFF]/30 hover:border-[#99EEFF]'
             }`}
           >
-            [3] Plato Arqueológico
+            [3] {t.inspectionBay.tabs.archviz}
           </button>
           <button
             onClick={() => handleModelSelect('FUSION_CORE')}
@@ -946,7 +948,7 @@ export const IguanaInspectionBay: React.FC<IguanaInspectionBayProps> = ({
                 : 'bg-[#244156]/60 text-slate-300 border-[#99EEFF]/30 hover:border-[#99EEFF]'
             }`}
           >
-            [4] Apartamento Retrofuturista
+            [4] {t.inspectionBay.tabs.fusionCore}
           </button>
         </div>
       </div>
@@ -1002,7 +1004,7 @@ export const IguanaInspectionBay: React.FC<IguanaInspectionBayProps> = ({
             <div className="flex items-center gap-2">
               <Cpu className="w-4 h-4 text-[#F57E00]" />
               <span className="font-heading font-bold text-white text-[11px]">
-                TELEMETRÍA TÉCNICA
+                {language === 'es' ? 'TELEMETRÍA TÉCNICA' : 'TECHNICAL TELEMETRY'}
               </span>
             </div>
             <span className="text-[10px] px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-mono-telemetry border border-emerald-500/40">
@@ -1012,19 +1014,19 @@ export const IguanaInspectionBay: React.FC<IguanaInspectionBayProps> = ({
 
           <div className="space-y-1.5 font-mono-telemetry text-[11px]">
             <div className="flex justify-between items-center text-slate-300">
-              <span className="text-slate-400">VÉRTICES:</span>
+              <span className="text-slate-400">{t.inspectionBay.vertices}:</span>
               <span className="text-[#99EEFF] font-bold">{stats.vertices.toLocaleString()}</span>
             </div>
             <div className="flex justify-between items-center text-slate-300">
-              <span className="text-slate-400">POLÍGONOS / TRIS:</span>
+              <span className="text-slate-400">{t.inspectionBay.triangles} / TRIS:</span>
               <span className="text-[#F57E00] font-bold">{stats.triangles.toLocaleString()}</span>
             </div>
             <div className="flex justify-between items-center text-slate-300">
-              <span className="text-slate-400">DRAW CALLS:</span>
+              <span className="text-slate-400">{t.inspectionBay.drawCalls}:</span>
               <span className="text-white font-bold">{stats.drawCalls}</span>
             </div>
             <div className="flex justify-between items-center text-slate-300">
-              <span className="text-slate-400">DRACO STATUS:</span>
+              <span className="text-slate-400">{t.inspectionBay.dracoStatus}:</span>
               <span className="text-emerald-400 font-semibold text-[10px]">
                 ONLINE (GOOGLE CDN)
               </span>
@@ -1033,7 +1035,7 @@ export const IguanaInspectionBay: React.FC<IguanaInspectionBayProps> = ({
 
           <div className="pt-2 border-t border-[#99EEFF]/20 flex items-center gap-2 text-[10px] text-slate-300">
             <ShieldCheck className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
-            <span>RoomEnvironment activo (Cero PBR oscuro)</span>
+            <span>{language === 'es' ? 'RoomEnvironment activo (Cero PBR oscuro)' : 'RoomEnvironment active (No dark PBR)'}</span>
           </div>
         </div>
 
@@ -1042,7 +1044,7 @@ export const IguanaInspectionBay: React.FC<IguanaInspectionBayProps> = ({
           <div className="absolute top-4 right-4 z-20 max-w-sm bg-red-950/80 border border-red-500/50 p-3 rounded-lg text-xs text-red-200 flex items-start gap-2 shadow-2xl">
             <AlertCircle className="w-4 h-4 text-red-400 shrink-0 mt-0.5" />
             <div className="flex-1">
-              <span className="font-bold block">Error de Carga</span>
+              <span className="font-bold block">{language === 'es' ? 'Error de Carga' : 'Upload Error'}</span>
               <span className="text-[11px] leading-tight">{uploadError}</span>
             </div>
             <button onClick={() => setUploadError(null)} className="text-red-400 hover:text-white">
@@ -1078,17 +1080,17 @@ export const IguanaInspectionBay: React.FC<IguanaInspectionBayProps> = ({
             }`}
           >
             <RotateCw className="w-3.5 h-3.5" />
-            <span>AUTO-ROTACIÓN</span>
+            <span>{language === 'es' ? 'AUTO-ROTACIÓN' : 'AUTO-ROTATION'}</span>
           </button>
 
           {/* Reset Camera */}
           <button
             onClick={handleResetCamera}
             className="px-3 py-1.5 rounded bg-[#244156] hover:bg-[#2e526d] text-slate-200 border border-[#99EEFF]/30 flex items-center gap-1.5 font-mono-telemetry transition-colors"
-            title="Centrar perspectiva"
+            title={language === 'es' ? 'Centrar perspectiva' : 'Reset perspective'}
           >
             <RefreshCw className="w-3.5 h-3.5 text-[#99EEFF]" />
-            <span>CENTRAR</span>
+            <span>{language === 'es' ? 'CENTRAR' : 'RESET'}</span>
           </button>
 
           {/* Exposure slider */}
@@ -1117,7 +1119,7 @@ export const IguanaInspectionBay: React.FC<IguanaInspectionBayProps> = ({
         <div className="flex items-center gap-3">
           <label className="flex items-center gap-2 px-3 py-1.5 bg-gradient-to-r from-[#244156] to-[#1b3447] hover:from-[#1b3447] hover:to-[#2e5675] text-[#99EEFF] border border-[#99EEFF]/50 rounded cursor-pointer transition-all font-mono-telemetry font-bold">
             <Upload className="w-3.5 h-3.5 text-[#F57E00]" />
-            <span>SUBIR .GLB / .OBJ</span>
+            <span>{language === 'es' ? 'SUBIR .GLB / .OBJ' : 'UPLOAD .GLB / .OBJ'}</span>
             <input
               ref={fileInputRef}
               type="file"

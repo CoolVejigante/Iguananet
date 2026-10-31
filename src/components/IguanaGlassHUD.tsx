@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  * Layer 2: The Glass HUD (Industrial UI, Navigation & Floating Telemetry)
  * Features the official IguanaNet Logo ("in." & Cyber Iguana mascot)
- * All SGX Guild mentions and HTML download button removed per user specification
+ * Includes persistent bilingual language switcher (ES / EN) in the top bar.
  */
 
 import React from 'react';
@@ -13,9 +13,11 @@ import {
   VolumeX,
   Eye,
   Maximize2,
-  Minimize2
+  Minimize2,
+  Globe
 } from 'lucide-react';
 import { soundEngine } from '../services/sound-effects';
+import { useLanguage } from '../context/LanguageContext';
 import logoCompact from '../assets/images/iguananetconcept-removebg-preview2.png';
 
 interface IguanaGlassHUDProps {
@@ -33,11 +35,20 @@ export const IguanaGlassHUD: React.FC<IguanaGlassHUDProps> = ({
   onToggleStageMode,
   onOpenGatekeeper
 }) => {
+  const { language, setLanguage, t } = useLanguage();
+
   const scrollTo = (id: string) => {
     soundEngine.playClickSound();
     const el = document.getElementById(id);
     if (el) {
       el.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  const handleSetLang = (newLang: 'es' | 'en') => {
+    if (language !== newLang) {
+      soundEngine.playClickSound();
+      setLanguage(newLang);
     }
   };
 
@@ -61,7 +72,7 @@ export const IguanaGlassHUD: React.FC<IguanaGlassHUDProps> = ({
               LUIS CASANOVA
             </span>
             <span className="text-[10px] font-mono-telemetry text-slate-400">
-              3D Artist & Visual Dev
+              {t.hud.roleSubtitle}
             </span>
           </div>
         </div>
@@ -74,34 +85,63 @@ export const IguanaGlassHUD: React.FC<IguanaGlassHUDProps> = ({
               className="px-3 py-1.5 rounded hover:bg-[#244156] text-[#99EEFF] hover:text-white transition-colors flex items-center gap-1 font-bold"
             >
               <Eye className="w-3.5 h-3.5 text-[#F57E00]" />
-              <span>[01 // INSPECTION BAY]</span>
+              <span>{t.hud.navInspectionBay}</span>
             </button>
             <span className="text-slate-600">/</span>
             <button
               onClick={() => scrollTo('catalogo-produccion')}
               className="px-3 py-1.5 rounded hover:bg-[#244156] text-slate-300 hover:text-[#99EEFF] transition-colors"
             >
-              [02 // CATÁLOGO 3D]
+              {t.hud.navCatalog}
             </button>
             <span className="text-slate-600">/</span>
             <button
               onClick={() => scrollTo('identity-hub')}
               className="px-3 py-1.5 rounded hover:bg-[#244156] text-slate-300 hover:text-[#99EEFF] transition-colors"
             >
-              [03 // MANIFIESTO & BIO]
+              {t.hud.navManifesto}
             </button>
             <span className="text-slate-600">/</span>
             <button
               onClick={() => scrollTo('trajectory-matrix')}
               className="px-3 py-1.5 rounded hover:bg-[#244156] text-slate-300 hover:text-[#99EEFF] transition-colors"
             >
-              [04 // ROADMAP]
+              {t.hud.navRoadmap}
             </button>
           </nav>
         )}
 
-        {/* Tactical Controls (Download button removed per user specification) */}
+        {/* Tactical Controls & Top Bar Language Switcher */}
         <div className="flex items-center gap-2 pointer-events-auto">
+          {/* Main Bar Bilingual Switcher: [ ES | EN ] */}
+          <div
+            className="flex items-center bg-[#162937]/95 hover:bg-[#1a3142] border border-[#99EEFF]/40 rounded p-1 shadow-md font-mono-telemetry text-xs transition-all"
+            title={t.hud.langToggleTooltip}
+          >
+            <Globe className="w-3.5 h-3.5 text-[#99EEFF] mr-1 hidden sm:inline" />
+            <button
+              onClick={() => handleSetLang('es')}
+              className={`px-2 py-0.5 rounded text-[11px] font-bold transition-all ${
+                language === 'es'
+                  ? 'bg-[#99EEFF] text-black shadow-[0_0_10px_rgba(153,238,255,0.6)]'
+                  : 'text-slate-400 hover:text-white'
+              }`}
+            >
+              ES
+            </button>
+            <span className="text-slate-600 px-0.5">/</span>
+            <button
+              onClick={() => handleSetLang('en')}
+              className={`px-2 py-0.5 rounded text-[11px] font-bold transition-all ${
+                language === 'en'
+                  ? 'bg-[#99EEFF] text-black shadow-[0_0_10px_rgba(153,238,255,0.6)]'
+                  : 'text-slate-400 hover:text-white'
+              }`}
+            >
+              EN
+            </button>
+          </div>
+
           {/* Re-open Gatekeeper Intro */}
           <button
             onClick={() => {
@@ -109,10 +149,10 @@ export const IguanaGlassHUD: React.FC<IguanaGlassHUDProps> = ({
               onOpenGatekeeper();
             }}
             className="hidden sm:flex items-center gap-1.5 px-3 py-2 bg-[#162937]/90 hover:bg-[#244156] border border-[#99EEFF]/30 rounded text-xs font-mono-telemetry text-slate-200 transition-colors"
-            title="Volver a la Terminal de Acceso"
+            title={t.hud.introGateTooltip}
           >
             <Terminal className="w-3.5 h-3.5 text-[#99EEFF]" />
-            <span>Intro Gate</span>
+            <span>{t.hud.introGate}</span>
           </button>
 
           {/* Audio Mute/Unmute */}
@@ -124,7 +164,7 @@ export const IguanaGlassHUD: React.FC<IguanaGlassHUDProps> = ({
             className={`p-2 bg-[#162937]/90 hover:bg-[#244156] border border-[#99EEFF]/30 rounded transition-colors ${
               isMuted ? 'text-slate-500' : 'text-[#99EEFF]'
             }`}
-            title={isMuted ? 'Reanudar Audio [M]' : 'Silenciar Audio [M]'}
+            title={isMuted ? t.hud.audioTooltipOff : t.hud.audioTooltipOn}
           >
             {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
           </button>
@@ -138,7 +178,7 @@ export const IguanaGlassHUD: React.FC<IguanaGlassHUDProps> = ({
             className={`p-2 bg-[#162937]/90 hover:bg-[#244156] border border-[#99EEFF]/30 rounded transition-colors ${
               isStageMode ? 'text-[#F57E00] border-[#F57E00]' : 'text-slate-300'
             }`}
-            title={isStageMode ? 'Salir de Modo Escenario [F]' : 'Modo Escenario Completo [F]'}
+            title={isStageMode ? t.hud.stageTooltipExit : t.hud.stageTooltipEnter}
           >
             {isStageMode ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
           </button>
