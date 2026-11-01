@@ -313,89 +313,6 @@ export const IguanaPortfolioMatrix: React.FC = () => {
             </div>
           </div>
         </div>
-
-        {/* Retro-Illuminated Social & Credentials Links */}
-        <div className="space-y-4">
-          <div className="flex items-center justify-between pb-2 border-b border-[#99EEFF]/20">
-            <span className="text-xs font-mono-telemetry text-[#99EEFF] uppercase tracking-wider">
-              {t.identityHub.connectivityBadge}
-            </span>
-            <span className="text-xs font-mono-telemetry text-slate-400">
-              {t.identityHub.connectivitySub}
-            </span>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            {/* ArtStation */}
-            <a
-              href="https://www.artstation.com"
-              target="_blank"
-              rel="noreferrer"
-              className="group p-4 bg-[#162937]/80 hover:bg-[#1f384c] border border-[#99EEFF]/30 hover:border-[#99EEFF] clip-chamfer-45 transition-all duration-300 shadow-lg hover:shadow-[0_0_25px_rgba(153,238,255,0.35)] flex items-center justify-between"
-            >
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-[#0e1b24] border border-[#99EEFF]/40 rounded flex items-center justify-center group-hover:scale-105 transition-transform">
-                  <Globe className="w-5 h-5 text-[#99EEFF]" />
-                </div>
-                <div>
-                  <h4 className="font-heading font-bold text-white text-sm group-hover:text-[#99EEFF] transition-colors">
-                    ARTSTATION
-                  </h4>
-                  <span className="text-[11px] font-mono-telemetry text-slate-400">
-                    {t.identityHub.artstationSub}
-                  </span>
-                </div>
-              </div>
-              <ExternalLink className="w-4 h-4 text-slate-400 group-hover:text-[#99EEFF] group-hover:translate-x-0.5 transition-transform" />
-            </a>
-
-            {/* LinkedIn */}
-            <a
-              href="https://www.linkedin.com"
-              target="_blank"
-              rel="noreferrer"
-              className="group p-4 bg-[#162937]/80 hover:bg-[#1f384c] border border-[#99EEFF]/30 hover:border-[#99EEFF] clip-chamfer-45 transition-all duration-300 shadow-lg hover:shadow-[0_0_25px_rgba(153,238,255,0.35)] flex items-center justify-between"
-            >
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-[#0e1b24] border border-[#99EEFF]/40 rounded flex items-center justify-center group-hover:scale-105 transition-transform">
-                  <Award className="w-5 h-5 text-[#99EEFF]" />
-                </div>
-                <div>
-                  <h4 className="font-heading font-bold text-white text-sm group-hover:text-[#99EEFF] transition-colors">
-                    LINKEDIN
-                  </h4>
-                  <span className="text-[11px] font-mono-telemetry text-slate-400">
-                    {t.identityHub.linkedinSub}
-                  </span>
-                </div>
-              </div>
-              <ExternalLink className="w-4 h-4 text-slate-400 group-hover:text-[#99EEFF] group-hover:translate-x-0.5 transition-transform" />
-            </a>
-
-            {/* Instagram */}
-            <a
-              href="https://www.instagram.com"
-              target="_blank"
-              rel="noreferrer"
-              className="group p-4 bg-[#162937]/80 hover:bg-[#1f384c] border border-[#F57E00]/40 hover:border-[#F57E00] clip-chamfer-45 transition-all duration-300 shadow-lg hover:shadow-[0_0_25px_rgba(245,126,0,0.35)] flex items-center justify-between"
-            >
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-[#0e1b24] border border-[#F57E00]/40 rounded flex items-center justify-center group-hover:scale-105 transition-transform">
-                  <Sparkles className="w-5 h-5 text-[#F57E00]" />
-                </div>
-                <div>
-                  <h4 className="font-heading font-bold text-white text-sm group-hover:text-[#F57E00] transition-colors">
-                    INSTAGRAM
-                  </h4>
-                  <span className="text-[11px] font-mono-telemetry text-slate-400">
-                    {t.identityHub.instagramSub}
-                  </span>
-                </div>
-              </div>
-              <ExternalLink className="w-4 h-4 text-slate-400 group-hover:text-[#F57E00] group-hover:translate-x-0.5 transition-transform" />
-            </a>
-          </div>
-        </div>
       </section>
 
       {/* SECTION 4: Trajectory Matrix & Roadmap - Iguana3D Vision */}
@@ -575,6 +492,89 @@ export const IguanaPortfolioMatrix: React.FC = () => {
             >
               <Mail className="w-3.5 h-3.5" />
               <span>{language === 'es' ? 'Redactar en Gmail' : 'Compose in Gmail'}</span>
+            </a>
+          </div>
+        </div>
+
+        {/* Retro-Illuminated Social & Credentials Links (Red de Conectividad) */}
+        <div className="space-y-4 pt-4">
+          <div className="flex items-center justify-between pb-2 border-b border-[#99EEFF]/20">
+            <span className="text-xs font-mono-telemetry text-[#99EEFF] uppercase tracking-wider">
+              {t.identityHub.connectivityBadge}
+            </span>
+            <span className="text-xs font-mono-telemetry text-slate-400">
+              {t.identityHub.connectivitySub}
+            </span>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            {/* ArtStation */}
+            <a
+              href="https://www.artstation.com"
+              target="_blank"
+              rel="noreferrer"
+              className="group p-4 bg-[#162937]/80 hover:bg-[#1f384c] border border-[#99EEFF]/30 hover:border-[#99EEFF] clip-chamfer-45 transition-all duration-300 shadow-lg hover:shadow-[0_0_25px_rgba(153,238,255,0.35)] flex items-center justify-between"
+            >
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-[#0e1b24] border border-[#99EEFF]/40 rounded flex items-center justify-center group-hover:scale-105 transition-transform">
+                  <Globe className="w-5 h-5 text-[#99EEFF]" />
+                </div>
+                <div>
+                  <h4 className="font-heading font-bold text-white text-sm group-hover:text-[#99EEFF] transition-colors">
+                    ARTSTATION
+                  </h4>
+                  <span className="text-[11px] font-mono-telemetry text-slate-400">
+                    {t.identityHub.artstationSub}
+                  </span>
+                </div>
+              </div>
+              <ExternalLink className="w-4 h-4 text-slate-400 group-hover:text-[#99EEFF] group-hover:translate-x-0.5 transition-transform" />
+            </a>
+
+            {/* LinkedIn */}
+            <a
+              href="https://www.linkedin.com"
+              target="_blank"
+              rel="noreferrer"
+              className="group p-4 bg-[#162937]/80 hover:bg-[#1f384c] border border-[#99EEFF]/30 hover:border-[#99EEFF] clip-chamfer-45 transition-all duration-300 shadow-lg hover:shadow-[0_0_25px_rgba(153,238,255,0.35)] flex items-center justify-between"
+            >
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-[#0e1b24] border border-[#99EEFF]/40 rounded flex items-center justify-center group-hover:scale-105 transition-transform">
+                  <Award className="w-5 h-5 text-[#99EEFF]" />
+                </div>
+                <div>
+                  <h4 className="font-heading font-bold text-white text-sm group-hover:text-[#99EEFF] transition-colors">
+                    LINKEDIN
+                  </h4>
+                  <span className="text-[11px] font-mono-telemetry text-slate-400">
+                    {t.identityHub.linkedinSub}
+                  </span>
+                </div>
+              </div>
+              <ExternalLink className="w-4 h-4 text-slate-400 group-hover:text-[#99EEFF] group-hover:translate-x-0.5 transition-transform" />
+            </a>
+
+            {/* Instagram */}
+            <a
+              href="https://www.instagram.com"
+              target="_blank"
+              rel="noreferrer"
+              className="group p-4 bg-[#162937]/80 hover:bg-[#1f384c] border border-[#F57E00]/40 hover:border-[#F57E00] clip-chamfer-45 transition-all duration-300 shadow-lg hover:shadow-[0_0_25px_rgba(245,126,0,0.35)] flex items-center justify-between"
+            >
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-[#0e1b24] border border-[#F57E00]/40 rounded flex items-center justify-center group-hover:scale-105 transition-transform">
+                  <Sparkles className="w-5 h-5 text-[#F57E00]" />
+                </div>
+                <div>
+                  <h4 className="font-heading font-bold text-white text-sm group-hover:text-[#F57E00] transition-colors">
+                    INSTAGRAM
+                  </h4>
+                  <span className="text-[11px] font-mono-telemetry text-slate-400">
+                    {t.identityHub.instagramSub}
+                  </span>
+                </div>
+              </div>
+              <ExternalLink className="w-4 h-4 text-slate-400 group-hover:text-[#F57E00] group-hover:translate-x-0.5 transition-transform" />
             </a>
           </div>
         </div>
