@@ -67,6 +67,14 @@ export interface Translations {
     autoRotate: string;
     resetCam: string;
     exposure: string;
+    explodedView: string;
+    explodedViewShort: string;
+    explosionDistance: string;
+    guideLines: string;
+    autoExplode: string;
+    blenderTutorial: string;
+    tutorialTitle: string;
+    closeTutorial: string;
     telemetryTitle: string;
     vertices: string;
     triangles: string;
@@ -245,6 +253,14 @@ export const translationsMap: Record<Language, Translations> = {
       autoRotate: 'Rotación Auto',
       resetCam: 'Reiniciar Cámara',
       exposure: 'Exposición / Luz',
+      explodedView: 'Vista Explosionada',
+      explodedViewShort: 'Explosión',
+      explosionDistance: 'Despiece / Distancia',
+      guideLines: 'Líneas Guía CAD',
+      autoExplode: 'Auto-Ciclo',
+      blenderTutorial: 'Tutorial Blender GLB',
+      tutorialTitle: 'Guía de Ingeniería: Cómo Crear Vistas Explosionadas en Blender para GLB',
+      closeTutorial: 'Cerrar Guía Técnica',
       telemetryTitle: '// TELEMETRÍA EN TIEMPO REAL',
       vertices: 'VÉRTICES',
       triangles: 'TRIÁNGULOS',
@@ -417,6 +433,14 @@ export const translationsMap: Record<Language, Translations> = {
       autoRotate: 'Auto Rotation',
       resetCam: 'Reset Camera',
       exposure: 'Exposure / Light',
+      explodedView: 'Exploded View',
+      explodedViewShort: 'Explosion',
+      explosionDistance: 'Disassembly Distance',
+      guideLines: 'CAD Guide Lines',
+      autoExplode: 'Auto-Cycle',
+      blenderTutorial: 'Blender GLB Tutorial',
+      tutorialTitle: 'Engineering Guide: Creating Exploded Views in Blender for GLB',
+      closeTutorial: 'Close Technical Guide',
       telemetryTitle: '// REAL-TIME TELEMETRY',
       vertices: 'VERTICES',
       triangles: 'TRIANGLES',

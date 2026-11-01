@@ -178,9 +178,17 @@ export const IguanaPortfolioMatrix: React.FC = () => {
                   </h3>
                 </div>
 
-                <span className="px-2 py-0.5 text-[10px] font-mono-telemetry bg-[#244156] border border-[#99EEFF]/30 text-[#F57E00] rounded">
-                  {art.specs.triangles}
-                </span>
+                <div className="flex items-center gap-1.5">
+                  {(art.modelTarget === 'TERMINAL' || art.modelTarget === 'FUSION_CORE') && (
+                    <span className="px-1.5 py-0.5 text-[9px] font-mono-telemetry bg-[#F57E00]/20 border border-[#F57E00] text-[#F57E00] rounded flex items-center gap-1 font-bold">
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#F57E00] animate-ping" />
+                      {language === 'es' ? 'EXPLOSIÓN' : 'EXPLODE'}
+                    </span>
+                  )}
+                  <span className="px-2 py-0.5 text-[10px] font-mono-telemetry bg-[#244156] border border-[#99EEFF]/30 text-[#F57E00] rounded">
+                    {art.specs.triangles}
+                  </span>
+                </div>
               </div>
 
               {art.image && (
@@ -567,24 +575,6 @@ export const IguanaPortfolioMatrix: React.FC = () => {
             >
               <Mail className="w-3.5 h-3.5" />
               <span>{language === 'es' ? 'Redactar en Gmail' : 'Compose in Gmail'}</span>
-            </a>
-            <a
-              href="https://www.linkedin.com"
-              target="_blank"
-              rel="noreferrer"
-              className="px-4 py-2 bg-[#99EEFF] hover:bg-white text-black font-heading font-bold text-xs rounded transition-all shadow-md flex items-center gap-2"
-            >
-              <Send className="w-3.5 h-3.5" />
-              <span>{language === 'es' ? 'LinkedIn' : 'LinkedIn'}</span>
-            </a>
-            <a
-              href="https://www.artstation.com"
-              target="_blank"
-              rel="noreferrer"
-              className="px-4 py-2 bg-[#244156] hover:bg-[#1a3142] border border-[#99EEFF]/40 text-[#99EEFF] font-heading font-bold text-xs rounded transition-all flex items-center gap-2"
-            >
-              <Globe className="w-3.5 h-3.5" />
-              <span>{language === 'es' ? 'ArtStation' : 'ArtStation'}</span>
             </a>
           </div>
         </div>
