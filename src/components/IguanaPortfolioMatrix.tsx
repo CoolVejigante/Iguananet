@@ -10,9 +10,7 @@
  * Full bilingual support (ES / EN) via useLanguage().
  */
 
-import React, { useState, useEffect } from 'react';
-import * as THREE from 'three';
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import React, { useState } from 'react';
 import {
   Layers,
   Box,
@@ -36,7 +34,7 @@ import {
 } from 'lucide-react';
 import { soundEngine } from '../services/sound-effects';
 import { useLanguage } from '../context/LanguageContext';
-import { IguanaInspectionBay, BuiltinModelId, resolveModelUrl } from './IguanaInspectionBay';
+import { IguanaInspectionBay, BuiltinModelId } from './IguanaInspectionBay';
 import logoFull from '../assets/images/iguananetconcept-removebg-preview.png';
 import pcVRImg from '../assets/images/pcVR@2x@2x.jpg';
 import busStopImg from '../assets/images/busStopRndr1@2x.jpg';
@@ -63,151 +61,86 @@ interface ArtworkProject {
   tags: string[];
 }
 
-/** Global snapshot cache so GLB card thumbnails only render once */
-const glbThumbnailCache = new Map<string, string>();
-
 interface GLBCardThumbnailProps {
   modelPath: string;
   title: string;
+  onInspect?: () => void;
 }
 
-const GLBCardThumbnail: React.FC<GLBCardThumbnailProps> = ({ modelPath, title }) => {
-  const [dataUrl, setDataUrl] = useState<string | null>(() => glbThumbnailCache.get(modelPath) || null);
-  const [isLoading, setIsLoading] = useState(!glbThumbnailCache.has(modelPath));
-
-  useEffect(() => {
-    if (glbThumbnailCache.has(modelPath)) {
-      setDataUrl(glbThumbnailCache.get(modelPath)!);
-      setIsLoading(false);
-      return;
-    }
-
-    let isMounted = true;
-    const width = 480;
-    const height = 280;
-
-    let renderer: THREE.WebGLRenderer | null = null;
-    try {
-      renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, preserveDrawingBuffer: true });
-      renderer.setSize(width, height);
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-      renderer.toneMapping = THREE.ACESFilmicToneMapping;
-      renderer.toneMappingExposure = 1.25;
-
-      const scene = new THREE.Scene();
-      scene.background = new THREE.Color(0x0e1b24);
-
-      const camera = new THREE.PerspectiveCamera(40, width / height, 0.1, 100);
-      camera.position.set(2.4, 1.8, 2.8);
-
-      const hemiLight = new THREE.HemisphereLight(0x99eeff, 0x162937, 1.8);
-      scene.add(hemiLight);
-
-      const dirLight1 = new THREE.DirectionalLight(0xffffff, 2.2);
-      dirLight1.position.set(5, 8, 5);
-      scene.add(dirLight1);
-
-      const dirLight2 = new THREE.DirectionalLight(0xf57e00, 1.4);
-      dirLight2.position.set(-5, 2, -4);
-      scene.add(dirLight2);
-
-      // Subtle cyan grid base
-      const grid = new THREE.GridHelper(6, 12, 0x99eeff, 0x1f384c);
-      grid.position.y = -0.55;
-      (grid.material as THREE.Material).opacity = 0.3;
-      (grid.material as THREE.Material).transparent = true;
-      scene.add(grid);
-
-      const loader = new GLTFLoader();
-      const resolvedUrl = resolveModelUrl(modelPath);
-
-      loader.load(
-        resolvedUrl,
-        (gltf) => {
-          if (!isMounted || !renderer) {
-            renderer?.dispose();
-            return;
-          }
-
-          const model = gltf.scene;
-          const box = new THREE.Box3().setFromObject(model);
-          const center = box.getCenter(new THREE.Vector3());
-          const size = box.getSize(new THREE.Vector3());
-          const maxDim = Math.max(size.x, size.y, size.z) || 1;
-          const scale = 1.35 / maxDim;
-
-          model.position.sub(center.clone().multiplyScalar(scale));
-          model.scale.setScalar(scale);
-          model.position.y += 0.05;
-          model.rotation.y = Math.PI / 4.2;
-
-          scene.add(model);
-          camera.lookAt(0, 0, 0);
-
-          renderer.render(scene, camera);
-          const urlResult = renderer.domElement.toDataURL('image/jpeg', 0.85);
-          glbThumbnailCache.set(modelPath, urlResult);
-
-          if (isMounted) {
-            setDataUrl(urlResult);
-            setIsLoading(false);
-          }
-
-          renderer.dispose();
-        },
-        undefined,
-        (err) => {
-          console.warn('Could not generate 3D thumbnail for:', modelPath, err);
-          if (isMounted) {
-            setIsLoading(false);
-          }
-          renderer?.dispose();
-        }
-      );
-    } catch (e) {
-      console.warn('WebGL init failed for thumbnail:', e);
-      setIsLoading(false);
-      renderer?.dispose();
-    }
-
-    return () => {
-      isMounted = false;
-      if (renderer) {
-        renderer.dispose();
-      }
-    };
-  }, [modelPath]);
+/**
+ * Zero-WebGL Holographic Blueprint Card.
+ * Renders an isometric cyber wireframe projection in pure CSS/SVG to guarantee 0 GPU context consumption.
+ */
+const GLBCardThumbnail: React.FC<GLBCardThumbnailProps> = ({ modelPath, title, onInspect }) => {
+  const fileName = modelPath.split('/').pop() || modelPath;
 
   return (
-    <div className="relative w-full h-44 sm:h-52 overflow-hidden rounded-md border border-[#99EEFF]/25 group-hover:border-[#99EEFF]/60 transition-all bg-[#0e1b24] flex items-center justify-center">
-      {isLoading ? (
-        <div className="flex flex-col items-center justify-center gap-2 text-slate-400">
-          <div className="w-6 h-6 border-2 border-[#99EEFF] border-t-transparent rounded-full animate-spin" />
-          <span className="text-[10px] font-mono-telemetry text-slate-400 tracking-wider">
-            RENDERIZANDO 3D SNAPSHOT...
-          </span>
+    <div
+      onClick={onInspect}
+      className="relative w-full h-44 sm:h-52 overflow-hidden rounded-md border border-[#99EEFF]/30 group-hover:border-[#99EEFF] transition-all bg-gradient-to-b from-[#0b1720] to-[#162937] flex flex-col items-center justify-center p-4 cursor-pointer select-none group/thumb shadow-inner"
+    >
+      {/* CAD Blueprint grid background */}
+      <div
+        className="absolute inset-0 opacity-20 group-hover/thumb:opacity-35 transition-opacity"
+        style={{
+          backgroundImage: `
+            linear-gradient(to right, rgba(153, 238, 255, 0.2) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(153, 238, 255, 0.2) 1px, transparent 1px)
+          `,
+          backgroundSize: '18px 18px'
+        }}
+      />
+
+      {/* Holographic Scanline sweep */}
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#99EEFF]/10 to-transparent opacity-0 group-hover/thumb:opacity-100 transition-opacity pointer-events-none animate-pulse" />
+
+      {/* Corner HUD reticles */}
+      <div className="absolute top-2 left-2 w-2.5 h-2.5 border-t-2 border-l-2 border-[#99EEFF]" />
+      <div className="absolute top-2 right-2 w-2.5 h-2.5 border-t-2 border-r-2 border-[#99EEFF]" />
+      <div className="absolute bottom-2 left-2 w-2.5 h-2.5 border-b-2 border-l-2 border-[#99EEFF]" />
+      <div className="absolute bottom-2 right-2 w-2.5 h-2.5 border-b-2 border-r-2 border-[#99EEFF]" />
+
+      {/* Holographic Wireframe 3D Isometric Mesh Icon */}
+      <div className="relative z-10 flex flex-col items-center justify-center space-y-2">
+        <div className="relative p-3 rounded-xl bg-[#244156]/60 border border-[#99EEFF]/35 group-hover/thumb:border-[#99EEFF] group-hover/thumb:shadow-[0_0_20px_rgba(153,238,255,0.45)] transition-all">
+          <svg className="w-12 h-12 text-[#99EEFF]" viewBox="0 0 48 48" fill="none">
+            {/* Isometric 3D Wireframe Cube Projection */}
+            <polygon points="24,4 44,14 44,34 24,44 4,34 4,14" strokeWidth="1.5" stroke="#99EEFF" fill="rgba(153,238,255,0.08)" />
+            <line x1="24" y1="4" x2="24" y2="24" strokeWidth="1.5" stroke="#99EEFF" />
+            <line x1="4" y1="14" x2="24" y2="24" strokeWidth="1.5" stroke="#99EEFF" />
+            <line x1="44" y1="14" x2="24" y2="24" strokeWidth="1.5" stroke="#99EEFF" />
+            <line x1="24" y1="24" x2="24" y2="44" strokeWidth="1.5" stroke="#99EEFF" />
+            {/* Center core pulse */}
+            <circle cx="24" cy="24" r="3" fill="#F57E00" />
+            <line x1="14" y1="19" x2="34" y2="29" strokeWidth="1" strokeDasharray="2,2" stroke="#F57E00" />
+          </svg>
         </div>
-      ) : dataUrl ? (
-        <>
-          <img
-            src={dataUrl}
-            alt={title}
-            className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
-            loading="lazy"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#162937]/80 via-transparent to-transparent pointer-events-none" />
-        </>
-      ) : (
-        <div className="flex flex-col items-center justify-center gap-2 text-slate-500">
-          <Box className="w-10 h-10 text-[#99EEFF]/60" />
-          <span className="text-[10px] font-mono-telemetry text-[#99EEFF]/80 tracking-wider">
-            ASSET 3D BLENDER .GLB
-          </span>
+
+        <div className="text-center space-y-0.5">
+          <div className="text-[11px] font-heading font-bold text-white tracking-wide group-hover/thumb:text-[#99EEFF] transition-colors">
+            {title}
+          </div>
+          <div className="text-[9px] font-mono-telemetry text-[#99EEFF]/70 tracking-widest uppercase">
+            {fileName} • 3D PBR ASSET
+          </div>
         </div>
-      )}
-      <div className="absolute top-2 right-2 px-2 py-0.5 text-[9px] font-mono-telemetry bg-[#0e1b24]/90 border border-[#99EEFF]/40 text-[#99EEFF] rounded flex items-center gap-1 shadow">
+      </div>
+
+      {/* Top right badge */}
+      <div className="absolute top-2.5 right-2.5 px-2 py-0.5 text-[9px] font-mono-telemetry bg-[#0e1b24]/90 border border-[#99EEFF]/40 text-[#99EEFF] rounded flex items-center gap-1 shadow">
         <Sparkles className="w-2.5 h-2.5 text-[#F57E00]" />
         <span>GLB NATIVO</span>
+      </div>
+
+      {/* Bottom telemetry overlay */}
+      <div className="absolute bottom-2 inset-x-3 flex items-center justify-between text-[8px] font-mono-telemetry text-slate-400">
+        <span className="flex items-center gap-1 text-[#F57E00]">
+          <span className="w-1.5 h-1.5 rounded-full bg-[#F57E00] animate-pulse" />
+          LISTO EN VISOR 3D
+        </span>
+        <span className="text-[#99EEFF] group-hover/thumb:underline flex items-center gap-0.5 font-bold">
+          CARGAR ↗
+        </span>
       </div>
     </div>
   );
@@ -419,7 +352,11 @@ export const IguanaPortfolioMatrix: React.FC = () => {
                   <div className="absolute inset-0 bg-gradient-to-t from-[#162937]/80 via-transparent to-transparent pointer-events-none" />
                 </div>
               ) : art.modelPath ? (
-                <GLBCardThumbnail modelPath={art.modelPath} title={art.title} />
+                <GLBCardThumbnail
+                  modelPath={art.modelPath}
+                  title={art.title}
+                  onInspect={() => handleInspectArtwork(art.modelTarget)}
+                />
               ) : null}
 
               <p className="text-xs text-slate-300 leading-relaxed font-sans">

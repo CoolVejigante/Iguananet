@@ -151,7 +151,7 @@ export const BLENDER_MODELS_REGISTRY: Record<BuiltinModelId, BlenderModelMeta> =
     category: 'Patrimonio Cultural & ArchViz Prop',
     fileName: 'garita.glb',
     relativePath: 'assets/models/garita.glb',
-    hasDraco: false,
+    hasDraco: true,
     targetScale: 3.2,
     description: 'Garita emblemática de inspiración colonial puertorriqueña adaptada con acabados reflectantes PBR y clearcoat.'
   },
@@ -161,7 +161,7 @@ export const BLENDER_MODELS_REGISTRY: Record<BuiltinModelId, BlenderModelMeta> =
     category: 'Hard Surface & Prop Urbano',
     fileName: 'newatm.glb',
     relativePath: 'assets/models/newatm.glb',
-    hasDraco: false,
+    hasDraco: true,
     targetScale: 3.2,
     description: 'Terminal interactiva multiservicio y cajero automático retrofuturista con ranuras holográficas, pantalla curva y 3 sets UDIM.'
   },
@@ -220,6 +220,7 @@ export const IguanaInspectionBay: React.FC<IguanaInspectionBayProps> = ({
   const [uploadError, setUploadError] = useState<string | null>(null);
   const [isDragging, setIsDragging] = useState<boolean>(false);
   const [isDracoActive, setIsDracoActive] = useState<boolean>(true);
+  const [webglError, setWebglError] = useState<boolean>(false);
 
   // Exploded View State (Cinemática y Despiece 3D)
   const [isExplodedView, setIsExplodedView] = useState<boolean>(false);
@@ -1033,10 +1034,26 @@ export const IguanaInspectionBay: React.FC<IguanaInspectionBayProps> = ({
     sceneRefs.current.camera = camera;
 
     // 3. Renderizador con espacio de color SRGB y mapeo tonal ACESFilmic
-    const renderer = new THREE.WebGLRenderer({
-      antialias: true,
-      powerPreference: 'high-performance'
-    });
+    let renderer: THREE.WebGLRenderer;
+    try {
+      renderer = new THREE.WebGLRenderer({
+        antialias: true,
+        powerPreference: 'high-performance'
+      });
+      setWebglError(false);
+    } catch (err) {
+      console.warn('WebGL context creation failed in IguanaInspectionBay:', err);
+      setWebglError(true);
+      return;
+    }
+
+    const onContextLost = (event: Event) => {
+      event.preventDefault();
+      console.warn('WebGL context lost in IguanaInspectionBay');
+      setWebglError(true);
+    };
+    renderer.domElement.addEventListener('webglcontextlost', onContextLost, false);
+
     renderer.setSize(width, height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.outputColorSpace = THREE.SRGBColorSpace;
@@ -1123,12 +1140,18 @@ export const IguanaInspectionBay: React.FC<IguanaInspectionBayProps> = ({
     return () => {
       cancelAnimationFrame(animId);
       resizeObserver.disconnect();
+      renderer.domElement.removeEventListener('webglcontextlost', onContextLost);
 
       if (sceneRefs.current.currentMeshGroup) {
         disposeGroup(sceneRefs.current.currentMeshGroup);
       }
       pmremGenerator.dispose();
-      renderer.dispose();
+      try {
+        renderer.forceContextLoss();
+        renderer.dispose();
+      } catch (e) {
+        console.warn('Renderer cleanup warning:', e);
+      }
       if (container.contains(renderer.domElement)) {
         container.removeChild(renderer.domElement);
       }
@@ -1530,6 +1553,31 @@ export const IguanaInspectionBay: React.FC<IguanaInspectionBayProps> = ({
             <p className="text-xs text-[#99EEFF] font-mono-telemetry mt-1">
               Decodificación DRACO v1.5.6 vía Google CDN · PBR RoomEnvironment
             </p>
+          </div>
+        )}
+
+        {/* WebGL Context Loss / Error State */}
+        {webglError && (
+          <div className="absolute inset-0 z-40 flex flex-col items-center justify-center bg-[#162937]/95 p-6 text-center">
+            <div className="p-5 bg-[#244156]/90 border border-[#F57E00]/60 rounded-xl max-w-md space-y-3 shadow-2xl">
+              <div className="flex items-center justify-center gap-2 text-[#F57E00]">
+                <Activity className="w-5 h-5 animate-pulse" />
+                <span className="font-heading font-bold text-sm tracking-wide">
+                  {language === 'es' ? 'AVISO: CONTEXTO GRÁFICO WEBGL' : 'NOTICE: WEBGL GRAPHICS CONTEXT'}
+                </span>
+              </div>
+              <p className="text-xs text-slate-300 font-mono-telemetry leading-relaxed">
+                {language === 'es'
+                  ? 'El navegador liberó la memoria de la tarjeta gráfica temporalmente para proteger el rendimiento del sistema.'
+                  : 'The browser temporarily released graphics memory to protect system performance.'}
+              </p>
+              <button
+                onClick={() => window.location.reload()}
+                className="px-4 py-2 bg-[#F57E00] hover:bg-[#ff8f1c] text-black font-heading font-bold text-xs rounded transition-all shadow-lg cursor-pointer"
+              >
+                {language === 'es' ? 'REINICIAR VISOR 3D' : 'RESTART 3D VIEWER'}
+              </button>
+            </div>
           </div>
         )}
 
