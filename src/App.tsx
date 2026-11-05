@@ -12,12 +12,13 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import { soundEngine } from './services/sound-effects';
+import { LanguageProvider } from './context/LanguageContext';
 import { IguanaVoidCanvas } from './components/IguanaVoidCanvas';
 import { IguanaPortfolioMatrix } from './components/IguanaPortfolioMatrix';
 import { IguanaGlassHUD } from './components/IguanaGlassHUD';
 import { IguanaGatekeeper } from './components/IguanaGatekeeper';
 
-export default function App() {
+function AppContent() {
   const [showGatekeeper, setShowGatekeeper] = useState<boolean>(true);
   const [isStageMode, setIsStageMode] = useState<boolean>(false);
   const [isMuted, setIsMuted] = useState<boolean>(false);
@@ -56,7 +57,7 @@ export default function App() {
       // Numeric Keys 1-3: Quick section jump
       else if (['1', '2', '3'].includes(e.key) && !e.ctrlKey && !e.metaKey) {
         soundEngine.playPillarSwitchSound();
-        const targets = ['identity-hub', 'inspection-bay', 'trajectory-matrix'];
+        const targets = ['inspection-bay', 'catalogo-produccion', 'identity-hub', 'trajectory-matrix'];
         const targetId = targets[parseInt(e.key) - 1];
         if (targetId) {
           const el = document.getElementById(targetId);
@@ -86,7 +87,7 @@ export default function App() {
       {/* LAYER 1: The DOM Matrix (2D/UX Scrollytelling Container) */}
       <IguanaPortfolioMatrix />
 
-      {/* LAYER 3: The Gatekeeper (Cinematic Intro Terminal & Typewriter Manifesto) */}
+      {/* LAYER 3: The Gatekeeper (Cinematic Intro Terminal, Language Selector & Manifesto) */}
       {showGatekeeper && (
         <IguanaGatekeeper
           onEnter={() => setShowGatekeeper(false)}
@@ -95,5 +96,13 @@ export default function App() {
         />
       )}
     </div>
+  );
+}
+
+export default function App() {
+  return (
+    <LanguageProvider>
+      <AppContent />
+    </LanguageProvider>
   );
 }
