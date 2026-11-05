@@ -52,7 +52,15 @@ import {
 import { soundEngine } from '../services/sound-effects';
 import { useLanguage } from '../context/LanguageContext';
 
-export type BuiltinModelId = 'TERMINAL' | 'DRONE' | 'ARCHVIZ' | 'FUSION_CORE';
+export type BuiltinModelId =
+  | 'TERMINAL'
+  | 'DRONE'
+  | 'ARCHVIZ'
+  | 'FUSION_CORE'
+  | 'MICROWAVE'
+  | 'GARITA'
+  | 'ATM'
+  | 'ROBOT';
 
 /**
  * ============================================================================
@@ -126,6 +134,46 @@ export const BLENDER_MODELS_REGISTRY: Record<BuiltinModelId, BlenderModelMeta> =
     hasDraco: true,
     targetScale: 3.2,
     description: 'Concepto de apartamento modular con arquitectura retrofuturista, grandes ventanales y compresión DRACO v1.5.6.'
+  },
+  MICROWAVE: {
+    id: 'MICROWAVE',
+    title: 'Microondas Futurista',
+    category: 'Electrodoméstico Sci-Fi & Props',
+    fileName: 'ftrmicrowave.glb',
+    relativePath: 'assets/models/ftrmicrowave.glb',
+    hasDraco: false,
+    targetScale: 3.2,
+    description: 'Unidad de microondas retrofuturista con interfaz digital táctil, cámara interna reforzada y acabado industrial.'
+  },
+  GARITA: {
+    id: 'GARITA',
+    title: 'Garita Histórica Sci-Fi',
+    category: 'Patrimonio Cultural & ArchViz Prop',
+    fileName: 'garita.glb',
+    relativePath: 'assets/models/garita.glb',
+    hasDraco: false,
+    targetScale: 3.2,
+    description: 'Garita emblemática de inspiración colonial puertorriqueña adaptada con acabados reflectantes PBR y clearcoat.'
+  },
+  ATM: {
+    id: 'ATM',
+    title: 'Terminal ATM / Ticket Machine',
+    category: 'Hard Surface & Prop Urbano',
+    fileName: 'newatm.glb',
+    relativePath: 'assets/models/newatm.glb',
+    hasDraco: false,
+    targetScale: 3.2,
+    description: 'Terminal interactiva multiservicio y cajero automático retrofuturista con ranuras holográficas, pantalla curva y 3 sets UDIM.'
+  },
+  ROBOT: {
+    id: 'ROBOT',
+    title: 'Robot Mecatrónico Y2K',
+    category: 'Personaje & Droide Cibernético',
+    fileName: 'y2krobo.glb',
+    relativePath: 'assets/models/y2krobo.glb',
+    hasDraco: false,
+    targetScale: 3.5,
+    description: 'Droide bípedo estilizado estética Y2K modelado en 6 módulos desacoplables (brazos, manos, cabeza, cuello, torso, piernas) con juntas bioluminiscentes.'
   }
 };
 
@@ -458,7 +506,7 @@ export const IguanaInspectionBay: React.FC<IguanaInspectionBayProps> = ({
 
       vertCount = 3840;
       triCount = 6120;
-    } else {
+    } else if (type === 'FUSION_CORE') {
       // 4. FUSION_CORE: Apartamento Retrofuturista (ArchViz Modular Concept)
       // Losa de cimentación y pedestal
       const slabGeo = new THREE.BoxGeometry(4.5, 0.3, 4.5);
@@ -507,6 +555,56 @@ export const IguanaInspectionBay: React.FC<IguanaInspectionBayProps> = ({
 
       vertCount = 4120;
       triCount = 6880;
+    } else if (type === 'MICROWAVE') {
+      const body = new THREE.Mesh(new THREE.BoxGeometry(2.4, 1.5, 1.6), darkChassisMat);
+      body.name = 'Chasis Microondas';
+      group.add(body);
+      const door = new THREE.Mesh(new THREE.BoxGeometry(1.6, 1.3, 0.1), glassMat);
+      door.position.set(-0.3, 0, 0.85);
+      door.name = 'Puerta Translúcida Reforzada';
+      group.add(door);
+      const dial = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.18, 0.15, 16), tangerineMat);
+      dial.position.set(0.8, 0.2, 0.85);
+      dial.rotation.x = Math.PI / 2;
+      dial.name = 'Dial Selector Táctil';
+      group.add(dial);
+      vertCount = 2800;
+      triCount = 4200;
+    } else if (type === 'GARITA') {
+      const turret = new THREE.Mesh(new THREE.CylinderGeometry(1.1, 1.3, 2.2, 16), steelMat);
+      turret.name = 'Cuerpo Cilindro Garita';
+      group.add(turret);
+      const dome = new THREE.Mesh(new THREE.SphereGeometry(1.15, 16, 12, 0, Math.PI * 2, 0, Math.PI / 2), copperMat);
+      dome.position.y = 1.1;
+      dome.name = 'Cúpula Colonial Garita';
+      group.add(dome);
+      vertCount = 3200;
+      triCount = 5100;
+    } else if (type === 'ATM') {
+      const terminal = new THREE.Mesh(new THREE.BoxGeometry(1.8, 3.2, 1.4), darkChassisMat);
+      terminal.name = 'Chasis Terminal ATM';
+      group.add(terminal);
+      const screen = new THREE.Mesh(new THREE.BoxGeometry(1.3, 1.0, 0.1), tealAccentMat);
+      screen.position.set(0, 0.6, 0.72);
+      screen.name = 'Pantalla Interfaz ATM';
+      group.add(screen);
+      vertCount = 2600;
+      triCount = 4100;
+    } else if (type === 'ROBOT') {
+      const torso = new THREE.Mesh(new THREE.BoxGeometry(1.2, 1.4, 0.9), darkChassisMat);
+      torso.name = 'Torso Droide Y2K';
+      group.add(torso);
+      const head = new THREE.Mesh(new THREE.SphereGeometry(0.55, 16, 16), steelMat);
+      head.position.y = 1.2;
+      head.name = 'Cabeza Sensorial';
+      group.add(head);
+      const eye = new THREE.Mesh(new THREE.CylinderGeometry(0.2, 0.2, 0.2, 12), tangerineMat);
+      eye.position.set(0, 1.2, 0.5);
+      eye.rotation.x = Math.PI / 2;
+      eye.name = 'Visor Óptico';
+      group.add(eye);
+      vertCount = 14500;
+      triCount = 24700;
     }
 
     setStats({
@@ -669,6 +767,50 @@ export const IguanaInspectionBay: React.FC<IguanaInspectionBayProps> = ({
           dir.set(-1.8, 0, 0);
           dist = 2.0;
           label = language === 'es' ? 'Aleta Disipadora Térmica' : 'Thermal Dissipation Fin';
+        } else if (rawName.includes('microwave.001') || rawName.includes('puerta') || rawName.includes('door')) {
+          dir.set(0, 0, 2.0);
+          dist = 2.2;
+          label = language === 'es' ? 'Puerta / Enclosure Frontal' : 'Front Door / Enclosure';
+        } else if (rawName.includes('microwave.002') || rawName.includes('panel') || rawName.includes('dial')) {
+          dir.set(1.8, 0.4, 0.8);
+          dist = 2.0;
+          label = language === 'es' ? 'Bandeja & Interfaz Control' : 'Turntable & Control Panel';
+        } else if (rawName.includes('microwave')) {
+          dir.set(0, 0, -0.6);
+          dist = 1.0;
+          label = language === 'es' ? 'Chasis Cavidad Reforzada' : 'Reinforced Cavity Chassis';
+        } else if (rawName.includes('pcylinder') || rawName.includes('cupula') || rawName.includes('dome')) {
+          dir.set(0, 2.4, 0);
+          dist = 2.4;
+          label = language === 'es' ? 'Cúpula & Remate Superior' : 'Dome & Upper Pinnacle';
+        } else if (rawName.includes('polysurface') || rawName.includes('muro') || rawName.includes('base')) {
+          dir.set(0, -1.2, 0);
+          dist = 1.4;
+          label = language === 'es' ? 'Cuerpo Garita & Aspilleras' : 'Sentry Watchtower & Loophole Base';
+        } else if (rawName.includes('head') || rawName.includes('cabeza')) {
+          dir.set(0, 2.6, 0);
+          dist = 2.6;
+          label = language === 'es' ? 'Módulo Craneal & Sensores' : 'Cranial Module & Sensors';
+        } else if (rawName.includes('neck') || rawName.includes('cuello')) {
+          dir.set(0, 1.2, 0);
+          dist = 1.4;
+          label = language === 'es' ? 'Cuello Articulado' : 'Articulated Neck';
+        } else if (rawName.includes('arm') || rawName.includes('brazo')) {
+          dir.set(2.0, 0.3, 0);
+          dist = 2.2;
+          label = language === 'es' ? 'Extremidades Superiores (Brazos)' : 'Upper Limbs (Arms)';
+        } else if (rawName.includes('hand') || rawName.includes('mano')) {
+          dir.set(2.8, -0.2, 0.4);
+          dist = 2.8;
+          label = language === 'es' ? 'Efectores Finales (Manos)' : 'End Effectors (Hands)';
+        } else if (rawName.includes('leg') || rawName.includes('feet') || rawName.includes('pierna') || rawName.includes('pie')) {
+          dir.set(0, -2.4, 0);
+          dist = 2.4;
+          label = language === 'es' ? 'Locomoción & Pies' : 'Locomotion & Feet';
+        } else if (rawName.includes('torso')) {
+          dir.set(0, 0, 0);
+          dist = 0;
+          label = language === 'es' ? 'Chasis Torso Central' : 'Central Torso Chassis';
         } else {
           const b = new THREE.Box3().setFromObject(mesh);
           const c = b.getCenter(new THREE.Vector3());
@@ -1300,6 +1442,58 @@ export const IguanaInspectionBay: React.FC<IguanaInspectionBayProps> = ({
             title="Soporta Vista Explosionada de Componentes"
           >
             <span>[4] {t.inspectionBay.tabs.fusionCore}</span>
+            <span className="px-1 py-0.2 bg-black/40 text-[9px] text-[#99EEFF] rounded font-bold">
+              💥 EXPLODE
+            </span>
+          </button>
+          <button
+            onClick={() => handleModelSelect('MICROWAVE')}
+            className={`px-2.5 py-1 rounded text-[11px] font-mono-telemetry border transition-all flex items-center gap-1.5 ${
+              activeModelId === 'MICROWAVE' && !uploadedModelName
+                ? 'bg-[#F57E00] text-black font-bold border-[#F57E00]'
+                : 'bg-[#244156]/60 text-slate-300 border-[#99EEFF]/30 hover:border-[#99EEFF]'
+            }`}
+            title="Soporta Vista Explosionada de Componentes"
+          >
+            <span>[5] {t.inspectionBay.tabs.microwave}</span>
+            <span className="px-1 py-0.2 bg-black/40 text-[9px] text-[#99EEFF] rounded font-bold">
+              💥 EXPLODE
+            </span>
+          </button>
+          <button
+            onClick={() => handleModelSelect('GARITA')}
+            className={`px-2.5 py-1 rounded text-[11px] font-mono-telemetry border transition-all flex items-center gap-1.5 ${
+              activeModelId === 'GARITA' && !uploadedModelName
+                ? 'bg-[#F57E00] text-black font-bold border-[#F57E00]'
+                : 'bg-[#244156]/60 text-slate-300 border-[#99EEFF]/30 hover:border-[#99EEFF]'
+            }`}
+            title="Soporta Vista Explosionada de Componentes"
+          >
+            <span>[6] {t.inspectionBay.tabs.garita}</span>
+            <span className="px-1 py-0.2 bg-black/40 text-[9px] text-[#99EEFF] rounded font-bold">
+              💥 EXPLODE
+            </span>
+          </button>
+          <button
+            onClick={() => handleModelSelect('ATM')}
+            className={`px-2.5 py-1 rounded text-[11px] font-mono-telemetry border transition-all ${
+              activeModelId === 'ATM' && !uploadedModelName
+                ? 'bg-[#F57E00] text-black font-bold border-[#F57E00]'
+                : 'bg-[#244156]/60 text-slate-300 border-[#99EEFF]/30 hover:border-[#99EEFF]'
+            }`}
+          >
+            [7] {t.inspectionBay.tabs.atm}
+          </button>
+          <button
+            onClick={() => handleModelSelect('ROBOT')}
+            className={`px-2.5 py-1 rounded text-[11px] font-mono-telemetry border transition-all flex items-center gap-1.5 ${
+              activeModelId === 'ROBOT' && !uploadedModelName
+                ? 'bg-[#F57E00] text-black font-bold border-[#F57E00]'
+                : 'bg-[#244156]/60 text-slate-300 border-[#99EEFF]/30 hover:border-[#99EEFF]'
+            }`}
+            title="Soporta Vista Explosionada de Componentes (6 partes)"
+          >
+            <span>[8] {t.inspectionBay.tabs.robot}</span>
             <span className="px-1 py-0.2 bg-black/40 text-[9px] text-[#99EEFF] rounded font-bold">
               💥 EXPLODE
             </span>
