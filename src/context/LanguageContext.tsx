@@ -60,6 +60,10 @@ export interface Translations {
       drone: string;
       archviz: string;
       fusionCore: string;
+      microwave: string;
+      garita: string;
+      atm: string;
+      robot: string;
       upload: string;
     };
     controlsTitle: string;
@@ -107,6 +111,26 @@ export interface Translations {
         category: string;
         description: string;
       };
+      microwave: {
+        title: string;
+        category: string;
+        description: string;
+      };
+      garita: {
+        title: string;
+        category: string;
+        description: string;
+      };
+      atm: {
+        title: string;
+        category: string;
+        description: string;
+      };
+      robot: {
+        title: string;
+        category: string;
+        description: string;
+      };
     };
   };
   // Production Catalog
@@ -141,6 +165,34 @@ export interface Translations {
         lighting: string;
       };
       art4: {
+        title: string;
+        category: string;
+        description: string;
+        textures: string;
+        lighting: string;
+      };
+      art5: {
+        title: string;
+        category: string;
+        description: string;
+        textures: string;
+        lighting: string;
+      };
+      art6: {
+        title: string;
+        category: string;
+        description: string;
+        textures: string;
+        lighting: string;
+      };
+      art7: {
+        title: string;
+        category: string;
+        description: string;
+        textures: string;
+        lighting: string;
+      };
+      art8: {
         title: string;
         category: string;
         description: string;
@@ -246,6 +298,10 @@ export const translationsMap: Record<Language, Translations> = {
         drone: 'Iguana',
         archviz: 'Plato Arqueológico',
         fusionCore: 'Apartamento Retrofuturista',
+        microwave: 'Microondas Futurista',
+        garita: 'Garita Histórica',
+        atm: 'Terminal ATM',
+        robot: 'Robot Y2K',
         upload: 'Subir .GLB/.OBJ'
       },
       controlsTitle: '// CONTROLES DE VISUALIZACIÓN',
@@ -292,6 +348,26 @@ export const translationsMap: Record<Language, Translations> = {
           title: 'Apartamento Retrofuturista',
           category: 'ArchViz Modular Concept',
           description: 'Concepto de apartamento modular con arquitectura retrofuturista, grandes ventanales y compresión DRACO v1.5.6.'
+        },
+        microwave: {
+          title: 'Microondas Futurista',
+          category: 'Props / Electrodoméstico Sci-Fi',
+          description: 'Unidad de microondas retrofuturista con interfaz táctil digital, biseles metálicos, cámara interna reforzada y acabado industrial.'
+        },
+        garita: {
+          title: 'Garita Histórica Sci-Fi',
+          category: 'Patrimonio Cultural & ArchViz Prop',
+          description: 'Inspirada en las emblemáticas garitas coloniales de Puerto Rico, adaptada con materiales reflectantes y acabado clearcoat.'
+        },
+        atm: {
+          title: 'Terminal ATM / Ticket Machine',
+          category: 'Hard Surface & Prop Urbano',
+          description: 'Terminal interactiva multiservicio y cajero automático retrofuturista con ranuras holográficas, pantalla curva y 3 sets UDIM.'
+        },
+        robot: {
+          title: 'Robot Mecatrónico Y2K',
+          category: 'Personaje & Droide Cibernético',
+          description: 'Droide bípedo estilizado con estética Y2K modelado en 6 módulos desacoplables para despiece y articulaciones bioluminiscentes.'
         }
       }
     },
@@ -331,6 +407,34 @@ export const translationsMap: Record<Language, Translations> = {
           description: 'Pabellón habitacional y concepto de apartamento modular retrofuturista con pórticos voladizos, ventanales panorámicos y estética brutalista contemporánea.',
           textures: 'Concreto & Vidrio Dieléctrico',
           lighting: 'Transmission 0.9 / ACES'
+        },
+        art5: {
+          title: 'Microondas Futurista',
+          category: 'Props / Electrodoméstico Sci-Fi',
+          description: 'Unidad de cocción por microondas retrofuturista con interfaz táctil digital, cámara interna reforzada y acabado industrial con materiales PBR.',
+          textures: 'PBR 2K (Albedo, Normal, Metallic, Roughness, Emissive)',
+          lighting: 'PBR Metal/Roughness + Emissive'
+        },
+        art6: {
+          title: 'Garita Histórica Sci-Fi',
+          category: 'Patrimonio Cultural & ArchViz Prop',
+          description: 'Inspirada en las emblemáticas garitas coloniales de Puerto Rico, reconstruida con cúpula biselada, aspilleras de vigilancia y acabado cerámico reflectante.',
+          textures: 'PBR (Albedo, Normal, Specular, Clearcoat, Emissive)',
+          lighting: 'Clearcoat & Specular PBR'
+        },
+        art7: {
+          title: 'Terminal ATM / Ticket Machine',
+          category: 'Hard Surface & Prop Urbano',
+          description: 'Terminal interactiva multiservicio y cajero de boletos retrofuturista con ranuras holográficas, teclado numérico y 3 sets de texturas UDIM de alta fidelidad.',
+          textures: '3x Sets UDIM (BaseColor, Normal, Metallic-Roughness, Emissive)',
+          lighting: 'PBR + KHR_materials_transmission'
+        },
+        art8: {
+          title: 'Robot Mecatrónico Y2K',
+          category: 'Personaje & Droide Cibernético',
+          description: 'Droide bípedo estilizado con estética Y2K modelado en 6 módulos desacoplables independientes para vistas explosionadas, articulaciones bioluminiscentes y colores de vértice.',
+          textures: 'PBR 4K (Albedo, Normal, Metallic, Roughness, Emissive)',
+          lighting: 'PBR Dual-Vertex Color + Emissive'
         }
       }
     },
@@ -426,6 +530,10 @@ export const translationsMap: Record<Language, Translations> = {
         drone: 'Iguana',
         archviz: 'Archaeological Plate',
         fusionCore: 'Retrofuturistic Apartment',
+        microwave: 'Futuristic Microwave',
+        garita: 'Historic Sentry Box',
+        atm: 'ATM Terminal',
+        robot: 'Y2K Robot',
         upload: 'Upload .GLB/.OBJ'
       },
       controlsTitle: '// DISPLAY CONTROLS',
@@ -472,6 +580,26 @@ export const translationsMap: Record<Language, Translations> = {
           title: 'Retrofuturistic Apartment',
           category: 'Modular ArchViz Concept',
           description: 'Modular apartment concept featuring retrofuturistic architecture, sweeping panoramic windows, and DRACO v1.5.6 compression.'
+        },
+        microwave: {
+          title: 'Futuristic Microwave',
+          category: 'Props / Sci-Fi Appliance',
+          description: 'Retro-futuristic microwave unit with digital touch interface, metallic bevels, reinforced cavity, and industrial finish.'
+        },
+        garita: {
+          title: 'Historic Sci-Fi Sentry Box',
+          category: 'Cultural Heritage & ArchViz Prop',
+          description: 'Inspired by the iconic colonial sentry boxes of San Juan, Puerto Rico, adapted with reflective PBR materials and clearcoat finish.'
+        },
+        atm: {
+          title: 'ATM Ticket Machine',
+          category: 'Hard Surface & Urban Prop',
+          description: 'Multi-service interactive terminal and retro-futuristic ATM featuring holographic card slots, curved screen, and 3 UDIM sets.'
+        },
+        robot: {
+          title: 'Y2K Mechatronic Robot',
+          category: 'Character & Cybernetic Droid',
+          description: 'Stylized Y2K bipedal droid modeled in 6 detachable modules for exploded inspection, bioluminescent joints, and vertex colors.'
         }
       }
     },
@@ -511,6 +639,34 @@ export const translationsMap: Record<Language, Translations> = {
           description: 'Residential pavilion and retrofuturistic modular apartment concept with cantilevered porticos, panoramic windows, and contemporary brutalist aesthetics.',
           textures: 'Concrete & Dielectric Glass',
           lighting: 'Transmission 0.9 / ACES'
+        },
+        art5: {
+          title: 'Futuristic Microwave',
+          category: 'Props / Sci-Fi Appliance',
+          description: 'Retro-futuristic microwave cooking unit featuring tactile digital interface, reinforced cavity, and industrial finish with PBR materials.',
+          textures: 'PBR 2K (Albedo, Normal, Metallic, Roughness, Emissive)',
+          lighting: 'PBR Metal/Roughness + Emissive'
+        },
+        art6: {
+          title: 'Historic Sci-Fi Sentry Box (Garita)',
+          category: 'Cultural Heritage & ArchViz Prop',
+          description: 'Inspired by the iconic colonial sentry boxes of Puerto Rico, reconstructed with beveled dome, watch embrasures, and reflective ceramic finish.',
+          textures: 'PBR (Albedo, Normal, Specular, Clearcoat, Emissive)',
+          lighting: 'Clearcoat & Specular PBR'
+        },
+        art7: {
+          title: 'ATM Ticket Machine',
+          category: 'Hard Surface & Urban Prop',
+          description: 'Interactive multi-service terminal and retro-futuristic ticket dispenser featuring holographic card slots, numeric keypad, and 3 UDIM texture sets.',
+          textures: '3x Sets UDIM (BaseColor, Normal, Metallic-Roughness, Emissive)',
+          lighting: 'PBR + KHR_materials_transmission'
+        },
+        art8: {
+          title: 'Y2K Mechatronic Robot',
+          category: 'Character & Cybernetic Droid',
+          description: 'Stylized Y2K bipedal droid modeled in 6 independent detachable modules for exploded views, bioluminescent articulation joints, and vertex colors.',
+          textures: 'PBR 4K (Albedo, Normal, Metallic, Roughness, Emissive)',
+          lighting: 'PBR Dual-Vertex Color + Emissive'
         }
       }
     },

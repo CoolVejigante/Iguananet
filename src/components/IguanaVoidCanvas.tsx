@@ -27,18 +27,29 @@ export const IguanaVoidCanvas: React.FC = () => {
     camera.position.set(0, 4, 18);
     camera.lookAt(0, 0, 0);
 
-    // 2. High-performance WebGL Renderer
-    const renderer = new THREE.WebGLRenderer({
-      powerPreference: 'high-performance',
-      antialias: true,
-      alpha: false
-    });
-    renderer.setSize(width, height);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    renderer.outputColorSpace = THREE.SRGBColorSpace;
-    renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.0;
-    container.appendChild(renderer.domElement);
+    let renderer: THREE.WebGLRenderer | null = null;
+    try {
+      renderer = new THREE.WebGLRenderer({
+        powerPreference: 'high-performance',
+        antialias: false,
+        alpha: false
+      });
+      renderer.setSize(width, height);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+      renderer.outputColorSpace = THREE.SRGBColorSpace;
+      renderer.toneMapping = THREE.ACESFilmicToneMapping;
+      renderer.toneMappingExposure = 1.0;
+
+      renderer.domElement.addEventListener('webglcontextlost', (e) => {
+        e.preventDefault();
+        console.warn('IguanaVoidCanvas: WebGL context lost.');
+      });
+
+      container.appendChild(renderer.domElement);
+    } catch (err) {
+      console.warn('IguanaVoidCanvas: WebGLRenderer unavailable. Falling back gracefully.', err);
+      return;
+    }
 
     // 3. Industrial Coordinate Grid Floor
     const gridHelper = new THREE.GridHelper(60, 40, 0x99eeff, 0x162937);
@@ -175,10 +186,16 @@ export const IguanaVoidCanvas: React.FC = () => {
       particleGeo.dispose();
       particleMat.dispose();
       particleTexture.dispose();
-      renderer.dispose();
-
-      if (container.contains(renderer.domElement)) {
-        container.removeChild(renderer.domElement);
+      if (renderer) {
+        try {
+          renderer.forceContextLoss();
+          renderer.dispose();
+        } catch (e) {
+          console.warn('IguanaVoidCanvas dispose:', e);
+        }
+        if (container.contains(renderer.domElement)) {
+          container.removeChild(renderer.domElement);
+        }
       }
     };
   }, []);

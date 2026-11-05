@@ -50,6 +50,7 @@ interface ArtworkProject {
   category: string;
   modelTarget: BuiltinModelId;
   image?: string;
+  modelPath?: string;
   specs: {
     triangles: string;
     textures: string;
@@ -59,6 +60,91 @@ interface ArtworkProject {
   description: string;
   tags: string[];
 }
+
+interface GLBCardThumbnailProps {
+  modelPath: string;
+  title: string;
+  onInspect?: () => void;
+}
+
+/**
+ * Zero-WebGL Holographic Blueprint Card.
+ * Renders an isometric cyber wireframe projection in pure CSS/SVG to guarantee 0 GPU context consumption.
+ */
+const GLBCardThumbnail: React.FC<GLBCardThumbnailProps> = ({ modelPath, title, onInspect }) => {
+  const fileName = modelPath.split('/').pop() || modelPath;
+
+  return (
+    <div
+      onClick={onInspect}
+      className="relative w-full h-44 sm:h-52 overflow-hidden rounded-md border border-[#99EEFF]/30 group-hover:border-[#99EEFF] transition-all bg-gradient-to-b from-[#0b1720] to-[#162937] flex flex-col items-center justify-center p-4 cursor-pointer select-none group/thumb shadow-inner"
+    >
+      {/* CAD Blueprint grid background */}
+      <div
+        className="absolute inset-0 opacity-20 group-hover/thumb:opacity-35 transition-opacity"
+        style={{
+          backgroundImage: `
+            linear-gradient(to right, rgba(153, 238, 255, 0.2) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(153, 238, 255, 0.2) 1px, transparent 1px)
+          `,
+          backgroundSize: '18px 18px'
+        }}
+      />
+
+      {/* Holographic Scanline sweep */}
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#99EEFF]/10 to-transparent opacity-0 group-hover/thumb:opacity-100 transition-opacity pointer-events-none animate-pulse" />
+
+      {/* Corner HUD reticles */}
+      <div className="absolute top-2 left-2 w-2.5 h-2.5 border-t-2 border-l-2 border-[#99EEFF]" />
+      <div className="absolute top-2 right-2 w-2.5 h-2.5 border-t-2 border-r-2 border-[#99EEFF]" />
+      <div className="absolute bottom-2 left-2 w-2.5 h-2.5 border-b-2 border-l-2 border-[#99EEFF]" />
+      <div className="absolute bottom-2 right-2 w-2.5 h-2.5 border-b-2 border-r-2 border-[#99EEFF]" />
+
+      {/* Holographic Wireframe 3D Isometric Mesh Icon */}
+      <div className="relative z-10 flex flex-col items-center justify-center space-y-2">
+        <div className="relative p-3 rounded-xl bg-[#244156]/60 border border-[#99EEFF]/35 group-hover/thumb:border-[#99EEFF] group-hover/thumb:shadow-[0_0_20px_rgba(153,238,255,0.45)] transition-all">
+          <svg className="w-12 h-12 text-[#99EEFF]" viewBox="0 0 48 48" fill="none">
+            {/* Isometric 3D Wireframe Cube Projection */}
+            <polygon points="24,4 44,14 44,34 24,44 4,34 4,14" strokeWidth="1.5" stroke="#99EEFF" fill="rgba(153,238,255,0.08)" />
+            <line x1="24" y1="4" x2="24" y2="24" strokeWidth="1.5" stroke="#99EEFF" />
+            <line x1="4" y1="14" x2="24" y2="24" strokeWidth="1.5" stroke="#99EEFF" />
+            <line x1="44" y1="14" x2="24" y2="24" strokeWidth="1.5" stroke="#99EEFF" />
+            <line x1="24" y1="24" x2="24" y2="44" strokeWidth="1.5" stroke="#99EEFF" />
+            {/* Center core pulse */}
+            <circle cx="24" cy="24" r="3" fill="#F57E00" />
+            <line x1="14" y1="19" x2="34" y2="29" strokeWidth="1" strokeDasharray="2,2" stroke="#F57E00" />
+          </svg>
+        </div>
+
+        <div className="text-center space-y-0.5">
+          <div className="text-[11px] font-heading font-bold text-white tracking-wide group-hover/thumb:text-[#99EEFF] transition-colors">
+            {title}
+          </div>
+          <div className="text-[9px] font-mono-telemetry text-[#99EEFF]/70 tracking-widest uppercase">
+            {fileName} • 3D PBR ASSET
+          </div>
+        </div>
+      </div>
+
+      {/* Top right badge */}
+      <div className="absolute top-2.5 right-2.5 px-2 py-0.5 text-[9px] font-mono-telemetry bg-[#0e1b24]/90 border border-[#99EEFF]/40 text-[#99EEFF] rounded flex items-center gap-1 shadow">
+        <Sparkles className="w-2.5 h-2.5 text-[#F57E00]" />
+        <span>GLB NATIVO</span>
+      </div>
+
+      {/* Bottom telemetry overlay */}
+      <div className="absolute bottom-2 inset-x-3 flex items-center justify-between text-[8px] font-mono-telemetry text-slate-400">
+        <span className="flex items-center gap-1 text-[#F57E00]">
+          <span className="w-1.5 h-1.5 rounded-full bg-[#F57E00] animate-pulse" />
+          LISTO EN VISOR 3D
+        </span>
+        <span className="text-[#99EEFF] group-hover/thumb:underline flex items-center gap-0.5 font-bold">
+          CARGAR ↗
+        </span>
+      </div>
+    </div>
+  );
+};
 
 export const IguanaPortfolioMatrix: React.FC = () => {
   const { t, language } = useLanguage();
@@ -124,6 +210,66 @@ export const IguanaPortfolioMatrix: React.FC = () => {
       },
       description: t.catalog.artworks.art4.description,
       tags: ['ArchViz', 'Retrofuturismo', 'Apartamento', 'Modular', 'Ambientes']
+    },
+    {
+      id: 'art-5',
+      title: t.catalog.artworks.art5.title,
+      category: t.catalog.artworks.art5.category,
+      modelTarget: 'MICROWAVE',
+      modelPath: 'assets/models/ftrmicrowave.glb',
+      specs: {
+        triangles: '8,962 Tris',
+        textures: t.catalog.artworks.art5.textures,
+        pbrType: t.catalog.artworks.art5.lighting,
+        compression: 'Standard glTF 2.0 PBR'
+      },
+      description: t.catalog.artworks.art5.description,
+      tags: ['Props', 'Electrodoméstico', 'Sci-Fi', 'Microondas', 'Explosionable']
+    },
+    {
+      id: 'art-6',
+      title: t.catalog.artworks.art6.title,
+      category: t.catalog.artworks.art6.category,
+      modelTarget: 'GARITA',
+      modelPath: 'assets/models/garita.glb',
+      specs: {
+        triangles: '6,122 Tris',
+        textures: t.catalog.artworks.art6.textures,
+        pbrType: t.catalog.artworks.art6.lighting,
+        compression: 'Standard glTF 2.0 PBR'
+      },
+      description: t.catalog.artworks.art6.description,
+      tags: ['Patrimonio', 'Garita', 'Puerto Rico', 'ArchViz', 'Clearcoat']
+    },
+    {
+      id: 'art-7',
+      title: t.catalog.artworks.art7.title,
+      category: t.catalog.artworks.art7.category,
+      modelTarget: 'ATM',
+      modelPath: 'assets/models/newatm.glb',
+      specs: {
+        triangles: '4,821 Tris',
+        textures: t.catalog.artworks.art7.textures,
+        pbrType: t.catalog.artworks.art7.lighting,
+        compression: 'Standard glTF 2.0 (3x UDIM)'
+      },
+      description: t.catalog.artworks.art7.description,
+      tags: ['Hard Surface', 'ATM', 'Ticket Machine', 'UDIM', 'Transmission']
+    },
+    {
+      id: 'art-8',
+      title: t.catalog.artworks.art8.title,
+      category: t.catalog.artworks.art8.category,
+      modelTarget: 'ROBOT',
+      modelPath: 'assets/models/y2krobo.glb',
+      specs: {
+        triangles: '24,712 Tris',
+        textures: t.catalog.artworks.art8.textures,
+        pbrType: t.catalog.artworks.art8.lighting,
+        compression: 'Standard glTF 2.0 (6 Módulos)'
+      },
+      description: t.catalog.artworks.art8.description,
+      tags: ['Personaje', 'Robot', 'Y2K', 'Droide', 'Explosión Modular']
     }
   ];
 
@@ -179,7 +325,11 @@ export const IguanaPortfolioMatrix: React.FC = () => {
                 </div>
 
                 <div className="flex items-center gap-1.5">
-                  {(art.modelTarget === 'TERMINAL' || art.modelTarget === 'FUSION_CORE') && (
+                  {(art.modelTarget === 'TERMINAL' ||
+                    art.modelTarget === 'FUSION_CORE' ||
+                    art.modelTarget === 'MICROWAVE' ||
+                    art.modelTarget === 'GARITA' ||
+                    art.modelTarget === 'ROBOT') && (
                     <span className="px-1.5 py-0.5 text-[9px] font-mono-telemetry bg-[#F57E00]/20 border border-[#F57E00] text-[#F57E00] rounded flex items-center gap-1 font-bold">
                       <span className="w-1.5 h-1.5 rounded-full bg-[#F57E00] animate-ping" />
                       {language === 'es' ? 'EXPLOSIÓN' : 'EXPLODE'}
@@ -191,7 +341,7 @@ export const IguanaPortfolioMatrix: React.FC = () => {
                 </div>
               </div>
 
-              {art.image && (
+              {art.image ? (
                 <div className="relative w-full h-44 sm:h-52 overflow-hidden rounded-md border border-[#99EEFF]/25 group-hover:border-[#99EEFF]/60 transition-all bg-[#0e1b24]">
                   <img
                     src={art.image}
@@ -201,7 +351,13 @@ export const IguanaPortfolioMatrix: React.FC = () => {
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#162937]/80 via-transparent to-transparent pointer-events-none" />
                 </div>
-              )}
+              ) : art.modelPath ? (
+                <GLBCardThumbnail
+                  modelPath={art.modelPath}
+                  title={art.title}
+                  onInspect={() => handleInspectArtwork(art.modelTarget)}
+                />
+              ) : null}
 
               <p className="text-xs text-slate-300 leading-relaxed font-sans">
                 {art.description}
