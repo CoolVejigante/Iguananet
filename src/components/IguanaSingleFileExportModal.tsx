@@ -182,7 +182,7 @@ export const IguanaSingleFileExportModal: React.FC<IguanaSingleFileExportModalPr
       <h2 class="text-2xl sm:text-3xl font-heading font-bold text-white">VISIÓN ESTRATÉGICA IGUANA3D</h2>
       <div class="p-6 bg-[#162937]/90 border-l-4 border-[#F57E00] border-y border-r border-[#99EEFF]/30 clip-chamfer-45">
         <blockquote class="text-base sm:text-lg text-white font-heading font-semibold">
-          "Nuestra visión no es solo improvisar tus assets u otros trabajos, Iguana3D está también enfocado en la contribución visual de cada tipo de industria relacionada para cementar la nueva generacion de desarolladores encargado de cementear propiedad intelectual cautivadora y imposible de despegar."
+          "Soy Luis Casanova, y resuelvo el riesgo financiero de contratar talento 3D a ciegas por falta de optimización o escala irreal en proyectos de ArchViz, creando un visor de inspección donde los estudios pueden auditar la escala real, los materiales y el rendimiento en tiempo real."
         </blockquote>
       </div>
 

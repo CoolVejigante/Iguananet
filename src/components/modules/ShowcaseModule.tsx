@@ -44,7 +44,7 @@ export const ShowcaseModule: React.FC<ShowcaseModuleProps> = ({ onOpenRemix }) =
   const [activeMaterial, setActiveMaterial] = useState<MaterialPreset>('GOLD');
   const [activeGeometry, setActiveGeometry] = useState<GeometryPreset>('PAVILION');
   const [isWireframe, setIsWireframe] = useState<boolean>(false);
-  const [autoRotate, setAutoRotate] = useState<boolean>(true);
+  const [autoRotate, setAutoRotate] = useState<boolean>(false);
   const [exposure, setExposure] = useState<number>(1.2);
   const [uploadedModelName, setUploadedModelName] = useState<string | null>(null);
   const [stats, setStats] = useState({ vertices: 3420, triangles: 5880 });

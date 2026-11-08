@@ -41,13 +41,9 @@ import {
   Pause,
   HelpCircle,
   Boxes,
-  FileCode,
-  Check,
-  Copy,
   Sparkles,
   ExternalLink,
-  Split,
-  BookOpen
+  Split
 } from 'lucide-react';
 import { soundEngine } from '../services/sound-effects';
 import { useLanguage } from '../context/LanguageContext';
@@ -61,6 +57,8 @@ export type BuiltinModelId =
   | 'GARITA'
   | 'ATM'
   | 'ROBOT';
+
+export const NON_INSPECTABLE_MODELS: BuiltinModelId[] = ['MICROWAVE', 'GARITA'];
 
 /**
  * ============================================================================
@@ -213,7 +211,7 @@ export const IguanaInspectionBay: React.FC<IguanaInspectionBayProps> = ({
 
   const [activeModelId, setActiveModelId] = useState<BuiltinModelId>(initialModel);
   const [isWireframe, setIsWireframe] = useState<boolean>(false);
-  const [autoRotate, setAutoRotate] = useState<boolean>(true);
+  const [autoRotate, setAutoRotate] = useState<boolean>(false);
   const [exposure, setExposure] = useState<number>(1.15);
   const [uploadedModelName, setUploadedModelName] = useState<string | null>(null);
   const [isLoadingModel, setIsLoadingModel] = useState<boolean>(false);
@@ -227,15 +225,13 @@ export const IguanaInspectionBay: React.FC<IguanaInspectionBayProps> = ({
   const [explodeFactor, setExplodeFactor] = useState<number>(0);
   const [autoExplode, setAutoExplode] = useState<boolean>(false);
   const [showGuideLines, setShowGuideLines] = useState<boolean>(true);
-  const [showBlenderTutorial, setShowBlenderTutorial] = useState<boolean>(false);
   const [activeExplodedCount, setActiveExplodedCount] = useState<number>(0);
   const [isDecomposedStructure, setIsDecomposedStructure] = useState<boolean>(false);
-  const [copyCodeSuccess, setCopyCodeSuccess] = useState<boolean>(false);
 
   const explodedComponentsRef = useRef<ExplodedComponent[]>([]);
   const explodeFactorRef = useRef<number>(0);
   const autoExplodeRef = useRef<boolean>(false);
-  const autoRotateRef = useRef<boolean>(true);
+  const autoRotateRef = useRef<boolean>(false);
   const showGuideLinesRef = useRef<boolean>(true);
 
   const [stats, setStats] = useState({
@@ -422,8 +418,8 @@ export const IguanaInspectionBay: React.FC<IguanaInspectionBayProps> = ({
         group.add(fin);
       }
 
-      vertCount = 4820;
-      triCount = 7640;
+      vertCount = 2128;
+      triCount = 1712;
     } else if (type === 'DRONE') {
       // 2. Recon Drone Iguana-X
       const bodyGeo = new THREE.CapsuleGeometry(0.7, 1.8, 16, 24);
@@ -474,8 +470,8 @@ export const IguanaInspectionBay: React.FC<IguanaInspectionBayProps> = ({
       antenna.name = 'Antena Direccional';
       group.add(antenna);
 
-      vertCount = 6180;
-      triCount = 9850;
+      vertCount = 36991;
+      triCount = 67924;
     } else if (type === 'ARCHVIZ') {
       // 3. Plato Arqueológico Ceremonial (Patrimonio Cultural)
       const plateRimGeo = new THREE.CylinderGeometry(2.4, 2.1, 0.22, 32);
@@ -505,8 +501,8 @@ export const IguanaInspectionBay: React.FC<IguanaInspectionBayProps> = ({
         group.add(glyph);
       }
 
-      vertCount = 3840;
-      triCount = 6120;
+      vertCount = 192;
+      triCount = 256;
     } else if (type === 'FUSION_CORE') {
       // 4. FUSION_CORE: Apartamento Retrofuturista (ArchViz Modular Concept)
       // Losa de cimentación y pedestal
@@ -554,8 +550,8 @@ export const IguanaInspectionBay: React.FC<IguanaInspectionBayProps> = ({
         group.add(louver);
       }
 
-      vertCount = 4120;
-      triCount = 6880;
+      vertCount = 7342;
+      triCount = 5556;
     } else if (type === 'MICROWAVE') {
       const body = new THREE.Mesh(new THREE.BoxGeometry(2.4, 1.5, 1.6), darkChassisMat);
       body.name = 'Chasis Microondas';
@@ -569,8 +565,8 @@ export const IguanaInspectionBay: React.FC<IguanaInspectionBayProps> = ({
       dial.rotation.x = Math.PI / 2;
       dial.name = 'Dial Selector Táctil';
       group.add(dial);
-      vertCount = 2800;
-      triCount = 4200;
+      vertCount = 8029;
+      triCount = 8802;
     } else if (type === 'GARITA') {
       const turret = new THREE.Mesh(new THREE.CylinderGeometry(1.1, 1.3, 2.2, 16), steelMat);
       turret.name = 'Cuerpo Cilindro Garita';
@@ -579,8 +575,8 @@ export const IguanaInspectionBay: React.FC<IguanaInspectionBayProps> = ({
       dome.position.y = 1.1;
       dome.name = 'Cúpula Colonial Garita';
       group.add(dome);
-      vertCount = 3200;
-      triCount = 5100;
+      vertCount = 4273;
+      triCount = 6122;
     } else if (type === 'ATM') {
       const terminal = new THREE.Mesh(new THREE.BoxGeometry(1.8, 3.2, 1.4), darkChassisMat);
       terminal.name = 'Chasis Terminal ATM';
@@ -589,8 +585,8 @@ export const IguanaInspectionBay: React.FC<IguanaInspectionBayProps> = ({
       screen.position.set(0, 0.6, 0.72);
       screen.name = 'Pantalla Interfaz ATM';
       group.add(screen);
-      vertCount = 2600;
-      triCount = 4100;
+      vertCount = 4991;
+      triCount = 4821;
     } else if (type === 'ROBOT') {
       const torso = new THREE.Mesh(new THREE.BoxGeometry(1.2, 1.4, 0.9), darkChassisMat);
       torso.name = 'Torso Droide Y2K';
@@ -604,8 +600,8 @@ export const IguanaInspectionBay: React.FC<IguanaInspectionBayProps> = ({
       eye.rotation.x = Math.PI / 2;
       eye.name = 'Visor Óptico';
       group.add(eye);
-      vertCount = 14500;
-      triCount = 24700;
+      vertCount = 44710;
+      triCount = 24712;
     }
 
     setStats({
@@ -627,6 +623,9 @@ export const IguanaInspectionBay: React.FC<IguanaInspectionBayProps> = ({
       sceneRefs.current.camera.position.set(4.2, 3.0, 5.0);
       sceneRefs.current.controls.target.set(0, 0, 0);
       sceneRefs.current.controls.update();
+    }
+    if (sceneRefs.current.currentMeshGroup) {
+      sceneRefs.current.currentMeshGroup.rotation.set(0, 0, 0);
     }
   }, []);
 
@@ -923,6 +922,7 @@ export const IguanaInspectionBay: React.FC<IguanaInspectionBayProps> = ({
         wrapper.position.y += (-1.5 - fitted.min.y);
       }
 
+      wrapper.rotation.set(0, 0, 0);
       sceneRefs.current.scene.add(wrapper);
       sceneRefs.current.currentMeshGroup = wrapper;
       uploadedModelRef.current.object = object;
@@ -941,6 +941,8 @@ export const IguanaInspectionBay: React.FC<IguanaInspectionBayProps> = ({
       setUploadedModelName(fileName);
       setUploadError(null);
       setIsLoadingModel(false);
+      setAutoRotate(false);
+      autoRotateRef.current = false;
       handleResetCamera();
     },
     [handleResetCamera, setupExplodedComponents, activeModelId]
@@ -954,17 +956,29 @@ export const IguanaInspectionBay: React.FC<IguanaInspectionBayProps> = ({
       const meta = BLENDER_MODELS_REGISTRY[modelId];
       if (!meta) return;
 
+      if (NON_INSPECTABLE_MODELS.includes(modelId)) {
+        setIsLoadingModel(false);
+        setUploadError(
+          language === 'es'
+            ? `El prop "${meta.title}" está reservado para exhibición en catálogo y no está disponible para inspección en el visor 3D.`
+            : `The prop "${meta.title}" is reserved for catalog exhibition only and is not available in the 3D inspection viewer.`
+        );
+        return;
+      }
+
       setIsLoadingModel(true);
       setUploadError(null);
       soundEngine.playModelLoadSound();
 
-      // Resetear estado de explosión para el nuevo modelo
+      // Resetear estado de explosión y rotación para el nuevo modelo
       setIsExplodedView(false);
       setExplodeFactor(0);
       explodeFactorRef.current = 0;
       setAutoExplode(false);
       autoExplodeRef.current = false;
       setIsDecomposedStructure(false);
+      setAutoRotate(false);
+      autoRotateRef.current = false;
 
       // Resolver URL Same-Origin considerando Vite BASE_URL (/Iguananet/ o /)
       const resolvedUrl = resolveModelUrl(meta.relativePath);
@@ -1268,12 +1282,20 @@ export const IguanaInspectionBay: React.FC<IguanaInspectionBayProps> = ({
   useEffect(() => {
     if (initialModel && initialModel !== prevInitialModelPropRef.current) {
       prevInitialModelPropRef.current = initialModel;
+      if (NON_INSPECTABLE_MODELS.includes(initialModel)) {
+        setUploadError(
+          language === 'es'
+            ? `El prop "${BLENDER_MODELS_REGISTRY[initialModel]?.title || initialModel}" está reservado para exhibición y no está disponible para inspección en el visor 3D.`
+            : `The prop "${BLENDER_MODELS_REGISTRY[initialModel]?.title || initialModel}" is reserved for exhibition and is not available in the 3D inspection viewer.`
+        );
+        return;
+      }
       setActiveModelId(initialModel);
       setUploadedModelName(null);
       setUploadError(null);
       loadBlenderGlbModel(initialModel, isWireframe);
     }
-  }, [initialModel, isWireframe, loadBlenderGlbModel]);
+  }, [initialModel, isWireframe, loadBlenderGlbModel, language]);
 
   // Manejador de cambio manual de modelo mediante los botones [1], [2], [3], [4]
   const handleModelSelect = (id: BuiltinModelId) => {
@@ -1281,6 +1303,8 @@ export const IguanaInspectionBay: React.FC<IguanaInspectionBayProps> = ({
     setActiveModelId(id);
     setUploadedModelName(null);
     setUploadError(null);
+    setAutoRotate(false);
+    autoRotateRef.current = false;
     loadBlenderGlbModel(id, isWireframe);
     onModelChange?.(id);
   };
@@ -1331,6 +1355,8 @@ export const IguanaInspectionBay: React.FC<IguanaInspectionBayProps> = ({
   const handleLoadFile = useCallback(async (file: File) => {
     setIsLoadingModel(true);
     setUploadError(null);
+    setAutoRotate(false);
+    autoRotateRef.current = false;
     soundEngine.playModelLoadSound();
 
     const ext = file.name.split('.').pop()?.toLowerCase();
@@ -1416,111 +1442,26 @@ export const IguanaInspectionBay: React.FC<IguanaInspectionBayProps> = ({
           </span>
         </div>
 
-        {/* Model Switcher Buttons */}
-        <div className="flex items-center gap-1.5 flex-wrap">
-          <span className="text-slate-400 font-mono-telemetry text-[11px] mr-1 hidden lg:inline">
-            {language === 'es' ? 'ASSETS 3D:' : '3D ASSETS:'}
+        {/* Active Model Indicator HUD */}
+        <div className="flex items-center gap-2">
+          <span className="text-slate-400 font-mono-telemetry text-[11px] hidden sm:inline">
+            {language === 'es' ? 'PROP EN VISOR:' : 'ACTIVE PROP:'}
           </span>
-          <button
-            onClick={() => handleModelSelect('TERMINAL')}
-            className={`px-2.5 py-1 rounded text-[11px] font-mono-telemetry border transition-all flex items-center gap-1.5 ${
-              activeModelId === 'TERMINAL' && !uploadedModelName
-                ? 'bg-[#F57E00] text-black font-bold border-[#F57E00]'
-                : 'bg-[#244156]/60 text-slate-300 border-[#99EEFF]/30 hover:border-[#99EEFF]'
-            }`}
-            title="Soporta Vista Explosionada de Componentes"
-          >
-            <span>[1] {t.inspectionBay.tabs.terminal}</span>
-            <span className="px-1 py-0.2 bg-black/40 text-[9px] text-[#99EEFF] rounded font-bold">
-              💥 EXPLODE
+          <div className="px-3 py-1 bg-[#244156]/90 border border-[#99EEFF]/40 text-[#99EEFF] rounded flex items-center gap-2 shadow-sm">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#F57E00] animate-pulse" />
+            <span className="font-heading font-bold text-white text-xs">
+              {uploadedModelName || BLENDER_MODELS_REGISTRY[activeModelId]?.title || activeModelId}
             </span>
-          </button>
-          <button
-            onClick={() => handleModelSelect('DRONE')}
-            className={`px-2.5 py-1 rounded text-[11px] font-mono-telemetry border transition-all ${
-              activeModelId === 'DRONE' && !uploadedModelName
-                ? 'bg-[#F57E00] text-black font-bold border-[#F57E00]'
-                : 'bg-[#244156]/60 text-slate-300 border-[#99EEFF]/30 hover:border-[#99EEFF]'
-            }`}
-          >
-            [2] {t.inspectionBay.tabs.drone}
-          </button>
-          <button
-            onClick={() => handleModelSelect('ARCHVIZ')}
-            className={`px-2.5 py-1 rounded text-[11px] font-mono-telemetry border transition-all ${
-              activeModelId === 'ARCHVIZ' && !uploadedModelName
-                ? 'bg-[#F57E00] text-black font-bold border-[#F57E00]'
-                : 'bg-[#244156]/60 text-slate-300 border-[#99EEFF]/30 hover:border-[#99EEFF]'
-            }`}
-          >
-            [3] {t.inspectionBay.tabs.archviz}
-          </button>
-          <button
-            onClick={() => handleModelSelect('FUSION_CORE')}
-            className={`px-2.5 py-1 rounded text-[11px] font-mono-telemetry border transition-all flex items-center gap-1.5 ${
-              activeModelId === 'FUSION_CORE' && !uploadedModelName
-                ? 'bg-[#F57E00] text-black font-bold border-[#F57E00]'
-                : 'bg-[#244156]/60 text-slate-300 border-[#99EEFF]/30 hover:border-[#99EEFF]'
-            }`}
-            title="Soporta Vista Explosionada de Componentes"
-          >
-            <span>[4] {t.inspectionBay.tabs.fusionCore}</span>
-            <span className="px-1 py-0.2 bg-black/40 text-[9px] text-[#99EEFF] rounded font-bold">
-              💥 EXPLODE
-            </span>
-          </button>
-          <button
-            onClick={() => handleModelSelect('MICROWAVE')}
-            className={`px-2.5 py-1 rounded text-[11px] font-mono-telemetry border transition-all flex items-center gap-1.5 ${
-              activeModelId === 'MICROWAVE' && !uploadedModelName
-                ? 'bg-[#F57E00] text-black font-bold border-[#F57E00]'
-                : 'bg-[#244156]/60 text-slate-300 border-[#99EEFF]/30 hover:border-[#99EEFF]'
-            }`}
-            title="Soporta Vista Explosionada de Componentes"
-          >
-            <span>[5] {t.inspectionBay.tabs.microwave}</span>
-            <span className="px-1 py-0.2 bg-black/40 text-[9px] text-[#99EEFF] rounded font-bold">
-              💥 EXPLODE
-            </span>
-          </button>
-          <button
-            onClick={() => handleModelSelect('GARITA')}
-            className={`px-2.5 py-1 rounded text-[11px] font-mono-telemetry border transition-all flex items-center gap-1.5 ${
-              activeModelId === 'GARITA' && !uploadedModelName
-                ? 'bg-[#F57E00] text-black font-bold border-[#F57E00]'
-                : 'bg-[#244156]/60 text-slate-300 border-[#99EEFF]/30 hover:border-[#99EEFF]'
-            }`}
-            title="Soporta Vista Explosionada de Componentes"
-          >
-            <span>[6] {t.inspectionBay.tabs.garita}</span>
-            <span className="px-1 py-0.2 bg-black/40 text-[9px] text-[#99EEFF] rounded font-bold">
-              💥 EXPLODE
-            </span>
-          </button>
-          <button
-            onClick={() => handleModelSelect('ATM')}
-            className={`px-2.5 py-1 rounded text-[11px] font-mono-telemetry border transition-all ${
-              activeModelId === 'ATM' && !uploadedModelName
-                ? 'bg-[#F57E00] text-black font-bold border-[#F57E00]'
-                : 'bg-[#244156]/60 text-slate-300 border-[#99EEFF]/30 hover:border-[#99EEFF]'
-            }`}
-          >
-            [7] {t.inspectionBay.tabs.atm}
-          </button>
-          <button
-            onClick={() => handleModelSelect('ROBOT')}
-            className={`px-2.5 py-1 rounded text-[11px] font-mono-telemetry border transition-all flex items-center gap-1.5 ${
-              activeModelId === 'ROBOT' && !uploadedModelName
-                ? 'bg-[#F57E00] text-black font-bold border-[#F57E00]'
-                : 'bg-[#244156]/60 text-slate-300 border-[#99EEFF]/30 hover:border-[#99EEFF]'
-            }`}
-            title="Soporta Vista Explosionada de Componentes (6 partes)"
-          >
-            <span>[8] {t.inspectionBay.tabs.robot}</span>
-            <span className="px-1 py-0.2 bg-black/40 text-[9px] text-[#99EEFF] rounded font-bold">
-              💥 EXPLODE
-            </span>
-          </button>
+            {(activeModelId === 'TERMINAL' ||
+              activeModelId === 'MICROWAVE' ||
+              activeModelId === 'GARITA' ||
+              activeModelId === 'ROBOT') &&
+              !uploadedModelName && (
+                <span className="px-1.5 py-0.2 bg-[#F57E00]/20 border border-[#F57E00]/50 text-[#F57E00] text-[9px] font-mono-telemetry rounded font-bold">
+                  💥 EXPLODE READY
+                </span>
+              )}
+          </div>
         </div>
       </div>
 
@@ -1676,17 +1617,32 @@ export const IguanaInspectionBay: React.FC<IguanaInspectionBayProps> = ({
             <span>WIREFRAME [{isWireframe ? 'ON' : 'OFF'}]</span>
           </button>
 
-          {/* Auto rotate toggle */}
+          {/* Rotación 360° Option Toggle */}
           <button
-            onClick={() => setAutoRotate(!autoRotate)}
-            className={`px-3 py-1.5 rounded flex items-center gap-1.5 font-mono-telemetry border transition-all ${
+            onClick={() => {
+              soundEngine.playClickSound();
+              const next = !autoRotate;
+              setAutoRotate(next);
+              autoRotateRef.current = next;
+            }}
+            className={`px-3 py-1.5 rounded flex items-center gap-1.5 font-mono-telemetry font-bold border transition-all cursor-pointer ${
               autoRotate
-                ? 'bg-[#99EEFF] text-black font-bold border-[#99EEFF]'
-                : 'bg-[#244156] text-slate-300 border-[#99EEFF]/30'
+                ? 'bg-[#99EEFF] text-black border-[#99EEFF] shadow-[0_0_12px_rgba(153,238,255,0.5)]'
+                : 'bg-[#244156] text-slate-300 border-[#99EEFF]/30 hover:border-[#99EEFF] hover:text-white'
             }`}
+            title={
+              language === 'es'
+                ? 'Activar o pausar animación de rotación en 360 grados'
+                : 'Toggle 360° turntable asset rotation animation'
+            }
           >
-            <RotateCw className="w-3.5 h-3.5" />
-            <span>{language === 'es' ? 'AUTO-ROTACIÓN' : 'AUTO-ROTATION'}</span>
+            <RotateCw
+              className={`w-3.5 h-3.5 ${autoRotate ? 'animate-spin' : ''}`}
+              style={autoRotate ? { animationDuration: '4s' } : undefined}
+            />
+            <span>
+              {language === 'es' ? 'ROTACIÓN 360°' : '360° ROTATION'} [{autoRotate ? 'ON' : 'OFF'}]
+            </span>
           </button>
 
           {/* Reset Camera */}
@@ -1812,20 +1768,6 @@ export const IguanaInspectionBay: React.FC<IguanaInspectionBayProps> = ({
 
         {/* Right Action Buttons */}
         <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
-          {/* Blender GLB Exploded View Tutorial Button */}
-          <button
-            onClick={() => {
-              soundEngine.playClickSound();
-              setShowBlenderTutorial(true);
-            }}
-            className="px-2.5 py-1.5 rounded bg-[#162937] hover:bg-[#1f384c] text-[#99EEFF] hover:text-white border border-[#99EEFF]/40 flex items-center gap-1.5 font-mono-telemetry text-xs transition-colors shadow-sm"
-            title={language === 'es' ? 'Guía técnica: cómo crear vistas explosionadas en Blender para GLB' : 'Technical guide: how to create exploded views in Blender for GLB'}
-          >
-            <BookOpen className="w-3.5 h-3.5 text-[#F57E00]" />
-            <span className="hidden sm:inline">{language === 'es' ? 'GUÍA BLENDER GLB' : 'BLENDER GLB GUIDE'}</span>
-            <span className="sm:hidden">{language === 'es' ? 'GUÍA' : 'GUIDE'}</span>
-          </button>
-
           {/* Upload Custom Model Button */}
           <label className="flex items-center gap-2 px-3 py-1.5 bg-gradient-to-r from-[#244156] to-[#1b3447] hover:from-[#1b3447] hover:to-[#2e5675] text-[#99EEFF] border border-[#99EEFF]/50 rounded cursor-pointer transition-all font-mono-telemetry font-bold">
             <Upload className="w-3.5 h-3.5 text-[#F57E00]" />
@@ -1840,183 +1782,6 @@ export const IguanaInspectionBay: React.FC<IguanaInspectionBayProps> = ({
           </label>
         </div>
       </div>
-
-      {/* ==================================================================== */}
-      {/* MODAL TUTORIAL: GUÍA TÉCNICA DE VISTA EXPLOSIONADA EN BLENDER & GLB  */}
-      {/* ==================================================================== */}
-      {showBlenderTutorial && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/80 backdrop-blur-md animate-fadeIn">
-          <div className="relative w-full max-w-3xl max-h-[90vh] overflow-y-auto bg-[#0e1b24] border border-[#99EEFF]/40 clip-chamfer-45 p-6 sm:p-8 shadow-[0_0_60px_rgba(22,41,55,0.9)] space-y-6 text-slate-200">
-            {/* Header */}
-            <div className="flex items-start justify-between pb-4 border-b border-[#99EEFF]/20">
-              <div className="space-y-1">
-                <div className="flex items-center gap-2 text-xs font-mono-telemetry text-[#F57E00] uppercase tracking-wider">
-                  <BookOpen className="w-4 h-4 text-[#F57E00]" />
-                  <span>// PROTOCOLO DE INGENIERÍA 3D // BLENDER & WEBGL DRACO</span>
-                </div>
-                <h3 className="text-xl sm:text-2xl font-heading font-black text-white">
-                  {language === 'es'
-                    ? '¿CÓMO CREAR VISTAS EXPLOSIONADAS EN BLENDER PARA GLB?'
-                    : 'HOW TO CREATE EXPLODED VIEWS IN BLENDER FOR GLB?'}
-                </h3>
-                <p className="text-xs text-slate-400 font-sans">
-                  {language === 'es'
-                    ? 'Guía técnica y mejores prácticas para el Teléfono Inteligente, el Apartamento Modular y cualquier asset 3D.'
-                    : 'Technical guide and best practices for the Smartphone, Modular Apartment, and any 3D asset.'}
-                </p>
-              </div>
-
-              <button
-                onClick={() => setShowBlenderTutorial(false)}
-                className="p-1 text-slate-400 hover:text-white hover:bg-[#244156] rounded transition-colors"
-                title="Cerrar modal"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-
-            {/* Diagnóstico de los archivos GLB */}
-            <div className="p-4 bg-[#162937]/80 border border-[#99EEFF]/25 rounded-lg space-y-2">
-              <h4 className="font-heading font-bold text-white text-xs text-[#99EEFF] flex items-center gap-1.5">
-                <Cpu className="w-3.5 h-3.5 text-[#F57E00]" />
-                <span>{language === 'es' ? '1. DIAGNÓSTICO DE LOS ARCHIVOS DEL PROYECTO' : '1. PROJECT FILES TECHNICAL DIAGNOSTIC'}</span>
-              </h4>
-              <ul className="text-xs space-y-2 font-sans text-slate-300">
-                <li className="flex items-start gap-2">
-                  <span className="text-[#F57E00] font-bold">▶</span>
-                  <span>
-                    <strong>newsovphone.glb (Teléfono Inteligente):</strong> Exportado con 4 nodos/mallas independientes (<code className="text-[#99EEFF] bg-black/40 px-1 rounded">Cube.042</code>, <code className="text-[#99EEFF] bg-black/40 px-1 rounded">Cylinder.034</code>, <code className="text-[#99EEFF] bg-black/40 px-1 rounded">Cylinder.036</code>, <code className="text-[#99EEFF] bg-black/40 px-1 rounded">Cylinder.035</code>). Three.js desplaza nativamente el chasis y los botones laterales en tiempo real a lo largo de sus ejes coordenados.
-                  </span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-[#F57E00] font-bold">▶</span>
-                  <span>
-                    <strong>modapar.glb (Apartamento Retrofuturista):</strong> Fue exportado en Blender como una <em>malla única consolidada (1 mesh: modapar)</em>. En WebGL, una malla única comparte un solo buffer de transformación, por lo que no puede despiezarse nodo a nodo a menos que se separe en piezas sueltas en Blender o se use el <strong>MODO CAPAS (13 Piezas)</strong> integrado en este visor.
-                  </span>
-                </li>
-              </ul>
-            </div>
-
-            {/* Paso a paso en Blender */}
-            <div className="space-y-4">
-              <h4 className="font-heading font-bold text-white text-sm flex items-center gap-2">
-                <Boxes className="w-4 h-4 text-[#F57E00]" />
-                <span>{language === 'es' ? '2. PASO A PASO EN BLENDER (MÉTODO RECOMENDADO)' : '2. STEP-BY-STEP IN BLENDER (RECOMMENDED METHOD)'}</span>
-              </h4>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
-                <div className="p-3.5 bg-[#162937]/70 border border-[#99EEFF]/20 rounded-lg space-y-1.5">
-                  <span className="font-mono-telemetry font-bold text-[#F57E00] block text-[11px]">
-                    PASO 1 // SEPARAR MALLAS SUELTAS
-                  </span>
-                  <p className="text-slate-300 font-sans">
-                    En Blender, selecciona el objeto y entra a <strong>Edit Mode</strong> (<kbd className="bg-black/50 px-1 rounded text-[#99EEFF]">Tab</kbd>). Selecciona todo con <kbd className="bg-black/50 px-1 rounded text-[#99EEFF]">A</kbd>, presiona <kbd className="bg-black/50 px-1 rounded text-[#99EEFF]">P</kbd> y haz clic en <strong>"By Loose Parts"</strong>.
-                  </p>
-                  <span className="text-[10px] text-emerald-400 font-mono-telemetry block">
-                    ✓ Divide losas, paredes, pilares y pérgolas en objetos independientes.
-                  </span>
-                </div>
-
-                <div className="p-3.5 bg-[#162937]/70 border border-[#99EEFF]/20 rounded-lg space-y-1.5">
-                  <span className="font-mono-telemetry font-bold text-[#F57E00] block text-[11px]">
-                    PASO 2 // RECALCULAR PUNTOS DE ORIGEN
-                  </span>
-                  <p className="text-slate-300 font-sans">
-                    Vuelve a <strong>Object Mode</strong> (<kbd className="bg-black/50 px-1 rounded text-[#99EEFF]">Tab</kbd>). Selecciona todas las piezas sueltas (<kbd className="bg-black/50 px-1 rounded text-[#99EEFF]">A</kbd>), haz clic derecho y elige <strong>Set Origin &gt; Origin to Geometry</strong>.
-                  </p>
-                  <span className="text-[10px] text-emerald-400 font-mono-telemetry block">
-                    ✓ Coloca el pivote en el centro exacto de cada pieza para un despiece simétrico.
-                  </span>
-                </div>
-
-                <div className="p-3.5 bg-[#162937]/70 border border-[#99EEFF]/20 rounded-lg space-y-1.5">
-                  <span className="font-mono-telemetry font-bold text-[#F57E00] block text-[11px]">
-                    PASO 3 // NOMENCLATURA EN EL OUTLINER
-                  </span>
-                  <p className="text-slate-300 font-sans">
-                    En el panel de la derecha (Outliner), renombra tus piezas de forma descriptiva: <code className="text-[#99EEFF]">Chasis</code>, <code className="text-[#99EEFF]">Pantalla</code>, <code className="text-[#99EEFF]">Boton_Volumen</code>, <code className="text-[#99EEFF]">Losa_Cimentacion</code>, <code className="text-[#99EEFF]">Ventanales_Vidrio</code>, <code className="text-[#99EEFF]">Pergola_Techo</code>.
-                  </p>
-                  <span className="text-[10px] text-[#99EEFF] font-mono-telemetry block">
-                    ✓ Three.js detecta estas palabras clave para asignar vectores de desplazamiento automáticos.
-                  </span>
-                </div>
-
-                <div className="p-3.5 bg-[#162937]/70 border border-[#99EEFF]/20 rounded-lg space-y-1.5">
-                  <span className="font-mono-telemetry font-bold text-[#F57E00] block text-[11px]">
-                    PASO 4 // EXPORTAR GLTF 2.0 CON DRACO
-                  </span>
-                  <p className="text-slate-300 font-sans">
-                    Ve a <strong>File &gt; Export &gt; glTF 2.0 (.glb)</strong>.
-                    En la barra lateral:
-                    <br />• <em>Format:</em> glTF Binary (.glb)
-                    <br />• <em>Transform:</em> +Y Up
-                    <br />• <em>Compression:</em> Activa <strong>DRACO mesh compression</strong>
-                  </p>
-                  <span className="text-[10px] text-emerald-400 font-mono-telemetry block">
-                    ✓ Reduce el archivo hasta un 85% preservando la jerarquía de nodos.
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            {/* Método Alternativo: Animación por Keyframes */}
-            <div className="p-4 bg-[#162937]/60 border border-[#F57E00]/30 rounded-lg space-y-2">
-              <h4 className="font-heading font-bold text-white text-xs text-[#F57E00] flex items-center gap-1.5">
-                <Play className="w-3.5 h-3.5 text-[#F57E00]" />
-                <span>{language === 'es' ? '3. MÉTODO ALTERNATIVO: ANIMACIÓN HORNEADA CON KEYFRAMES' : '3. ALTERNATIVE METHOD: BAKED TIMELINE KEYFRAME ANIMATION'}</span>
-              </h4>
-              <p className="text-xs text-slate-300 font-sans leading-relaxed">
-                {language === 'es'
-                  ? 'Si deseas que cada pieza siga una trayectoria curva o una coreografía cinematográfica específica: en la Timeline de Blender inserta keyframes de posición (tecla I > Location). En el Frame 0 coloca el modelo armado; en el Frame 60 desplaza las piezas al aire. Al exportar a .glb, marca la casilla "Animations". El visor de Three.js sincronizará esa animación automáticamente.'
-                  : 'If you want each part to follow a specific curved or choreographed path: in Blender\'s Timeline insert Location keyframes (press I > Location). At Frame 0, keep the model assembled; at Frame 60, disperse the parts in space. When exporting to .glb, check "Animations". The Three.js viewer can scrub this animation with AnimationMixer.'}
-              </p>
-            </div>
-
-            {/* Código Three.js de Demostración */}
-            <div className="p-4 bg-[#091218] border border-[#99EEFF]/20 rounded-lg space-y-2">
-              <div className="flex items-center justify-between">
-                <span className="text-[11px] font-mono-telemetry text-[#99EEFF]">
-                  // SNIPPET DE CÓDIGO THREE.JS PARA VISTA EXPLOSIONADA
-                </span>
-                <button
-                  onClick={() => {
-                    const code = `// Desplazamiento vectorial de piezas en Three.js\nconst explodeVector = mesh.position.clone().sub(modelCenter).normalize();\nmesh.position.add(explodeVector.multiplyScalar(distance * explodeFactor));`;
-                    navigator.clipboard.writeText(code);
-                    setCopyCodeSuccess(true);
-                    setTimeout(() => setCopyCodeSuccess(false), 2000);
-                  }}
-                  className="px-2 py-0.5 bg-[#244156] hover:bg-[#325b7a] text-xs font-mono-telemetry text-slate-200 rounded flex items-center gap-1 transition-colors"
-                >
-                  {copyCodeSuccess ? <Check className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3 text-[#99EEFF]" />}
-                  <span>{copyCodeSuccess ? 'Copiado' : 'Copiar'}</span>
-                </button>
-              </div>
-              <pre className="text-[11px] font-mono text-emerald-300 overflow-x-auto p-2 bg-black/40 rounded">
-                <code>{`// 1. Obtener centro global del modelo
-const center = new THREE.Box3().setFromObject(model).getCenter(new THREE.Vector3());
-
-// 2. Desplazar cada pieza hija a lo largo de su vector normalizado
-model.traverse((child) => {
-  if (child.isMesh) {
-    const dir = child.position.clone().sub(center).normalize();
-    child.position.add(dir.multiplyScalar(distance * explodeFactor));
-  }
-});`}</code>
-              </pre>
-            </div>
-
-            {/* Footer Buttons */}
-            <div className="flex items-center justify-end pt-2 border-t border-[#99EEFF]/20">
-              <button
-                onClick={() => setShowBlenderTutorial(false)}
-                className="px-5 py-2 bg-[#99EEFF] hover:bg-white text-black font-heading font-bold text-xs rounded transition-all shadow-[0_0_15px_rgba(153,238,255,0.4)]"
-              >
-                {language === 'es' ? 'ENTENDIDO // VOLVER AL INSPECTION BAY' : 'UNDERSTOOD // BACK TO INSPECTION BAY'}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 };
