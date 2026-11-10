@@ -172,7 +172,7 @@ export const IguanaSingleFileExportModal: React.FC<IguanaSingleFileExportModalPr
       <div class="p-6 sm:p-8 bg-[#162937]/90 backdrop-blur-xl border-2 border-[#99EEFF]/40 clip-chamfer-45 space-y-3">
         <span class="text-xs font-mono-telemetry text-[#F57E00] tracking-widest uppercase block">// MANIFIESTO PROFESIONAL Y PROPUESTA DE VALOR</span>
         <blockquote class="text-base sm:text-lg text-slate-100 italic border-l-2 border-[#F57E00] pl-4">
-          "Saludos, soy Luis Casanova, 3D Artist y Visual Developer especializado en props, ArchViz y diseño industrial y artístico. Resuelvo la incertidumbre de los directores de arte e indie game devs que contratan a ciegas sin conocer la optimización ni la escala real de los modelos. Logro mediante un visor WebGL de inspección 'Inspection Bay', donde pueden probar los assets tridimensionales en vivo, alternar wireframes, inspeccionar vértices y polígonos y evaluar texturas PBR sin fricción ni descargas. Y por eso es cósmicamente interesante."
+          "Soy Luis Casanova, y resuelvo el riesgo financiero de contratar talento 3D a ciegas por falta de optimización o escala irreal en proyectos de ArchViz, creando un visor de inspección donde los estudios pueden auditar la escala real, los materiales y el rendimiento en tiempo real."
         </blockquote>
       </div>
     </section>
@@ -182,7 +182,7 @@ export const IguanaSingleFileExportModal: React.FC<IguanaSingleFileExportModalPr
       <h2 class="text-2xl sm:text-3xl font-heading font-bold text-white">VISIÓN ESTRATÉGICA IGUANA3D</h2>
       <div class="p-6 bg-[#162937]/90 border-l-4 border-[#F57E00] border-y border-r border-[#99EEFF]/30 clip-chamfer-45">
         <blockquote class="text-base sm:text-lg text-white font-heading font-semibold">
-          "Soy Luis Casanova, y resuelvo el riesgo financiero de contratar talento 3D a ciegas por falta de optimización o escala irreal en proyectos de ArchViz, creando un visor de inspección donde los estudios pueden auditar la escala real, los materiales y el rendimiento en tiempo real."
+          "Nuestra visión no es solo improvisar tus assets u otros trabajos;yo estoy también enfocado en la contribución visual de cada tipo de industria relacionada para cementar la nueva generación de desarrolladores encargados de cementar contenido cautivador e imposible de ignorar."
         </blockquote>
       </div>
 

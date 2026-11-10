@@ -46,8 +46,6 @@ import modaparfinalImg from '../assets/images/modaparfinal.png';
 import iguanaModelImg from '../assets/images/iguana_model_3d.png';
 import platoArqueologicoImg from '../assets/images/plato_arqueologico.png';
 import telefonoInteligenteImg from '../assets/images/telefono_inteligente.png';
-import garitaImg from '../assets/images/garita_render.png';
-import microondasImg from '../assets/images/microondas_render.png';
 import robotImg from '../assets/images/robot_render.png';
 import atmTicketMachineImg from '../assets/images/atm_ticket_machine_render.png';
 
@@ -104,11 +102,7 @@ const GLBCardThumbnail: React.FC<GLBCardThumbnailProps> = ({
 
   return (
     <div
-      className={`relative w-full h-44 sm:h-52 overflow-hidden rounded-md border ${
-        isInspectable
-          ? 'border-[#99EEFF]/25'
-          : 'border-amber-500/40 opacity-90'
-      } transition-all bg-gradient-to-b from-[#0b1720] to-[#162937] flex flex-col items-center justify-center p-4 select-none group/thumb shadow-inner`}
+      className="relative w-full h-44 sm:h-52 overflow-hidden rounded-md border border-[#99EEFF]/25 transition-all bg-gradient-to-b from-[#0b1720] to-[#162937] flex flex-col items-center justify-center p-4 select-none group/thumb shadow-inner"
     >
       {/* CAD Blueprint grid background */}
       <div
@@ -126,21 +120,15 @@ const GLBCardThumbnail: React.FC<GLBCardThumbnailProps> = ({
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#99EEFF]/10 to-transparent opacity-0 group-hover/thumb:opacity-100 transition-opacity pointer-events-none animate-pulse" />
 
       {/* Corner HUD reticles */}
-      <div className={`absolute top-2 left-2 w-2.5 h-2.5 border-t-2 border-l-2 ${isInspectable ? 'border-[#99EEFF]' : 'border-amber-400'}`} />
-      <div className={`absolute top-2 right-2 w-2.5 h-2.5 border-t-2 border-r-2 ${isInspectable ? 'border-[#99EEFF]' : 'border-amber-400'}`} />
-      <div className={`absolute bottom-2 left-2 w-2.5 h-2.5 border-b-2 border-l-2 ${isInspectable ? 'border-[#99EEFF]' : 'border-amber-400'}`} />
-      <div className={`absolute bottom-2 right-2 w-2.5 h-2.5 border-b-2 border-r-2 ${isInspectable ? 'border-[#99EEFF]' : 'border-amber-400'}`} />
+      <div className="absolute top-2 left-2 w-2.5 h-2.5 border-t-2 border-l-2 border-[#99EEFF]" />
+      <div className="absolute top-2 right-2 w-2.5 h-2.5 border-t-2 border-r-2 border-[#99EEFF]" />
+      <div className="absolute bottom-2 left-2 w-2.5 h-2.5 border-b-2 border-l-2 border-[#99EEFF]" />
+      <div className="absolute bottom-2 right-2 w-2.5 h-2.5 border-b-2 border-r-2 border-[#99EEFF]" />
 
       {/* Holographic Wireframe 3D Isometric Mesh Icon */}
       <div className="relative z-10 flex flex-col items-center justify-center space-y-2">
-        <div
-          className={`relative p-3 rounded-xl bg-[#244156]/60 border ${
-            isInspectable
-              ? 'border-[#99EEFF]/35 group-hover/thumb:border-[#99EEFF] group-hover/thumb:shadow-[0_0_20px_rgba(153,238,255,0.45)]'
-              : 'border-amber-500/40 shadow-[0_0_15px_rgba(245,126,0,0.2)]'
-          } transition-all`}
-        >
-          <svg className={`w-12 h-12 ${isInspectable ? 'text-[#99EEFF]' : 'text-amber-400'}`} viewBox="0 0 48 48" fill="none">
+        <div className="relative p-3 rounded-xl bg-[#244156]/60 border border-[#99EEFF]/35 group-hover/thumb:border-[#99EEFF] group-hover/thumb:shadow-[0_0_20px_rgba(153,238,255,0.45)] transition-all">
+          <svg className="w-12 h-12 text-[#99EEFF]" viewBox="0 0 48 48" fill="none">
             {/* Isometric 3D Wireframe Cube Projection */}
             <polygon points="24,4 44,14 44,34 24,44 4,34 4,14" strokeWidth="1.5" stroke="currentColor" fill="rgba(153,238,255,0.08)" />
             <line x1="24" y1="4" x2="24" y2="24" strokeWidth="1.5" stroke="currentColor" />
@@ -148,7 +136,7 @@ const GLBCardThumbnail: React.FC<GLBCardThumbnailProps> = ({
             <line x1="44" y1="14" x2="24" y2="24" strokeWidth="1.5" stroke="currentColor" />
             <line x1="24" y1="24" x2="24" y2="44" strokeWidth="1.5" stroke="currentColor" />
             {/* Center core pulse */}
-            <circle cx="24" cy="24" r="3" fill={isInspectable ? '#F57E00' : '#eab308'} />
+            <circle cx="24" cy="24" r="3" fill="#F57E00" />
             <line x1="14" y1="19" x2="34" y2="29" strokeWidth="1" strokeDasharray="2,2" stroke="#F57E00" />
           </svg>
         </div>
@@ -164,39 +152,17 @@ const GLBCardThumbnail: React.FC<GLBCardThumbnailProps> = ({
       </div>
 
       {/* Top right badge */}
-      <div
-        className={`absolute top-2.5 right-2.5 px-2 py-0.5 text-[9px] font-mono-telemetry ${
-          isInspectable
-            ? 'bg-[#0e1b24]/90 border border-[#99EEFF]/40 text-[#99EEFF]'
-            : 'bg-[#1f160e]/95 border border-amber-500/50 text-amber-300 font-bold'
-        } rounded flex items-center gap-1 shadow`}
-      >
-        {isInspectable ? (
-          <>
-            <Sparkles className="w-2.5 h-2.5 text-[#F57E00]" />
-            <span>GLB NATIVO</span>
-          </>
-        ) : (
-          <>
-            <span>🔒</span>
-            <span>SOLO EXHIBICIÓN</span>
-          </>
-        )}
+      <div className="absolute top-2.5 right-2.5 px-2 py-0.5 text-[9px] font-mono-telemetry bg-[#0e1b24]/90 border border-[#99EEFF]/40 text-[#99EEFF] rounded flex items-center gap-1 shadow">
+        <Sparkles className="w-2.5 h-2.5 text-[#F57E00]" />
+        <span>GLB NATIVO</span>
       </div>
 
       {/* Bottom telemetry overlay */}
       <div className="absolute bottom-2 inset-x-3 flex items-center justify-between text-[8px] font-mono-telemetry text-slate-400">
-        {isInspectable ? (
-          <span className="flex items-center gap-1 text-[#99EEFF]">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#99EEFF]" />
-            MODELO 3D DISPONIBLE
-          </span>
-        ) : (
-          <span className="flex items-center gap-1 text-amber-400 font-semibold">
-            <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />
-            NO DISPONIBLE EN VISOR
-          </span>
-        )}
+        <span className="flex items-center gap-1 text-[#99EEFF]">
+          <span className="w-1.5 h-1.5 rounded-full bg-[#99EEFF]" />
+          MODELO 3D DISPONIBLE
+        </span>
       </div>
     </div>
   );
@@ -286,46 +252,6 @@ export const IguanaPortfolioMatrix: React.FC = () => {
       isExplosible: false
     },
     {
-      id: 'art-5',
-      title: t.catalog.artworks.art5.title,
-      category: t.catalog.artworks.art5.category,
-      modelTarget: 'MICROWAVE',
-      image: microondasImg,
-      modelPath: 'assets/models/ftrmicrowave.glb',
-      isInspectable: false,
-      specs: {
-        triangles: '8,802 Tris',
-        vertices: '8,029 Verts',
-        textures: t.catalog.artworks.art5.textures,
-        pbrType: t.catalog.artworks.art5.lighting,
-        compression: 'Standard glTF 2.0 (Blender 5.0)'
-      },
-      description: t.catalog.artworks.art5.description,
-      tags: ['Props', 'Electrodoméstico', 'Sci-Fi', 'Microondas', 'Exhibición'],
-      filterCategories: ['ENSERES'],
-      isExplosible: true
-    },
-    {
-      id: 'art-6',
-      title: t.catalog.artworks.art6.title,
-      category: t.catalog.artworks.art6.category,
-      modelTarget: 'GARITA',
-      image: garitaImg,
-      modelPath: 'assets/models/garita.glb',
-      isInspectable: false,
-      specs: {
-        triangles: '6,122 Tris',
-        vertices: '4,273 Verts',
-        textures: t.catalog.artworks.art6.textures,
-        pbrType: t.catalog.artworks.art6.lighting,
-        compression: 'DRACO v1.5.6 (Google CDN)'
-      },
-      description: t.catalog.artworks.art6.description,
-      tags: ['Patrimonio', 'Garita', 'Puerto Rico', 'ArchViz', 'Exhibición'],
-      filterCategories: ['ARQUITECTURA', 'HISTORICO'],
-      isExplosible: true
-    },
-    {
       id: 'art-7',
       title: t.catalog.artworks.art7.title,
       category: t.catalog.artworks.art7.category,
@@ -379,8 +305,8 @@ export const IguanaPortfolioMatrix: React.FC = () => {
       id: 'ALL',
       labelEs: 'Todos los Props',
       labelEn: 'All Props',
-      subEs: 'Colección completa de 8 modelos',
-      subEn: 'Complete collection of 8 models',
+      subEs: 'Colección completa de 6 modelos 3D interactivos',
+      subEn: 'Complete collection of 6 interactive 3D models',
       count: artworks.length
     },
     {
@@ -403,32 +329,32 @@ export const IguanaPortfolioMatrix: React.FC = () => {
       id: 'ARQUITECTURA',
       labelEs: '🏛️ Arquitectura',
       labelEn: '🏛️ Architecture',
-      subEs: 'Apartamento y la Garita',
-      subEn: 'Apartment and Garita',
+      subEs: 'Concepto de Apartamento Modular',
+      subEn: 'Modular Apartment Concept',
       count: artworks.filter((a) => a.filterCategories.includes('ARQUITECTURA')).length
     },
     {
       id: 'ENSERES',
       labelEs: '📟 Props de Enseres',
       labelEn: '📟 Appliances & Terminal',
-      subEs: 'Teléfono, Terminal ATM y Microondas',
-      subEn: 'Smartphone, ATM Terminal & Microwave',
+      subEs: 'Teléfono Inteligente y Terminal ATM',
+      subEn: 'Smartphone and ATM Terminal',
       count: artworks.filter((a) => a.filterCategories.includes('ENSERES')).length
     },
     {
       id: 'PERSONAJES',
       labelEs: '🤖 Personajes',
       labelEn: '🤖 Characters',
-      subEs: 'Robot y la Iguana',
-      subEn: 'Robot and Iguana',
+      subEs: 'Robot Mecatrónico y la Iguana',
+      subEn: 'Mechatronic Robot and Iguana',
       count: artworks.filter((a) => a.filterCategories.includes('PERSONAJES')).length
     },
     {
       id: 'HISTORICO',
       labelEs: '🏺 Props Históricos y Culturales',
       labelEn: '🏺 Historical & Cultural',
-      subEs: 'Plato Arqueológico y Garita',
-      subEn: 'Ceremonial Dish and Garita',
+      subEs: 'Plato Ceremonial Arqueológico',
+      subEn: 'Ceremonial Archaeological Dish',
       count: artworks.filter((a) => a.filterCategories.includes('HISTORICO')).length
     }
   ];
@@ -441,10 +367,6 @@ export const IguanaPortfolioMatrix: React.FC = () => {
   });
 
   const handleInspectArtwork = (target: BuiltinModelId) => {
-    const art = artworks.find((a) => a.modelTarget === target);
-    if (art && !art.isInspectable) {
-      return;
-    }
     soundEngine.playClickSound();
     setSelectedInspectModel(target);
     const bayEl = document.getElementById('inspection-bay');
@@ -617,17 +539,10 @@ export const IguanaPortfolioMatrix: React.FC = () => {
                         </span>
                       )}
 
-                      {!art.isInspectable ? (
-                        <span className="px-2 py-0.5 text-[9px] font-mono-telemetry bg-amber-950/70 border border-amber-500/60 text-amber-300 rounded font-bold flex items-center gap-1">
-                          <span>⚠️</span>
-                          <span>{language === 'es' ? 'NO DISPONIBLE EN VISOR' : 'NOT IN VIEWER'}</span>
-                        </span>
-                      ) : (
-                        <span className="px-2 py-0.5 text-[9px] font-mono-telemetry bg-emerald-950/60 border border-emerald-500/40 text-emerald-300 rounded font-bold flex items-center gap-1">
-                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-                          <span>{language === 'es' ? 'INSPECCIONABLE' : 'INSPECTABLE'}</span>
-                        </span>
-                      )}
+                      <span className="px-2 py-0.5 text-[9px] font-mono-telemetry bg-emerald-950/60 border border-emerald-500/40 text-emerald-300 rounded font-bold flex items-center gap-1">
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                        <span>{language === 'es' ? 'INSPECCIONABLE' : 'INSPECTABLE'}</span>
+                      </span>
 
                       <span className="px-2 py-0.5 text-[10px] font-mono-telemetry bg-[#244156] border border-[#99EEFF]/30 text-[#F57E00] rounded font-bold">
                         {art.specs.triangles}
@@ -646,35 +561,19 @@ export const IguanaPortfolioMatrix: React.FC = () => {
                       <div className="absolute inset-0 bg-gradient-to-t from-[#162937]/80 via-transparent to-transparent pointer-events-none" />
 
                       {/* HUD reticles on corners */}
-                      <div className={`absolute top-2 left-2 w-2 h-2 border-t border-l ${art.isInspectable ? 'border-[#99EEFF]' : 'border-amber-400'}`} />
-                      <div className={`absolute top-2 right-2 w-2 h-2 border-t border-r ${art.isInspectable ? 'border-[#99EEFF]' : 'border-amber-400'}`} />
+                      <div className="absolute top-2 left-2 w-2 h-2 border-t border-l border-[#99EEFF]" />
+                      <div className="absolute top-2 right-2 w-2 h-2 border-t border-r border-[#99EEFF]" />
 
                       {/* Corner Badge */}
-                      <div
-                        className={`absolute top-2.5 right-2.5 px-2 py-0.5 text-[9px] font-mono-telemetry ${
-                          art.isInspectable
-                            ? 'bg-[#0e1b24]/90 border border-[#99EEFF]/50 text-[#99EEFF]'
-                            : 'bg-[#1f160e]/95 border border-amber-500/60 text-amber-300 font-bold'
-                        } rounded flex items-center gap-1 shadow-md`}
-                      >
-                        {art.isInspectable ? (
-                          <>
-                            <Sparkles className="w-2.5 h-2.5 text-[#F57E00]" />
-                            <span>{language === 'es' ? 'RENDER REAL' : 'REAL RENDER'}</span>
-                          </>
-                        ) : (
-                          <>
-                            <span>🔒</span>
-                            <span>{language === 'es' ? 'SOLO EXHIBICIÓN' : 'EXHIBITION ONLY'}</span>
-                          </>
-                        )}
+                      <div className="absolute top-2.5 right-2.5 px-2 py-0.5 text-[9px] font-mono-telemetry bg-[#0e1b24]/90 border border-[#99EEFF]/50 text-[#99EEFF] rounded flex items-center gap-1 shadow-md">
+                        <Sparkles className="w-2.5 h-2.5 text-[#F57E00]" />
+                        <span>{language === 'es' ? 'RENDER REAL' : 'REAL RENDER'}</span>
                       </div>
                     </div>
                   ) : art.modelPath ? (
                     <GLBCardThumbnail
                       modelPath={art.modelPath}
                       title={art.title}
-                      isInspectable={art.isInspectable}
                     />
                   ) : null}
 
@@ -706,17 +605,10 @@ export const IguanaPortfolioMatrix: React.FC = () => {
                     </div>
                     <div className="col-span-2 pt-1 border-t border-[#99EEFF]/10 flex items-center justify-between text-[10px]">
                       <span className="text-slate-400">{language === 'es' ? 'Estado en Entorno 3D:' : '3D Environment Status:'}</span>
-                      {art.isInspectable ? (
-                        <span className="text-emerald-400 font-bold flex items-center gap-1">
-                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-                          {language === 'es' ? 'Disponible en Inspection Bay' : 'Available in Inspection Bay'}
-                        </span>
-                      ) : (
-                        <span className="text-amber-400 font-bold flex items-center gap-1">
-                          <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />
-                          {language === 'es' ? 'No disponible en visor (Solo exhibición)' : 'Unavailable in viewer (Exhibition only)'}
-                        </span>
-                      )}
+                      <span className="text-emerald-400 font-bold flex items-center gap-1">
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                        {language === 'es' ? 'Disponible en Inspection Bay' : 'Available in Inspection Bay'}
+                      </span>
                     </div>
                   </div>
 
@@ -733,27 +625,13 @@ export const IguanaPortfolioMatrix: React.FC = () => {
                       ))}
                     </div>
 
-                    {art.isInspectable ? (
-                      <button
-                        onClick={() => handleInspectArtwork(art.modelTarget)}
-                        className="px-3.5 py-1.5 bg-[#99EEFF] hover:bg-white text-black font-heading font-bold text-xs rounded flex items-center gap-1.5 transition-all shadow-md group-hover:shadow-[0_0_15px_rgba(153,238,255,0.6)] cursor-pointer"
-                      >
-                        <Eye className="w-3.5 h-3.5 text-black" />
-                        <span>{t.catalog.inspectBtn}</span>
-                      </button>
-                    ) : (
-                      <div
-                        className="px-3 py-1.5 bg-[#244156]/70 border border-amber-500/40 text-amber-300 rounded text-xs font-mono-telemetry font-bold flex items-center gap-1.5 shadow-sm select-none"
-                        title={
-                          language === 'es'
-                            ? 'Este objeto está reservado solo para exhibición en catálogo y no está disponible para inspección en el visor 3D.'
-                            : 'This object is catalog exhibition-only and is not available in the 3D inspection bay.'
-                        }
-                      >
-                        <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />
-                        <span>{language === 'es' ? 'SOLO EXHIBICIÓN (NO INSPECCIONABLE)' : 'EXHIBITION ONLY (NOT INSPECTABLE)'}</span>
-                      </div>
-                    )}
+                    <button
+                      onClick={() => handleInspectArtwork(art.modelTarget)}
+                      className="px-3.5 py-1.5 bg-[#99EEFF] hover:bg-white text-black font-heading font-bold text-xs rounded flex items-center gap-1.5 transition-all shadow-md group-hover:shadow-[0_0_15px_rgba(153,238,255,0.6)] cursor-pointer"
+                    >
+                      <Eye className="w-3.5 h-3.5 text-black" />
+                      <span>{t.catalog.inspectBtn}</span>
+                    </button>
                   </div>
                 </div>
               ))}

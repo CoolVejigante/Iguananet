@@ -58,7 +58,7 @@ export type BuiltinModelId =
   | 'ATM'
   | 'ROBOT';
 
-export const NON_INSPECTABLE_MODELS: BuiltinModelId[] = ['MICROWAVE', 'GARITA'];
+export const NON_INSPECTABLE_MODELS: BuiltinModelId[] = [];
 
 /**
  * ============================================================================
@@ -1452,10 +1452,7 @@ export const IguanaInspectionBay: React.FC<IguanaInspectionBayProps> = ({
             <span className="font-heading font-bold text-white text-xs">
               {uploadedModelName || BLENDER_MODELS_REGISTRY[activeModelId]?.title || activeModelId}
             </span>
-            {(activeModelId === 'TERMINAL' ||
-              activeModelId === 'MICROWAVE' ||
-              activeModelId === 'GARITA' ||
-              activeModelId === 'ROBOT') &&
+            {(activeModelId === 'TERMINAL' || activeModelId === 'ROBOT') &&
               !uploadedModelName && (
                 <span className="px-1.5 py-0.2 bg-[#F57E00]/20 border border-[#F57E00]/50 text-[#F57E00] text-[9px] font-mono-telemetry rounded font-bold">
                   💥 EXPLODE READY
