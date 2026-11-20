@@ -709,7 +709,7 @@ export const IguanaInspectionBay: React.FC<IguanaInspectionBayProps> = ({
   }, []);
 
   // Configuración de nodos y vectores para el despiece automático
-  const setupExplodedComponents = useCallback((object: THREE.Object3D, currentId: BuiltinModelId) => {
+  const setupExplodedComponents = useCallback((object: THREE.Object3D, modelLabel: string) => {
     const comps: ExplodedComponent[] = [];
     const modelBox = new THREE.Box3().setFromObject(object);
     const modelCenter = modelBox.getCenter(new THREE.Vector3());
@@ -720,6 +720,14 @@ export const IguanaInspectionBay: React.FC<IguanaInspectionBayProps> = ({
         meshes.push(child as THREE.Mesh);
       }
     });
+
+    console.table([
+      {
+        modelo: modelLabel,
+        cantidadMeshHijos: meshes.length,
+        esExplosionable: meshes.length >= 2
+      }
+    ]);
 
     if (meshes.length > 1) {
       meshes.forEach((mesh, index) => {
@@ -948,7 +956,7 @@ export const IguanaInspectionBay: React.FC<IguanaInspectionBayProps> = ({
       uploadedModelRef.current.object = object;
 
       // 6. Configurar componentes dinámicos para la Vista Explosionada
-      setupExplodedComponents(object, activeModelId);
+      setupExplodedComponents(object, fileName);
 
       // 7. Actualización de telemetría de inspección (triangles/drawCalls se leen tras renderizar el frame)
       renderInfoRef.current.needsSync = true;
@@ -969,7 +977,7 @@ export const IguanaInspectionBay: React.FC<IguanaInspectionBayProps> = ({
       autoRotateRef.current = false;
       handleResetCamera();
     },
-    [handleResetCamera, setupExplodedComponents, activeModelId]
+    [handleResetCamera, setupExplodedComponents]
   );
 
   // ============================================================================
@@ -1323,6 +1331,8 @@ export const IguanaInspectionBay: React.FC<IguanaInspectionBayProps> = ({
   };
 
   const handleToggleExplodedView = () => {
+    if (activeExplodedCount < 2) return;
+
     const next = !isExplodedView;
     setIsExplodedView(next);
     soundEngine.playPillarSwitchSound();
@@ -1840,21 +1850,34 @@ export const IguanaInspectionBay: React.FC<IguanaInspectionBayProps> = ({
           </div>
 
           {/* Exploded View Toggle Button */}
-          <button
-            onClick={handleToggleExplodedView}
-            className={`px-3 py-1.5 rounded flex items-center gap-1.5 font-mono-telemetry font-bold border transition-all ${
-              isExplodedView
-                ? 'bg-[#F57E00] text-black border-[#F57E00] shadow-[0_0_15px_rgba(245,126,0,0.6)]'
-                : 'bg-[#244156] text-slate-200 border-[#99EEFF]/30 hover:border-[#99EEFF]'
-            }`}
-            title={language === 'es' ? 'Alternar vista explosionada de componentes' : 'Toggle exploded view'}
+          <span
+            className="inline-flex"
+            title={
+              activeExplodedCount < 2
+                ? 'Modelo de una sola malla; sin piezas separables'
+                : language === 'es'
+                  ? 'Alternar vista explosionada de componentes'
+                  : 'Toggle exploded view'
+            }
           >
-            <Split className="w-3.5 h-3.5" />
-            <span>
-              {language === 'es' ? 'VISTA EXPLOSIONADA' : 'EXPLODED VIEW'}
-              {activeExplodedCount > 0 ? ` [${activeExplodedCount}]` : ''}
-            </span>
-          </button>
+            <button
+              onClick={handleToggleExplodedView}
+              disabled={activeExplodedCount < 2}
+              className={`px-3 py-1.5 rounded flex items-center gap-1.5 font-mono-telemetry font-bold border transition-all ${
+                activeExplodedCount < 2
+                  ? 'bg-[#244156]/40 text-slate-500 border-slate-600/40 cursor-not-allowed opacity-60'
+                  : isExplodedView
+                    ? 'bg-[#F57E00] text-black border-[#F57E00] shadow-[0_0_15px_rgba(245,126,0,0.6)]'
+                    : 'bg-[#244156] text-slate-200 border-[#99EEFF]/30 hover:border-[#99EEFF]'
+              }`}
+            >
+              <Split className="w-3.5 h-3.5" />
+              <span>
+                {language === 'es' ? 'VISTA EXPLOSIONADA' : 'EXPLODED VIEW'}
+                {activeExplodedCount > 0 ? ` [${activeExplodedCount}]` : ''}
+              </span>
+            </button>
+          </span>
 
           {/* Sub-bar for Exploded View Slider and Controls */}
           {isExplodedView && (
