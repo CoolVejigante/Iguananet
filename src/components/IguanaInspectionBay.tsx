@@ -87,7 +87,6 @@ export interface BlenderModelMeta {
   category: string;
   fileName: string;
   relativePath: string;
-  hasDraco: boolean;
   targetScale: number;
   description: string;
 }
@@ -99,7 +98,6 @@ export const BLENDER_MODELS_REGISTRY: Record<BuiltinModelId, BlenderModelMeta> =
     category: 'Dispositivo Móvil & Hardware Retrofuturista',
     fileName: 'newsovphone.glb',
     relativePath: 'assets/models/newsovphone.glb',
-    hasDraco: true,
     targetScale: 3.2,
     description: 'Smartphone modular retrofuturista modelado a mano en Blender con acabado negro titanio, pantalla táctil y botones laterales.'
   },
@@ -109,7 +107,6 @@ export const BLENDER_MODELS_REGISTRY: Record<BuiltinModelId, BlenderModelMeta> =
     category: 'Mascota Cibernética & Escultura 3D',
     fileName: 'iguana.glb',
     relativePath: 'assets/models/iguana.glb',
-    hasDraco: true,
     targetScale: 3.3,
     description: 'Escultura emblemática de la Iguana modelada a mano en Blender con cresta bioluminiscente y topología anatómica en tiempo real.'
   },
@@ -119,7 +116,6 @@ export const BLENDER_MODELS_REGISTRY: Record<BuiltinModelId, BlenderModelMeta> =
     category: 'Patrimonio Cultural & Arqueología',
     fileName: 'plato_arqueologico.glb',
     relativePath: 'assets/models/plato_arqueologico.glb',
-    hasDraco: true,
     targetScale: 3.0,
     description: 'Reconstrucción arqueológica de plato ceremonial con iconografía ancestral, pátina porosa y compresión DRACO aplicada en Blender.'
   },
@@ -129,7 +125,6 @@ export const BLENDER_MODELS_REGISTRY: Record<BuiltinModelId, BlenderModelMeta> =
     category: 'ArchViz Modular Concept',
     fileName: 'modapar.glb',
     relativePath: 'assets/models/modapar.glb',
-    hasDraco: true,
     targetScale: 3.2,
     description: 'Concepto de apartamento modular con arquitectura retrofuturista, grandes ventanales y compresión DRACO v1.5.6.'
   },
@@ -139,7 +134,6 @@ export const BLENDER_MODELS_REGISTRY: Record<BuiltinModelId, BlenderModelMeta> =
     category: 'Electrodoméstico Sci-Fi & Props',
     fileName: 'ftrmicrowave.glb',
     relativePath: 'assets/models/ftrmicrowave.glb',
-    hasDraco: false,
     targetScale: 3.2,
     description: 'Unidad de microondas retrofuturista con interfaz digital táctil, cámara interna reforzada y acabado industrial.'
   },
@@ -149,7 +143,6 @@ export const BLENDER_MODELS_REGISTRY: Record<BuiltinModelId, BlenderModelMeta> =
     category: 'Patrimonio Cultural & ArchViz Prop',
     fileName: 'garita.glb',
     relativePath: 'assets/models/garita.glb',
-    hasDraco: true,
     targetScale: 3.2,
     description: 'Garita emblemática de inspiración colonial puertorriqueña adaptada con acabados reflectantes PBR y clearcoat.'
   },
@@ -159,7 +152,6 @@ export const BLENDER_MODELS_REGISTRY: Record<BuiltinModelId, BlenderModelMeta> =
     category: 'Hard Surface & Prop Urbano',
     fileName: 'newatm.glb',
     relativePath: 'assets/models/newatm.glb',
-    hasDraco: true,
     targetScale: 3.2,
     description: 'Terminal interactiva multiservicio y cajero automático retrofuturista con ranuras holográficas, pantalla curva y 3 sets UDIM.'
   },
@@ -169,7 +161,6 @@ export const BLENDER_MODELS_REGISTRY: Record<BuiltinModelId, BlenderModelMeta> =
     category: 'Personaje & Droide Cibernético',
     fileName: 'y2krobo.glb',
     relativePath: 'assets/models/y2krobo.glb',
-    hasDraco: false,
     targetScale: 3.5,
     description: 'Droide bípedo estilizado estética Y2K modelado en 6 módulos desacoplables (brazos, manos, cabeza, cuello, torso, piernas) con juntas bioluminiscentes.'
   }
@@ -217,7 +208,6 @@ export const IguanaInspectionBay: React.FC<IguanaInspectionBayProps> = ({
   const [isLoadingModel, setIsLoadingModel] = useState<boolean>(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
   const [isDragging, setIsDragging] = useState<boolean>(false);
-  const [isDracoActive, setIsDracoActive] = useState<boolean>(true);
   const [webglError, setWebglError] = useState<boolean>(false);
 
   // Exploded View State (Cinemática y Despiece 3D)
@@ -874,7 +864,8 @@ export const IguanaInspectionBay: React.FC<IguanaInspectionBayProps> = ({
       fileName: string,
       isDraco = false,
       targetScale = 3.2,
-      wireframeMode = false
+      wireframeMode = false,
+      compressionLabel?: string
     ) => {
       if (!sceneRefs.current.scene) return;
 
@@ -966,7 +957,9 @@ export const IguanaInspectionBay: React.FC<IguanaInspectionBayProps> = ({
         triangles: null,
         drawCalls: null,
         dimensionsMeters,
-        dracoStatus: isDraco ? 'DRACO v1.5.6 (GOOGLE CDN)' : 'GLTF / DRACO PBR'
+        dracoStatus:
+          compressionLabel ??
+          (isDraco ? 'DRACO v1.5.6 (GOOGLE CDN)' : 'GLTF / GLB (SIN DRACO)')
       });
 
       setUploadedModelName(fileName);
@@ -1026,10 +1019,13 @@ export const IguanaInspectionBay: React.FC<IguanaInspectionBayProps> = ({
       gltfLoader.load(
         resolvedUrl,
         (gltf) => {
+          const hasDraco = Boolean(
+            gltf.parser?.json?.extensionsUsed?.includes('KHR_draco_mesh_compression')
+          );
           processLoadedAsset(
             gltf.scene,
             `${meta.title} (${meta.fileName})`,
-            meta.hasDraco,
+            hasDraco,
             meta.targetScale,
             wireframeMode
           );
@@ -1507,19 +1503,24 @@ export const IguanaInspectionBay: React.FC<IguanaInspectionBayProps> = ({
           buffer,
           '',
           (gltf) => {
-            processLoadedAsset(gltf.scene, file.name, true);
+            const hasDraco = Boolean(
+              gltf.parser?.json?.extensionsUsed?.includes('KHR_draco_mesh_compression')
+            );
+            processLoadedAsset(gltf.scene, file.name, hasDraco);
+            dracoLoader.dispose();
           },
           (err) => {
             console.error('Error parseando GLTF/DRACO:', err);
             setUploadError('Error parseando el archivo 3D. Asegúrate de que sea un modelo .GLB/.GLTF válido.');
             setIsLoadingModel(false);
+            dracoLoader.dispose();
           }
         );
       } else if (ext === 'obj') {
         const text = await file.text();
         const objLoader = new OBJLoader();
         const obj = objLoader.parse(text);
-        processLoadedAsset(obj, file.name, false);
+        processLoadedAsset(obj, file.name, false, 3.2, false, 'SIN COMPRESIÓN');
       } else if (ext === 'stl') {
         const buffer = await file.arrayBuffer();
         const stlLoader = new STLLoader();
@@ -1532,7 +1533,7 @@ export const IguanaInspectionBay: React.FC<IguanaInspectionBayProps> = ({
         const mesh = new THREE.Mesh(geo, mat);
         const group = new THREE.Group();
         group.add(mesh);
-        processLoadedAsset(group, file.name, false);
+        processLoadedAsset(group, file.name, false, 3.2, false, 'SIN COMPRESIÓN');
       } else {
         setUploadError(`Formato ".${ext}" no soportado. Sube un archivo .glb, .gltf, .obj o .stl.`);
         setIsLoadingModel(false);
@@ -1720,8 +1721,14 @@ export const IguanaInspectionBay: React.FC<IguanaInspectionBayProps> = ({
             </div>
             <div className="flex justify-between items-center text-slate-300">
               <span className="text-slate-400">{t.inspectionBay.dracoStatus}:</span>
-              <span className="text-emerald-400 font-semibold text-[10px]">
-                ONLINE (GOOGLE CDN)
+              <span
+                className={`font-semibold text-[10px] ${
+                  stats.dracoStatus.includes('DRACO v1.5.6')
+                    ? 'text-emerald-400'
+                    : 'text-slate-300'
+                }`}
+              >
+                {stats.dracoStatus}
               </span>
             </div>
             {isExplodedView && (

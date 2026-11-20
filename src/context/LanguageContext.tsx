@@ -84,7 +84,6 @@ export interface Translations {
     triangles: string;
     drawCalls: string;
     dracoStatus: string;
-    dracoValue: string;
     currentAsset: string;
     activeBadge: string;
     dragDropPrompt: string;
@@ -322,7 +321,6 @@ export const translationsMap: Record<Language, Translations> = {
       triangles: 'TRIÁNGULOS',
       drawCalls: 'LLAMADAS DRAW',
       dracoStatus: 'ESTADO DRACO',
-      dracoValue: 'OPTIMIZADO (DRACO v1.5.6)',
       currentAsset: 'ASSET EN INSPECCIÓN:',
       activeBadge: 'ACTIVO',
       dragDropPrompt: 'Arrastra tu archivo .GLB, .GLTF o .OBJ aquí',
@@ -554,7 +552,6 @@ export const translationsMap: Record<Language, Translations> = {
       triangles: 'TRIANGLES',
       drawCalls: 'DRAW CALLS',
       dracoStatus: 'DRACO STATUS',
-      dracoValue: 'OPTIMIZED (DRACO v1.5.6)',
       currentAsset: 'ACTIVE ASSET:',
       activeBadge: 'ACTIVE',
       dragDropPrompt: 'Drag & drop your .GLB, .GLTF, or .OBJ file here',
