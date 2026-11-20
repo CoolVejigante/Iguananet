@@ -246,11 +246,32 @@ export const IguanaInspectionBay: React.FC<IguanaInspectionBayProps> = ({
     frameTimeMs: 16.7
   });
 
-  const [stats, setStats] = useState({
-    vertices: 2128,
-    triangles: 1712,
-    drawCalls: 4,
-    dracoStatus: 'OPTIMIZADO (DRACO v1.5.6)'
+  const renderInfoRef = useRef<{
+    calls: number | null;
+    triangles: number | null;
+    committedCalls: number | null;
+    committedTriangles: number | null;
+    needsSync: boolean;
+  }>({
+    calls: null,
+    triangles: null,
+    committedCalls: null,
+    committedTriangles: null,
+    needsSync: true
+  });
+
+  const [stats, setStats] = useState<{
+    vertices: number | null;
+    triangles: number | null;
+    drawCalls: number | null;
+    dimensionsMeters: { x: number; y: number; z: number } | null;
+    dracoStatus: string;
+  }>({
+    vertices: null,
+    triangles: null,
+    drawCalls: null,
+    dimensionsMeters: null,
+    dracoStatus: '—'
   });
 
   const sceneRefs = useRef<{
@@ -356,9 +377,6 @@ export const IguanaInspectionBay: React.FC<IguanaInspectionBayProps> = ({
       wireframe: wireframeMode
     });
 
-    let vertCount = 0;
-    let triCount = 0;
-
     if (type === 'TERMINAL') {
       // 1. Retro Cyber Terminal / Smartphone
       // Main Console Body
@@ -429,9 +447,6 @@ export const IguanaInspectionBay: React.FC<IguanaInspectionBayProps> = ({
         fin.name = `Aleta Disipadora ${j + 1}`;
         group.add(fin);
       }
-
-      vertCount = 2128;
-      triCount = 1712;
     } else if (type === 'DRONE') {
       // 2. Recon Drone Iguana-X
       const bodyGeo = new THREE.CapsuleGeometry(0.7, 1.8, 16, 24);
@@ -481,9 +496,6 @@ export const IguanaInspectionBay: React.FC<IguanaInspectionBayProps> = ({
       antenna.rotation.x = -0.3;
       antenna.name = 'Antena Direccional';
       group.add(antenna);
-
-      vertCount = 36991;
-      triCount = 67924;
     } else if (type === 'ARCHVIZ') {
       // 3. Plato Arqueológico Ceremonial (Patrimonio Cultural)
       const plateRimGeo = new THREE.CylinderGeometry(2.4, 2.1, 0.22, 32);
@@ -512,9 +524,6 @@ export const IguanaInspectionBay: React.FC<IguanaInspectionBayProps> = ({
         glyph.name = `Relieve Glífico ${g + 1}`;
         group.add(glyph);
       }
-
-      vertCount = 192;
-      triCount = 256;
     } else if (type === 'FUSION_CORE') {
       // 4. FUSION_CORE: Apartamento Retrofuturista (ArchViz Modular Concept)
       // Losa de cimentación y pedestal
@@ -561,9 +570,6 @@ export const IguanaInspectionBay: React.FC<IguanaInspectionBayProps> = ({
         louver.name = `Persiana Louver Solar ${k + 1}`;
         group.add(louver);
       }
-
-      vertCount = 7342;
-      triCount = 5556;
     } else if (type === 'MICROWAVE') {
       const body = new THREE.Mesh(new THREE.BoxGeometry(2.4, 1.5, 1.6), darkChassisMat);
       body.name = 'Chasis Microondas';
@@ -577,8 +583,6 @@ export const IguanaInspectionBay: React.FC<IguanaInspectionBayProps> = ({
       dial.rotation.x = Math.PI / 2;
       dial.name = 'Dial Selector Táctil';
       group.add(dial);
-      vertCount = 8029;
-      triCount = 8802;
     } else if (type === 'GARITA') {
       const turret = new THREE.Mesh(new THREE.CylinderGeometry(1.1, 1.3, 2.2, 16), steelMat);
       turret.name = 'Cuerpo Cilindro Garita';
@@ -587,8 +591,6 @@ export const IguanaInspectionBay: React.FC<IguanaInspectionBayProps> = ({
       dome.position.y = 1.1;
       dome.name = 'Cúpula Colonial Garita';
       group.add(dome);
-      vertCount = 4273;
-      triCount = 6122;
     } else if (type === 'ATM') {
       const terminal = new THREE.Mesh(new THREE.BoxGeometry(1.8, 3.2, 1.4), darkChassisMat);
       terminal.name = 'Chasis Terminal ATM';
@@ -597,8 +599,6 @@ export const IguanaInspectionBay: React.FC<IguanaInspectionBayProps> = ({
       screen.position.set(0, 0.6, 0.72);
       screen.name = 'Pantalla Interfaz ATM';
       group.add(screen);
-      vertCount = 4991;
-      triCount = 4821;
     } else if (type === 'ROBOT') {
       const torso = new THREE.Mesh(new THREE.BoxGeometry(1.2, 1.4, 0.9), darkChassisMat);
       torso.name = 'Torso Droide Y2K';
@@ -612,15 +612,31 @@ export const IguanaInspectionBay: React.FC<IguanaInspectionBayProps> = ({
       eye.rotation.x = Math.PI / 2;
       eye.name = 'Visor Óptico';
       group.add(eye);
-      vertCount = 44710;
-      triCount = 24712;
     }
 
+    let realVerts = 0;
+    group.traverse((node) => {
+      if ((node as THREE.Mesh).isMesh) {
+        const pos = (node as THREE.Mesh).geometry?.attributes?.position;
+        if (pos) realVerts += pos.count;
+      }
+    });
+    const fallbackSize = new THREE.Box3().setFromObject(group).getSize(new THREE.Vector3());
+    const hasFallbackSize =
+      isFinite(fallbackSize.x) &&
+      isFinite(fallbackSize.y) &&
+      isFinite(fallbackSize.z) &&
+      (fallbackSize.x > 0 || fallbackSize.y > 0 || fallbackSize.z > 0);
+
+    renderInfoRef.current.needsSync = true;
     setStats({
-      vertices: vertCount,
-      triangles: triCount,
-      drawCalls: group.children.length,
-      dracoStatus: 'OPTIMIZADO (DRACO v1.5.6)'
+      vertices: realVerts > 0 ? realVerts : null,
+      triangles: null,
+      drawCalls: null,
+      dimensionsMeters: hasFallbackSize
+        ? { x: fallbackSize.x, y: fallbackSize.y, z: fallbackSize.z }
+        : null,
+      dracoStatus: 'PROCEDURAL FALLBACK'
     });
 
     return group;
@@ -872,8 +888,6 @@ export const IguanaInspectionBay: React.FC<IguanaInspectionBayProps> = ({
       uploadedModelRef.current.originalMaterialsMap.clear();
 
       let totalVerts = 0;
-      let totalTris = 0;
-      let meshCount = 0;
 
       // 2. Travesía de la jerarquía de nodos de Blender
       object.traverse((node) => {
@@ -881,7 +895,6 @@ export const IguanaInspectionBay: React.FC<IguanaInspectionBayProps> = ({
           const mesh = node as THREE.Mesh;
           mesh.castShadow = true;
           mesh.receiveShadow = true;
-          meshCount++;
 
           // Almacenar el material PBR original para alternar wireframe sin pérdida de texturas
           if (mesh.material) {
@@ -905,11 +918,6 @@ export const IguanaInspectionBay: React.FC<IguanaInspectionBayProps> = ({
           if (mesh.geometry) {
             const pos = mesh.geometry.attributes.position;
             if (pos) totalVerts += pos.count;
-            if (mesh.geometry.index) {
-              totalTris += Math.round(mesh.geometry.index.count / 3);
-            } else if (pos) {
-              totalTris += Math.floor(pos.count / 3);
-            }
           }
         }
       });
@@ -918,6 +926,15 @@ export const IguanaInspectionBay: React.FC<IguanaInspectionBayProps> = ({
       const box = new THREE.Box3().setFromObject(object);
       const center = box.getCenter(new THREE.Vector3());
       const size = box.getSize(new THREE.Vector3());
+
+      const hasValidSize =
+        isFinite(size.x) &&
+        isFinite(size.y) &&
+        isFinite(size.z) &&
+        (size.x > 0 || size.y > 0 || size.z > 0);
+      const dimensionsMeters = hasValidSize
+        ? { x: size.x, y: size.y, z: size.z }
+        : null;
 
       object.position.sub(center);
       wrapper.add(object);
@@ -942,11 +959,13 @@ export const IguanaInspectionBay: React.FC<IguanaInspectionBayProps> = ({
       // 6. Configurar componentes dinámicos para la Vista Explosionada
       setupExplodedComponents(object, activeModelId);
 
-      // 7. Actualización de telemetría de inspección
+      // 7. Actualización de telemetría de inspección (triangles/drawCalls se leen tras renderizar el frame)
+      renderInfoRef.current.needsSync = true;
       setStats({
-        vertices: totalVerts > 0 ? totalVerts : 3200,
-        triangles: totalTris > 0 ? totalTris : 5100,
-        drawCalls: meshCount > 0 ? meshCount : 1,
+        vertices: totalVerts > 0 ? totalVerts : null,
+        triangles: null,
+        drawCalls: null,
+        dimensionsMeters,
         dracoStatus: isDraco ? 'DRACO v1.5.6 (GOOGLE CDN)' : 'GLTF / DRACO PBR'
       });
 
@@ -1121,6 +1140,48 @@ export const IguanaInspectionBay: React.FC<IguanaInspectionBayProps> = ({
     grid.position.y = -1.6;
     scene.add(grid);
 
+    // Barra de referencia física de 1.00 m sobre el pedestal + etiqueta
+    const scaleRefGroup = new THREE.Group();
+    scaleRefGroup.position.set(2.4, -1.6, 2.2);
+
+    const barMat = new THREE.MeshBasicMaterial({ color: 0xf57e00 });
+    const capMat = new THREE.MeshBasicMaterial({ color: 0x99eeff });
+    const barGeo = new THREE.BoxGeometry(1.0, 0.04, 0.06);
+    const capGeo = new THREE.BoxGeometry(0.04, 0.14, 0.14);
+
+    const scaleBar = new THREE.Mesh(barGeo, barMat);
+    scaleBar.position.y = 0.02;
+    const capLeft = new THREE.Mesh(capGeo, capMat);
+    capLeft.position.set(-0.5, 0.07, 0);
+    const capRight = new THREE.Mesh(capGeo, capMat);
+    capRight.position.set(0.5, 0.07, 0);
+    scaleRefGroup.add(scaleBar, capLeft, capRight);
+
+    const labelCanvas = document.createElement('canvas');
+    labelCanvas.width = 256;
+    labelCanvas.height = 64;
+    const lctx = labelCanvas.getContext('2d');
+    if (lctx) {
+      lctx.fillStyle = 'rgba(14, 27, 36, 0.9)';
+      lctx.fillRect(4, 4, 248, 56);
+      lctx.strokeStyle = '#99EEFF';
+      lctx.lineWidth = 3;
+      lctx.strokeRect(4, 4, 248, 56);
+      lctx.fillStyle = '#FFFFFF';
+      lctx.font = 'bold 28px monospace';
+      lctx.textAlign = 'center';
+      lctx.textBaseline = 'middle';
+      lctx.fillText('1.00 m', 128, 34);
+    }
+    const labelTex = new THREE.CanvasTexture(labelCanvas);
+    labelTex.colorSpace = THREE.SRGBColorSpace;
+    const labelMat = new THREE.SpriteMaterial({ map: labelTex, transparent: true });
+    const labelSprite = new THREE.Sprite(labelMat);
+    labelSprite.position.set(0, 0.32, 0);
+    labelSprite.scale.set(0.95, 0.24, 1);
+    scaleRefGroup.add(labelSprite);
+    scene.add(scaleRefGroup);
+
     // Grupo para líneas guía CAD vectoriales de la Vista Explosionada
     const guideLinesGroup = new THREE.Group();
     scene.add(guideLinesGroup);
@@ -1154,10 +1215,7 @@ export const IguanaInspectionBay: React.FC<IguanaInspectionBayProps> = ({
       }
       perf.lastTime = now;
 
-      if (now - perf.lastUiUpdate >= 500 && perf.deltas.length > 0) {
-        perf.lastUiUpdate = now;
-        setPerfStats({ fps: perf.fps, frameTimeMs: perf.frameTimeMs });
-      }
+      const shouldUpdateUi = now - perf.lastUiUpdate >= 500;
 
       if (sceneRefs.current.currentMeshGroup && autoRotateRef.current) {
         sceneRefs.current.currentMeshGroup.rotation.y += 0.005;
@@ -1173,6 +1231,33 @@ export const IguanaInspectionBay: React.FC<IguanaInspectionBayProps> = ({
 
       controls.update();
       renderer.render(scene, camera);
+
+      const renderCalls = renderer.info.render.calls;
+      const renderTris = renderer.info.render.triangles;
+      renderInfoRef.current.calls = renderCalls;
+      renderInfoRef.current.triangles = renderTris;
+
+      if (shouldUpdateUi && perf.deltas.length > 0) {
+        perf.lastUiUpdate = now;
+        setPerfStats({ fps: perf.fps, frameTimeMs: perf.frameTimeMs });
+      }
+
+      if (
+        renderInfoRef.current.needsSync ||
+        (shouldUpdateUi &&
+          (renderInfoRef.current.committedCalls !== renderCalls ||
+            renderInfoRef.current.committedTriangles !== renderTris))
+      ) {
+        renderInfoRef.current.needsSync = false;
+        renderInfoRef.current.committedCalls = renderCalls;
+        renderInfoRef.current.committedTriangles = renderTris;
+        setStats((prev) => ({
+          ...prev,
+          triangles: renderTris > 0 ? renderTris : null,
+          drawCalls: renderCalls > 0 ? renderCalls : null
+        }));
+      }
+
       animId = requestAnimationFrame(animate);
     };
     animId = requestAnimationFrame(animate);
@@ -1198,6 +1283,12 @@ export const IguanaInspectionBay: React.FC<IguanaInspectionBayProps> = ({
       if (sceneRefs.current.currentMeshGroup) {
         disposeGroup(sceneRefs.current.currentMeshGroup);
       }
+      barGeo.dispose();
+      capGeo.dispose();
+      barMat.dispose();
+      capMat.dispose();
+      labelTex.dispose();
+      labelMat.dispose();
       pmremGenerator.dispose();
       try {
         renderer.forceContextLoss();
@@ -1596,15 +1687,36 @@ export const IguanaInspectionBay: React.FC<IguanaInspectionBayProps> = ({
           <div className="space-y-1.5 font-mono-telemetry text-[11px]">
             <div className="flex justify-between items-center text-slate-300">
               <span className="text-slate-400">{t.inspectionBay.vertices}:</span>
-              <span className="text-[#99EEFF] font-bold">{stats.vertices.toLocaleString()}</span>
+              <span className="text-[#99EEFF] font-bold">
+                {stats.vertices !== null ? stats.vertices.toLocaleString() : '—'}
+              </span>
             </div>
             <div className="flex justify-between items-center text-slate-300">
               <span className="text-slate-400">{t.inspectionBay.triangles} / TRIS:</span>
-              <span className="text-[#F57E00] font-bold">{stats.triangles.toLocaleString()}</span>
+              <span className="text-[#F57E00] font-bold">
+                {stats.triangles !== null ? stats.triangles.toLocaleString() : '—'}
+              </span>
             </div>
             <div className="flex justify-between items-center text-slate-300">
               <span className="text-slate-400">{t.inspectionBay.drawCalls}:</span>
-              <span className="text-white font-bold">{stats.drawCalls}</span>
+              <span className="text-white font-bold">
+                {stats.drawCalls !== null ? stats.drawCalls : '—'}
+              </span>
+            </div>
+            <div className="pt-1 border-t border-[#99EEFF]/15 space-y-0.5">
+              <div className="flex justify-between items-center text-slate-300 gap-2">
+                <span className="text-slate-400">
+                  {language === 'es' ? 'Dim. (1u = 1 m):' : 'Dim. (1u = 1 m):'}
+                </span>
+                <span className="text-[#99EEFF] font-bold text-right">
+                  {stats.dimensionsMeters
+                    ? `${stats.dimensionsMeters.x.toFixed(2)} × ${stats.dimensionsMeters.y.toFixed(2)} × ${stats.dimensionsMeters.z.toFixed(2)} m`
+                    : '—'}
+                </span>
+              </div>
+              <div className="text-[9px] text-[#F57E00] font-bold tracking-wider uppercase">
+                {language === 'es' ? 'ESCALA VISUAL NORMALIZADA' : 'VISUAL SCALE NORMALIZED'}
+              </div>
             </div>
             <div className="flex justify-between items-center text-slate-300">
               <span className="text-slate-400">{t.inspectionBay.dracoStatus}:</span>
