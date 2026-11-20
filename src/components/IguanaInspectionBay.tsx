@@ -234,6 +234,18 @@ export const IguanaInspectionBay: React.FC<IguanaInspectionBayProps> = ({
   const autoRotateRef = useRef<boolean>(false);
   const showGuideLinesRef = useRef<boolean>(true);
 
+  const perfMonitorRef = useRef<{
+    lastTime: number;
+    deltas: number[];
+    lastUiUpdate: number;
+    fps: number;
+    frameTimeMs: number;
+  }>({ lastTime: 0, deltas: [], lastUiUpdate: 0, fps: 60, frameTimeMs: 16.7 });
+  const [perfStats, setPerfStats] = useState<{ fps: number; frameTimeMs: number }>({
+    fps: 60,
+    frameTimeMs: 16.7
+  });
+
   const [stats, setStats] = useState({
     vertices: 2128,
     triangles: 1712,
@@ -1119,7 +1131,34 @@ export const IguanaInspectionBay: React.FC<IguanaInspectionBayProps> = ({
 
     // 7. Bucle de renderizado a 60 FPS con auto-rotación y auto-explosión
     let animId: number;
+    const initPerfTime = performance.now();
+    perfMonitorRef.current.lastTime = initPerfTime;
+    perfMonitorRef.current.lastUiUpdate = initPerfTime;
+    perfMonitorRef.current.deltas = [];
+
     const animate = () => {
+      const now = performance.now();
+      const perf = perfMonitorRef.current;
+      if (perf.lastTime > 0) {
+        const delta = now - perf.lastTime;
+        if (delta > 0 && delta < 1000) {
+          perf.deltas.push(delta);
+          if (perf.deltas.length > 30) {
+            perf.deltas.shift();
+          }
+          const avgDelta =
+            perf.deltas.reduce((sum, d) => sum + d, 0) / perf.deltas.length;
+          perf.frameTimeMs = avgDelta;
+          perf.fps = Math.round(1000 / avgDelta);
+        }
+      }
+      perf.lastTime = now;
+
+      if (now - perf.lastUiUpdate >= 500 && perf.deltas.length > 0) {
+        perf.lastUiUpdate = now;
+        setPerfStats({ fps: perf.fps, frameTimeMs: perf.frameTimeMs });
+      }
+
       if (sceneRefs.current.currentMeshGroup && autoRotateRef.current) {
         sceneRefs.current.currentMeshGroup.rotation.y += 0.005;
       }
@@ -1541,8 +1580,16 @@ export const IguanaInspectionBay: React.FC<IguanaInspectionBayProps> = ({
                 {language === 'es' ? 'TELEMETRÍA TÉCNICA' : 'TECHNICAL TELEMETRY'}
               </span>
             </div>
-            <span className="text-[10px] px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-mono-telemetry border border-emerald-500/40">
-              60 FPS OK
+            <span
+              className={`text-[10px] px-1.5 py-0.5 rounded font-mono-telemetry border whitespace-nowrap shrink-0 ${
+                perfStats.fps >= 55
+                  ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40'
+                  : perfStats.fps >= 30
+                    ? 'bg-amber-500/20 text-amber-300 border-amber-500/40'
+                    : 'bg-red-500/20 text-red-300 border-red-500/40'
+              }`}
+            >
+              {perfStats.fps} FPS · {perfStats.frameTimeMs.toFixed(1)} ms
             </span>
           </div>
 

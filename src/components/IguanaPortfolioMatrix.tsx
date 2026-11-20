@@ -918,7 +918,7 @@ export const IguanaPortfolioMatrix: React.FC = () => {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {/* ArtStation */}
             <a
-              href="https://www.artstation.com"
+              href="https://www.artstation.com/theoldlegion"
               target="_blank"
               rel="noreferrer"
               className="group p-4 bg-[#162937]/80 hover:bg-[#1f384c] border border-[#99EEFF]/30 hover:border-[#99EEFF] clip-chamfer-45 transition-all duration-300 shadow-lg hover:shadow-[0_0_25px_rgba(153,238,255,0.35)] flex items-center justify-between"
@@ -931,9 +931,6 @@ export const IguanaPortfolioMatrix: React.FC = () => {
                   <h4 className="font-heading font-bold text-white text-sm group-hover:text-[#99EEFF] transition-colors">
                     ARTSTATION
                   </h4>
-                  <span className="text-[11px] font-mono-telemetry text-slate-400">
-                    {t.identityHub.artstationSub}
-                  </span>
                 </div>
               </div>
               <ExternalLink className="w-4 h-4 text-slate-400 group-hover:text-[#99EEFF] group-hover:translate-x-0.5 transition-transform" />
@@ -941,7 +938,7 @@ export const IguanaPortfolioMatrix: React.FC = () => {
 
             {/* LinkedIn */}
             <a
-              href="https://www.linkedin.com"
+              href="https://www.linkedin.com/in/luis-e-a-font%C3%A1nez-casanova-b1a9272a5/"
               target="_blank"
               rel="noreferrer"
               className="group p-4 bg-[#162937]/80 hover:bg-[#1f384c] border border-[#99EEFF]/30 hover:border-[#99EEFF] clip-chamfer-45 transition-all duration-300 shadow-lg hover:shadow-[0_0_25px_rgba(153,238,255,0.35)] flex items-center justify-between"
@@ -954,9 +951,6 @@ export const IguanaPortfolioMatrix: React.FC = () => {
                   <h4 className="font-heading font-bold text-white text-sm group-hover:text-[#99EEFF] transition-colors">
                     LINKEDIN
                   </h4>
-                  <span className="text-[11px] font-mono-telemetry text-slate-400">
-                    {t.identityHub.linkedinSub}
-                  </span>
                 </div>
               </div>
               <ExternalLink className="w-4 h-4 text-slate-400 group-hover:text-[#99EEFF] group-hover:translate-x-0.5 transition-transform" />
@@ -964,7 +958,7 @@ export const IguanaPortfolioMatrix: React.FC = () => {
 
             {/* Instagram */}
             <a
-              href="https://www.instagram.com"
+              href="https://www.instagram.com/iguana3dart/?hl=es"
               target="_blank"
               rel="noreferrer"
               className="group p-4 bg-[#162937]/80 hover:bg-[#1f384c] border border-[#F57E00]/40 hover:border-[#F57E00] clip-chamfer-45 transition-all duration-300 shadow-lg hover:shadow-[0_0_25px_rgba(245,126,0,0.35)] flex items-center justify-between"
@@ -977,9 +971,6 @@ export const IguanaPortfolioMatrix: React.FC = () => {
                   <h4 className="font-heading font-bold text-white text-sm group-hover:text-[#F57E00] transition-colors">
                     INSTAGRAM
                   </h4>
-                  <span className="text-[11px] font-mono-telemetry text-slate-400">
-                    {t.identityHub.instagramSub}
-                  </span>
                 </div>
               </div>
               <ExternalLink className="w-4 h-4 text-slate-400 group-hover:text-[#F57E00] group-hover:translate-x-0.5 transition-transform" />
