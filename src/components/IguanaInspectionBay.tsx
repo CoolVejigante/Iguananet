@@ -650,7 +650,7 @@ export const IguanaInspectionBay: React.FC<IguanaInspectionBayProps> = ({
   // ============================================================================
   // MOTOR DE VISTA EXPLOSIONADA (DISASSEMBLY & EXPLODED VIEW VECTOR ENGINE)
   // ============================================================================
-  const applyExplosion = useCallback((factor: number) => {
+  const applyExplosion = useCallback((factor = explodeFactorRef.current) => {
     const comps = explodedComponentsRef.current;
     if (!comps || comps.length === 0) return;
 
@@ -1194,14 +1194,30 @@ export const IguanaInspectionBay: React.FC<IguanaInspectionBayProps> = ({
     // Cargar inmediatamente el modelo inicial manual hecho en Blender
     loadBlenderGlbModel(activeModelId, isWireframe);
 
-    // 7. Bucle de renderizado a 60 FPS con auto-rotación y auto-explosión
-    let animId: number;
+    // 7. Bucle de renderizado a 60 FPS con auto-rotación, auto-explosión y pausa fuera de pantalla
+    let animId = 0;
+    let isVisible = true;
+    let isDisposed = false;
     const initPerfTime = performance.now();
+    let lastExplodeUiUpdate = initPerfTime;
     perfMonitorRef.current.lastTime = initPerfTime;
     perfMonitorRef.current.lastUiUpdate = initPerfTime;
     perfMonitorRef.current.deltas = [];
 
+    const stopLoop = () => {
+      if (animId !== 0) {
+        cancelAnimationFrame(animId);
+        animId = 0;
+      }
+      perfMonitorRef.current.lastTime = 0;
+    };
+
     const animate = () => {
+      if (!isVisible || isDisposed) {
+        animId = 0;
+        return;
+      }
+
       const now = performance.now();
       const perf = perfMonitorRef.current;
       if (perf.lastTime > 0) {
@@ -1226,11 +1242,14 @@ export const IguanaInspectionBay: React.FC<IguanaInspectionBayProps> = ({
       }
 
       if (autoExplodeRef.current) {
-        const time = performance.now() * 0.0014;
+        const time = now * 0.0014;
         const factor = (Math.sin(time) + 1) * 0.45;
         explodeFactorRef.current = factor;
-        setExplodeFactor(factor);
-        applyExplosion(factor);
+        applyExplosion();
+        if (now - lastExplodeUiUpdate >= 100) {
+          lastExplodeUiUpdate = now;
+          setExplodeFactor(explodeFactorRef.current);
+        }
       }
 
       controls.update();
@@ -1262,9 +1281,35 @@ export const IguanaInspectionBay: React.FC<IguanaInspectionBayProps> = ({
         }));
       }
 
+      animId = 0;
+      if (isVisible && !isDisposed) {
+        animId = requestAnimationFrame(animate);
+      }
+    };
+
+    const startLoop = () => {
+      if (!isVisible || isDisposed || animId !== 0) return;
+      perfMonitorRef.current.lastTime = performance.now();
       animId = requestAnimationFrame(animate);
     };
-    animId = requestAnimationFrame(animate);
+
+    startLoop();
+
+    // Pausar renderizado cuando el visor sale de pantalla y reanudar al volver
+    const intersectionObserver = new IntersectionObserver(
+      (entries) => {
+        const entry = entries[0];
+        if (!entry) return;
+        isVisible = entry.isIntersecting;
+        if (isVisible) {
+          startLoop();
+        } else {
+          stopLoop();
+        }
+      },
+      { threshold: 0.01 }
+    );
+    intersectionObserver.observe(container);
 
     // Observer de redimensionamiento responsivo
     const resizeObserver = new ResizeObserver((entries) => {
@@ -1280,7 +1325,9 @@ export const IguanaInspectionBay: React.FC<IguanaInspectionBayProps> = ({
     resizeObserver.observe(container);
 
     return () => {
-      cancelAnimationFrame(animId);
+      isDisposed = true;
+      stopLoop();
+      intersectionObserver.disconnect();
       resizeObserver.disconnect();
       renderer.domElement.removeEventListener('webglcontextlost', onContextLost);
 
@@ -1358,6 +1405,8 @@ export const IguanaInspectionBay: React.FC<IguanaInspectionBayProps> = ({
     soundEngine.playClickSound();
     if (next && !isExplodedView) {
       setIsExplodedView(true);
+    } else if (!next) {
+      setExplodeFactor(explodeFactorRef.current);
     }
   };
 
