@@ -1,0 +1,11 @@
+﻿Prompt de Auditoría de IA Initiates (Fase 2)
+Instrucciones para el Initiate: Copia el texto que aparece en el bloque a continuación exactamente como está. Pégalo como tu próximo mensaje en el mismo hilo de conversación principal que has estado utilizando con Gemini/Google AI Studio para desarrollar tu proyecto.
+Una vez que la IA te responda, debes guardar esa respuesta cruda para compartir brevemente sus conclusiones (Calificación y Consejo) durante el Beat 4 de tu presentación Alfa este domingo.
+
+
+[COPIAR Y PEGAR ESTE TEXTO]:
+"Actúa como un evaluador técnico externo de nivel Senior (C-Suite) que está auditando mi historial completo en esta conversación. Tu objetivo es analizar mi comportamiento como desarrollador y mi nivel de rigor al colaborar contigo. Responde de forma directa, analítica y sin lenguaje edulcorado las siguientes tres preguntas, basándote exclusivamente en la evidencia de cómo te he hablado y pedido las cosas en este hilo:
+1. Nivel de Delegación vs. Troubleshooting: ¿Suelo pedirte que resuelvas mis problemas desde cero para yo solo hacer copy-paste, o te propongo lógicas, hago preguntas para entender los errores y discutimos soluciones técnicas juntos? Dame un ejemplo concreto de cómo me comporto cuando algo se rompe en el código.
+2. Iteración de Ideas: Cuando trabajamos en el pitch o en el concepto del proyecto, ¿acepto tu primera sugerencia sin cuestionar, o itero, refuto ideas y te proveo contexto adicional (como documentos o presentaciones) para afinar el resultado?
+3. Veredicto y Calificación: En una escala del 1 al 10, ¿qué calificación exacta me otorgas en 'Independencia Técnica y Rigor'? Finalmente, dame un solo consejo crudo y directo sobre qué debo dejar de hacer inmediatamente para no depender tanto de ti y utilizar mis propias habilidades de manera más estratégica.
+Genera tu análisis ahora, manteniendo un tono profesional, objetivo y estrictamente basado en nuestro historial."

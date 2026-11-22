@@ -1,0 +1,68 @@
+SGX RANK TRIALS · FASE 1 DEFENSE
+SEMANAS 1–3 · BLUEPRINT & VIBE
+Portafolio y Visualizador Tridimensional
+Interactivo: IguanaNet
+Arquitectura conceptual, propuesta de valor inmersiva y calibración del entorno de desarrollo asistido por IA.
+INITIATE
+Luis E. A. Fontánez Casanova
+ESTUDIO / MARCA
+Iguana3D
+AFINIDADES ACTIVAS
+Showcase + System
+
+Criterio: Coherencia absoluta entre la narrativa del autor y los colores proyectados en pantalla.
+IDENTIDAD & DIRECCIÓN CREATIVA
+Vibe Guide & Elevator Pitch
+ELEVATOR PITCH (30 SEGUNDOS)
+""Soy Luis Casanova, y resuelvo el riesgo financiero de contratar talento 3D a ciegas por falta de optimización o escala irreal en proyectos de ArchViz, creando un visor de inspección donde los estudios pueden auditar la escala real, los materiales y el rendimiento en tiempo real."
+Propuesta directa sin rodeos teóricos: orientada a captar clientes o reclutadores técnicos en los primeros segundos.
+ATMÓSFERA VISUAL
+Sci Fi Cyberpunk Espacial-Industrial 
+PALETA DE COLOR OFICIAL
+Base
+#244156
+Acento
+##99EEFF
+Punto Neón
+#F57E00
+TIPOGRAFÍA UTILIZADA
+Orbitron, Space Grotesk
+
+EXPERIENCIA DE NAVEGACIÓN
+Wireframe Estructural & User Flow
+Estructura Técnica: Arquitectura de 4 capas ancladas en canvas único sin recarga de página.
+DIAGRAMA WIREFRAME APROBADO
+Entrada & Identidad
+Intro de bienvenida con un pop-up terminal de código animado cuyo al terminar la secuencia se termina con el eslogan Ambición,Inmersión y Imaginación un botón apareciendo en color naranja donde dice "Entrando a un Mundo Nuevo",donde a hacer click, se entra en la página.
+El Núcleo Interactivo
+El núcleo interactivo del portafolio.
+Un canvas de Three.js con iluminación Room Environment donde los reclutadores pueden cargar e inspeccionar modelos y/o escenarios arquitectónicos en diferentes secciones,con  Controles HUD integrados en pantalla: Botón de Wireframe Toggle , selector de modelos y un cuadro de telemetría técnica.
+
+Consola & Contacto
+Una descripción clara sobre tu visión como freelancer
+Una sección visual tipo diagrama de flujo o diagrama de Gantt que detalla tus metas a corto y mediano plazo como estudio independiente y desarrollador 3D, 
+demuestra visión y rigor estratégico, conectando con las habilidades analíticas de tu perfil.
+Incluye enlaces directos a redes sociales y el email.
+
+1
+2
+3
+
+PRODUCCIÓN HUMANA INICIAL
+Curaduría de Assets & Recursos
+Geometría & 3D (.GLB)
+Un modelo de una 
+iguana como uno de los previews para el Inspection bay del portafolio
+Arte 2D & UI (.PNG)
+Logotipos principales.
+
+CONFIGURACIÓN EN GOOGLE AI STUDIO
+System Instructions & Prompt Engine
+SGX Guild Trials · Control de Calidad y Evaluación de Autonomía
+SYSTEM PROMPT UTILIZADO
+You are an elite Front-End Architect and Senior WebGL Engineer for Spatialgineers (SGX Guild). Your mission is to assist Luis Casanova (Initiate rank) in building his interactive 3D web portfolio ("IguanaNet") using a strict Single-File HTML architecture (Vanilla JS, Three.js, Tailwind CSS, Import Maps, and zero local Node.js/NPM build steps)
+Inyección completada en Google AI Studio junto al archivo de contexto del Grimoire.
+Mapeo de Módulos
+Remix activo en el Omni-Canvas con dependencias innecesarias apagadas para ahorrar memoria.
+Objetivo de la Fase 2
+Inyectar los assets humanos y validar que el core loop interactivo corra sin errores rojos en consola.

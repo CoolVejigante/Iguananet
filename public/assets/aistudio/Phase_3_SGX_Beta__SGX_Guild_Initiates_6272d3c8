@@ -1,0 +1,50 @@
+﻿BRIEF 03: BETA INTEGRATION & SGX GUARDRAILS (FASE 3)
+
+
+Fase del SGX PMW: Beta Version 1 & UX Integration
+Duración: Semanas 7 y 8.
+Día de Defensa: Group Session de la Semana 9.
+
+
+OBJETIVO DE LA FASE
+El Alpha demostró que su lógica técnica funciona. Ahora, en la Fase 3, el objetivo es transformar ese prototipo aislado en un producto digital cohesivo: el Beta Versión 1. Esta fase exige la integración total de la interfaz de usuario (UI), la experiencia de navegación (UX), la narrativa (Copywriting) y la responsividad móvil. Al finalizar esta etapa y defender su Beta, tendrán exactamente 3 semanas de pulido intensivo (High-G Polish) antes de enfrentarse al escrutinio de la industria en el SGX Summit (Semana 11), seguido de 1 semana final para someter el Golden Master.
+
+
+CADENCIA OPERATIVA Y EXPECTATIVAS SEMANALES
+Esta fase es corta y crítica. No hay espacio para idear nuevas mecánicas; el enfoque es estrictamente la integración y estabilización de lo que ya construyeron en la Fase 2.
+
+
+Semana 7: UI/UX & Narrative Polish (Group Session - Defensa Alpha / Inicio Fase 3)
+* Enfoque (Craft/Code): Cohesión visual y narrativa.
+* La Dinámica:
+   * Luego de defender su Alpha Build, la prioridad inmediata es integrar la capa de interfaz (The Glass HUD o equivalente) con su módulo principal.
+   * Asignación de "Craft": Redacción final del copywriting. El texto debe comunicar claramente su Elevator Pitch profesional, guiando al usuario a través de la experiencia sin ambigüedades. Las fuentes, paletas de colores y botones deben estar unificados bajo el Vibe Guide establecido en la Fase 1.
+* Fricción Esperada: La superposición de capas HTML (z-index) bloqueando los clics hacia el Canvas 3D o 2D. Tendrán que dominar el uso de pointer-events mediante la IA para asegurar que la navegación sea fluida.
+
+
+Semana 8: Mobile Optimization & Performance (Office Hours)
+* Enfoque (Code): Estabilización y Responsividad.
+* La Dinámica:
+   * El portafolio tiene que ser funcional en dispositivos móviles. Deben implementar los ResizeObservers y Media Queries necesarios para que el Canvas y el DOM se adapten dinámicamente a pantallas pequeñas.
+   * Troubleshooting: Las Office Hours se dedicarán estrictamente a auditar tiempos de carga iniciales y asegurar que los assets pesados estén siendo comprimidos o manejados correctamente por un Loading Manager.
+
+
+LA DEFENSA OFICIAL: EL BETA VERSIÓN 1 (SEMANA 9)
+Fecha de Presentación: Group Session de la Semana 9.
+Tiempo Límite: 5 Minutos de presentación + 5 Minutos de auditoría técnica.
+En esta reunión, cada Initiate presentará la versión navegable de su portafolio. El producto debe sentirse como un sitio web real y listo para usuarios, aunque falten optimizaciones menores.
+
+
+Criterios de Evaluación para el Beta Build:
+Para aprobar esta defensa y obtener el pase al ciclo de pulido final, el proyecto debe cumplir con:
+1. Integración de Experiencia (UX/UI): ¿La navegación desde la pantalla de carga hasta el módulo central es intuitiva? ¿Los botones funcionan, los textos son legibles y la jerarquía visual dirige la atención correctamente?
+2. Identidad Consolidada (Narrativa): ¿El portafolio comunica de inmediato quién es el Initiate y qué problema resuelve? El arte y el código deben sentirse como una sola pieza, no como elementos forzados en una plantilla.
+3. Estabilidad Responsiva (Guardrail de Rendimiento): El portafolio debe cargar sin errores fatales en la consola y la estructura base no debe desarmarse al cambiar la resolución de la pantalla.
+
+
+SGX Guardrail (Regla Innegociable):
+Cualquier portafolio que colapse durante la presentación o que requiera que el Initiate explique "cómo se supone que debería verse" en lugar de mostrarlo funcionando, resultará en una caída crítica de XP en el renglón de Destreza.
+
+
+Proyección de Cierre:
+La aprobación de este Beta Versión 1 marca el inicio del High-G Polish. A partir de la Semana 9, entran en un periodo de congelación de código (Code Freeze). Tendrán 3 semanas (Semanas 9, 10 y 11) dedicadas exclusivamente a optimizar memoria, pulir animaciones y ensayar su presentación comercial antes del SGX Summit en vivo. Una vez finalizado el evento, tendrán la Semana 12 para aplicar correcciones finales y someter el Golden Master.

@@ -1,0 +1,58 @@
+﻿BRIEF 02: THE CORE BUILD (FASE 2)
+Fase del SGX PMW: Module Architecture & Alpha Build
+Duración: Semanas 3, 4, 5 y 6.
+Día de Defensa: Group Session de la Semana 7 (Noviembre 15).
+
+
+OBJETIVO DE LA FASE
+En esta fase abandonan la teoría y entran a la arena. Ya definieron su Vibe y estructuraron su Baseline en la Fase 1. Ahora, durante cuatro semanas, el objetivo es construir y ejecutar el módulo central (diferenciador interactivo) de su Portafolio SGX. No buscamos que el texto esté perfecto ni que sea 100% responsivo aún; buscamos probar que la lógica principal (el minijuego, la galería 3D, el visor, el scroll dinámico) funciona de principio a fin sin colapsar el navegador.
+
+
+CADENCIA OPERATIVA Y EXPECTATIVAS SEMANALES
+Esta fase abarca cuatro semanas críticas, alternando entre Group Sessions y Office Hours para balancear la carga de trabajo entre el diseño humano (Craft) y el código generado (Code).
+
+
+Semana 3: Blueprint Defense & System Setup (Group Session - Oct 18)
+* Enfoque (Craft/Code): Presentación del concepto y preparación de la IA.
+* La Dinámica:
+   * Defenderán ante el gremio su Blueprint inicial (el Wireframe de su UI y el Vibe del proyecto).
+   * Asignación de "Code": Esta semana deben refinar sus System Instructions en Google AI Studio para que la IA entienda perfectamente el tono, el alcance técnico y las limitaciones de su pilar (Showcase, Story, Stage, Spark o System).
+* Fricción Esperada: La IA les dará código genérico si no le inyectan el lore y el objetivo específico de su proyecto.
+
+
+Semana 4: Asset Injection (Office Hours - Oct 25)
+* Enfoque (Code): Conectar el arte con la web.
+* La Dinámica:
+   * Tienen que empezar a cargar sus modelos .glb, imágenes, texturas y sonidos en su entorno base.
+   * Asignación de "Craft": Paralelamente, deben continuar puliendo sus assets en Blender/Unity/Illustrator para que la versión final que exporten sea óptima para la web.
+* Fricción Esperada (The Cheat Code): Se van a estrellar contra los errores de CORS (Cross-Origin Resource Sharing) al intentar cargar un modelo de Google Drive, o la web se va a colgar porque su modelo .glb pesa 150 MB. Las Office Hours de esta semana estarán dedicadas 100% a resolver problemas de carga de archivos y optimización de medios (DRACO/KTX2).
+
+
+Semana 5: The "Wow" Factor (Group Session - Nov 1)
+* Enfoque (Craft): Diferenciación Estética.
+* La Dinámica:
+   * Presentarán en grupo los avances visuales de sus módulos.
+   * Asignación de "Craft/Code": Esta es la semana para inyectar shaders customizados, sistemas de partículas básicos, iluminación PBR reactiva (RoomEnvironment) o animaciones de entrada. No queremos ver templates genéricos; queremos ver su identidad plasmada en pantalla.
+* Fricción Esperada: Pedirle a la IA efectos demasiado complejos que rompan el render loop y bajen los FPS a menos de 30. Aprenderán a balancear estética con rendimiento.
+
+
+Semana 6: Alpha Logic Assembly (Office Hours - Nov 8)
+* Enfoque (Code): Ensamblaje lógico.
+* La Dinámica:
+   * Esta semana deben unir todas las piezas. El flujo desde la pantalla de carga (Layer 3) hasta su módulo principal interactivo (ej. mover el personaje, cambiar la textura, pasar al próximo slide narrativo) debe funcionar lógicamente.
+   * Troubleshooting: Las Office Hours se centrarán en debugear la consola (DevTools) para eliminar errores rojos que detengan la ejecución.
+
+
+LA DEFENSA OFICIAL: EL MÓDULO ALPHA (SEMANA 7)
+Fecha de Presentación: Domingo, 15 de Noviembre (Group Session).
+Tiempo Límite: 5 Minutos de presentación + 4 Minutos de retroalimentación implacable.
+En esta reunión, cada Initiate presentará la versión Alpha de su Portafolio Interactivo.
+Criterios de Evaluación para el Alpha Build:
+Para aprobar esta fase sin penalidades en su Growth Factor, la presentación debe cumplir con:
+1. Validación de Lógica (Rigor): ¿El core loop (la interacción principal) funciona? Si prometiste un visor 3D, ¿puedo orbitar y hacer zoom? Si prometiste un minijuego, ¿el personaje se mueve y colisiona? (No nos importa si los botones están feos o descuadrados en esta fase, nos importa que la consola no tire errores fatales).
+2. Identidad Visual Inicial (Destreza/Visión): ¿Se nota la integración inicial del "Vibe" prometido en la Fase 1? ¿Se inyectaron los assets humanos (modelos, arte 2D) en el espacio de trabajo digital?
+3. SGX Baseline Compliance: ¿Están utilizando la arquitectura modular de 4 capas propuesta o rompieron la infraestructura base por depender ciegamente de la IA?
+
+
+⚠️ SGX Guardrail (Regla Innegociable):
+Cualquier falla crítica (crasheo total de la web durante la presentación de la Semana 7) por falta de pruebas previas impactará severamente la métrica de Autonomía. Un SGX Initiate prueba su código antes de presentar.
